@@ -134,7 +134,7 @@ packages = {
 const outlet = true
 
 function Page() {
-	return <></>
+  return <></>
 }
 
 export { outlet }
@@ -246,11 +246,11 @@ vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js
     ```javascript
     // env.ts
     const common = {
-    	levels: [1, 2, 3],
+      levels: [1, 2, 3],
     }
     // env.development.ts
     const dev = {
-    	levels: [4, 5],
+      levels: [4, 5],
     }
 
     // 上面兩個數組合併將為以下，所以使用數組做環境變數要注意這塊
@@ -272,7 +272,7 @@ vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js
     - .json
       ```json
       {
-      	"hello": "world!"
+        "hello": "world!"
       }
       ```
     - `.ts` 配置方式
@@ -281,7 +281,7 @@ vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js
       ```typescript
       export default // --- ---
       {
-      	hello: 'world!',
+        hello: 'world!',
       }
       // --- ---
       ```
@@ -292,17 +292,17 @@ vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js
 
 ```javascript
 const envConfig = await createEnvConfig(
-	mode,
-	'ts',
-	// 使用第三個轉換語句將環境變量替換掉
-	_envConfig => {
-		// 在原有的環境變數物件裡添加 version，值為現在的年與月
-		const d = new Date()
-		_envConfig.version = `v${d.getFullYear()}.${d.getMonth()}`
+  mode,
+  'ts',
+  // 使用第三個轉換語句將環境變量替換掉
+  _envConfig => {
+    // 在原有的環境變數物件裡添加 version，值為現在的年與月
+    const d = new Date()
+    _envConfig.version = `v${d.getFullYear()}.${d.getMonth()}`
 
-		// 返回的將會是你最終的環境變數
-		return _envConfig
-	},
+    // 返回的將會是你最終的環境變數
+    return _envConfig
+  },
 )
 ```
 
@@ -312,10 +312,10 @@ const envConfig = await createEnvConfig(
 
 ```js
 System.config({
-	paths: {
-		'~common/*': 'core/app/*',
-		'@/*': 'src/*',
-	},
+  paths: {
+    '~common/*': 'core/app/*',
+    '@/*': 'src/*',
+  },
 })
 ```
 
@@ -339,9 +339,9 @@ System.config({
   import { registerRouter } from '~app'
 
   registerRouter({
-  	// 將 prefix, modules 的 ./pages 替換成你想要的目錄的"相對路徑"
-  	prefix: './pages',
-  	modules: import.meta.glob('./pages/**/page.jsx'),
+    // 將 prefix, modules 的 ./pages 替換成你想要的目錄的"相對路徑"
+    prefix: './pages',
+    modules: import.meta.glob('./pages/**/page.jsx'),
   })
   ```
 
@@ -360,20 +360,20 @@ import { registerRouter } from '~app'
 
 // 必須在 ReactDOM.createRoot render 前調用
 registerRouter({
-	// 略 prefix, modules
+  // 略 prefix, modules
 
-	// 自定義路由 Suspense，如果想細分的話用 path 判斷即可
-	Suspense: ({ path, children }) => (
-		<Suspense fallback={<div>{path} 頁面加載中...</div>}>{children}</Suspense>
-	),
+  // 自定義路由 Suspense，如果想細分的話用 path 判斷即可
+  Suspense: ({ path, children }) => (
+    <Suspense fallback={<div>{path} 頁面加載中...</div>}>{children}</Suspense>
+  ),
 })
 
 // 在你需要渲染 Routes 的地方
 import { Routes } from '~app'
 
 function Page() {
-	// 使用該組件即可(記得父層要有 react-router-dom 的 Router 組件)
-	return <Routes />
+  // 使用該組件即可(記得父層要有 react-router-dom 的 Router 組件)
+  return <Routes />
 }
 
 export default Page
@@ -399,10 +399,10 @@ page.jsx // /
 
 ```javascript
 pages /
-	news /
-	outlet / // 以下的路由都會變成 /news 的子路由
-	tab1 /
-	page.jsx // /news/tab1
+  news /
+  outlet / // 以下的路由都會變成 /news 的子路由
+  tab1 /
+  page.jsx // /news/tab1
 tab2 / page.jsx // /news/tab2
 page.jsx // /news
 
@@ -410,15 +410,15 @@ page.jsx // /news
 import { Outlet } from 'react-router-dom'
 
 function Page() {
-	return (
-		<>
-			<h1>/news</h1>
-			<Tabs tabs={['/news/tab1', '/news/tab2']} />
+  return (
+    <>
+      <h1>/news</h1>
+      <Tabs tabs={['/news/tab1', '/news/tab2']} />
 
-			{/* 注意必須有這個！！不然子路由無法渲染 */}
-			<Outlet />
-		</>
-	)
+      {/* 注意必須有這個！！不然子路由無法渲染 */}
+      <Outlet />
+    </>
+  )
 }
 
 export default Page
@@ -428,8 +428,8 @@ export default Page
 
 ```javascript
 pages /
-	outlet / // 以下路由都會在 / 的 Outlet 之中
-	page.jsx // /
+  outlet / // 以下路由都會在 / 的 Outlet 之中
+  page.jsx // /
 ```
 
 ## 其他
@@ -437,8 +437,8 @@ pages /
 ```javascript
 // 略 Router, registerRouter
 import {
-	// 返回所有頁面的路由路徑，你在 development mode 的 info log 裡看到的路由數組就是這個的值
-	routePaths,
+  // 返回所有頁面的路由路徑，你在 development mode 的 info log 裡看到的路由數組就是這個的值
+  routePaths,
 } from '~app'
 ```
 
