@@ -91,26 +91,26 @@ smart-input
 
 ```javascript
 packages = {
-	dependencies: {
-		antd: '^5.11.2', // 組件
-		clsx: '^2.0.0', // 類名組裝
-		'date-fns': '^2.30.0', // 日期
-		immer: '^10.0.3', // 方便的處理不可變狀態
-		'lodash-es': '^4.17.21', // 就 lodash，這是我用來寫底層用的，不過有需要就用
-		mitt: '^3.0.1', // 發布訂閱
-		'query-string': '^8.1.0', // QS 轉換
-		react: '^18.2.0', // 就 react@18
-		'react-dom': '^18.2.0', // 就 react-dom@18
-		'react-router-dom': '^6.3.0', // 鎖 6.3 版，6.4+ 會有 data api，用不到
-		wtbx: '^x.x.x', // 自研的工具集
-		zustand: '^4.4.6', // 狀態管理
-	},
-	devDependencies: {
-		'@vitejs/plugin-react': '^4.2.0', // babel 版，也有 swc 版，看情況再決定要不要換過去
-		unocss: '^0.57.4', // 樣式
-		'vite-plugin-html': '^3.2.0', // 為入口 html 注入值
-		'vite-plugin-svgr': '^4.1.0', // svg component
-	},
+  dependencies: {
+    antd: '^5.11.2', // 組件
+    clsx: '^2.0.0', // 類名組裝
+    'date-fns': '^2.30.0', // 日期
+    immer: '^10.0.3', // 方便的處理不可變狀態
+    'lodash-es': '^4.17.21', // 就 lodash，這是我用來寫底層用的，不過有需要就用
+    mitt: '^3.0.1', // 發布訂閱
+    'query-string': '^8.1.0', // QS 轉換
+    react: '^18.2.0', // 就 react@18
+    'react-dom': '^18.2.0', // 就 react-dom@18
+    'react-router-dom': '^6.3.0', // 鎖 6.3 版，6.4+ 會有 data api，用不到
+    wtbx: '^x.x.x', // 自研的工具集
+    zustand: '^4.4.6', // 狀態管理
+  },
+  devDependencies: {
+    '@vitejs/plugin-react': '^4.2.0', // babel 版，也有 swc 版，看情況再決定要不要換過去
+    unocss: '^0.57.4', // 樣式
+    'vite-plugin-html': '^3.2.0', // 為入口 html 注入值
+    'vite-plugin-svgr': '^4.1.0', // svg component
+  },
 }
 ```
 
@@ -189,45 +189,42 @@ export default Page
 
 以下列出比較重要的而已
 
-```javascript
-react - spa
+```text
+react-spa
   .husky // husky 主目錄
-pre - commit // git pre-commit hook
-  .wtbx - build / // 腳本生成的檔案，會被 .gitignore 掉(所以項目開發不要引用這裡黑= =)
-env - config.js // 開發用的環境變數
-core /
-app / // 開發通用模塊(不常改的核心模塊，類似 soul 那樣的東西)
-index.jsx // ~app 指向的檔案
-build - recipe /
-env /
-env.json // 通用環境變數
-env.[mode].json
-mode // 環境變數，可以通過 vite --mode 指定
-vite /
-config / // vite 相關配置，有需要就改
-utils / // vite 通用方法
-bootstrap.js // vite 相關配置，有需要就改
-type / // core 用的 type
-dist / // bundle 目錄
-mock - server / // 開發中不介紹
-public
-/ /
-/ 靜態資源目錄
-src /
-assets / // 引用資源目錄(最後打包都會被我送到 public 裡，一來目錄乾淨；一來 cdn 優化方便)
-enums / // 枚舉目錄
-hooks / // 鉤子目錄
-pages / // 頁面目錄
-store / // 狀態目錄
-type / // 類型目錄(有需要在用)
-global.d.ts // 通用類型
-utils / // 通用方法目錄
-app.jsx // 入口 App Component
-main.jsx // 入口 (react-dom render)
-idea.config.js // jetbrains IDE 用的 alias 配置，不過會依此配置自動生成對應的 vite alias
-index.html // 入口 html
-pnpm - lock.yaml // 包 lock，因為使用 pnpm，所以是 pnpm-lock.yaml 檔
-vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js 裡
+    pre-commit // git pre-commit hook
+	.wtbx-build/ // 腳本生成的檔案，會被 .gitignore 掉(所以項目開發不要引用這裡黑= =)
+    env-config.js // 開發用的環境變數
+  core/
+    app/ // 開發通用模塊(不常改的核心模塊，類似 soul 那樣的東西)
+      index.jsx // ~app 指向的檔案
+    build-recipe/
+      env/
+        env.json // 通用環境變數
+        env.[mode].json mode // 環境變數，可以通過 vite --mode 指定
+      vite/
+        config/ // vite 相關配置，有需要就改
+        utils/ // vite 通用方法
+        bootstrap.js // vite 相關配置，有需要就改
+    type/ // core 用的 type
+  dist/ // bundle 目錄
+  mock-server/ // 開發中不介紹
+  public/ // 靜態資源目錄
+  src/
+    assets/ // 引用資源目錄(最後打包都會被我送到 public 裡，一來目錄乾淨；一來 cdn 優化方便)
+    enums/ // 枚舉目錄
+    hooks/ // 鉤子目錄
+    pages/ // 頁面目錄
+    store/ // 狀態目錄
+    type/ // 類型目錄(有需要在用)
+      global.d.ts // 通用類型
+    utils/ // 通用方法目錄
+    app.jsx // 入口 App Component
+    main.jsx // 入口 (react-dom render)
+  idea.config.js // jetbrains IDE 用的 alias 配置，不過會依此配置自動生成對應的 vite alias
+  index.html // 入口 html
+  pnpm-lock.yaml // 包 lock，因為使用 pnpm，所以是 pnpm-lock.yaml 檔
+  vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js 裡
 ```
 
 # env 環境變數
