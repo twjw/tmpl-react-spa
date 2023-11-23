@@ -1,7 +1,7 @@
-# twjw-react-spa-tmpl
+# twjw-tmpl-react-spa
 
 > Author: @twjw  
-> Repository: https://github.com/twjw/js-kit/tree/main/tmpl/react-spa
+> Repository: https://github.com/twjw/tmpl-react-spa
 >
 > **[初始化](#初始化)** <- 該章節必看
 
