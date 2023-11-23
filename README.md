@@ -102,7 +102,6 @@ packages = {
 		react: '^18.2.0', // 就 react@18
 		'react-dom': '^18.2.0', // 就 react-dom@18
 		'react-router-dom': '^6.3.0', // 鎖 6.3 版，6.4+ 會有 data api，用不到
-		swr: '^2.2.4', // 請求
 		wtbx: '^x.x.x', // 自研的工具集
 		zustand: '^4.4.6', // 狀態管理
 	},
@@ -233,6 +232,7 @@ react-spa
 > 環境變數配置位置於 `core/build-recipe/env/` 目錄下，當 vite 啟動後會生成 `src/core/env-config.js`，如果項目需要環境變數可以 import 該檔案(`@core/env-config`)
 
 - 接著講解 env 的配置方式：
+
   - 建議使用 `.ts` 來配置
     - 開發 vite 時可以獲取到環境變數類型
     - 可以寫註釋
