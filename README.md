@@ -190,46 +190,50 @@ export default Page
 以下列出比較重要的而已
 
 ```javascript
-react-spa
+react - spa
   .husky // husky 主目錄
-    pre-commit // git pre-commit hook
-	.wtbx-build/ // 腳本生成的檔案，會被 .gitignore 掉(所以項目開發不要引用這裡黑= =)
-    env-config.js // 開發用的環境變數
-  core/
-    app/ // 開發通用模塊(不常改的核心模塊，類似 soul 那樣的東西)
-      index.jsx // ~app 指向的檔案
-    build-recipe/
-      env/
-        env.json // 通用環境變數
-        env.[mode].json mode // 環境變數，可以通過 vite --mode 指定
-      vite/
-        config/ // vite 相關配置，有需要就改
-        utils/ // vite 通用方法
-        bootstrap.js // vite 相關配置，有需要就改
-    type/ // core 用的 type
-  dist/ // bundle 目錄
-  mock-server/ // 開發中不介紹
-  public/ // 靜態資源目錄
-  src/
-    assets/ // 引用資源目錄(最後打包都會被我送到 public 裡，一來目錄乾淨；一來 cdn 優化方便)
-    enums/ // 枚舉目錄
-    hooks/ // 鉤子目錄
-    pages/ // 頁面目錄
-    store/ // 狀態目錄
-    type/ // 類型目錄(有需要在用)
-      global.d.ts // 通用類型
-    utils/ // 通用方法目錄
-    app.jsx // 入口 App Component
-    main.jsx // 入口 (react-dom render)
-  idea.config.js // jetbrains IDE 用的 alias 配置，不過會依此配置自動生成對應的 vite alias
-  index.html // 入口 html
-  pnpm-lock.yaml // 包 lock，因為使用 pnpm，所以是 pnpm-lock.yaml 檔
-  vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js 裡
+pre - commit // git pre-commit hook
+  .wtbx - build / // 腳本生成的檔案，會被 .gitignore 掉(所以項目開發不要引用這裡黑= =)
+env - config.js // 開發用的環境變數
+core /
+app / // 開發通用模塊(不常改的核心模塊，類似 soul 那樣的東西)
+index.jsx // ~app 指向的檔案
+build - recipe /
+env /
+env.json // 通用環境變數
+env.[mode].json
+mode // 環境變數，可以通過 vite --mode 指定
+vite /
+config / // vite 相關配置，有需要就改
+utils / // vite 通用方法
+bootstrap.js // vite 相關配置，有需要就改
+type / // core 用的 type
+dist / // bundle 目錄
+mock - server / // 開發中不介紹
+public
+/ /
+/ 靜態資源目錄
+src /
+assets / // 引用資源目錄(最後打包都會被我送到 public 裡，一來目錄乾淨；一來 cdn 優化方便)
+enums / // 枚舉目錄
+hooks / // 鉤子目錄
+pages / // 頁面目錄
+store / // 狀態目錄
+type / // 類型目錄(有需要在用)
+global.d.ts // 通用類型
+utils / // 通用方法目錄
+app.jsx // 入口 App Component
+main.jsx // 入口 (react-dom render)
+idea.config.js // jetbrains IDE 用的 alias 配置，不過會依此配置自動生成對應的 vite alias
+index.html // 入口 html
+pnpm - lock.yaml // 包 lock，因為使用 pnpm，所以是 pnpm-lock.yaml 檔
+vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js 裡
 ```
 
 # env 環境變數
 
-> 環境變數配置位置於 `core/build-recipe/env/` 目錄下，當 vite 啟動後會生成 `src/core/env-config.js`，如果項目需要環境變數可以 import 該檔案(`@core/env-config`)
+> 環境變數配置位置於 `core/build-recipe/env/` 目錄下，當 vite 啟動後會生成 `src/core/env-config.js`，如果項目需要環境變數可以
+> import 該檔案(`@core/env-config`)
 
 - 接著講解 env 的配置方式：
 
@@ -327,7 +331,8 @@ System.config({
 > ![](https://raw.githubusercontent.com/twjw/pic-bed/main/202311192141798.png)
 
 - 採**目錄式路由**，會自動生成 `react-router@6` 的路由系統
-  - 順便說，路由會鎖在 `6.3` 版本，因為在上去都是 `ssr api`，完全是用不到，所以看文檔請看 [`6.3`](https://reactrouter.com/en/v6.3.0) 版的路由喔
+  - 順便說，路由會鎖在 `6.3` 版本，因為在上去都是 `ssr api`
+    ，完全是用不到，所以看文檔請看 [`6.3`](https://reactrouter.com/en/v6.3.0) 版的路由喔
 - `pages` 可自定義，但我是建議使用 `pages` 啦，比較不會這麼搞怪，以下示範怎麼替換
 
   ```javascript
@@ -388,7 +393,9 @@ page.jsx // /
 
 ### 嵌套
 
-因為是轉換成 `react-router@6` 的路由關係，所以子路由的上層路由**必須有 <Outlet /> 組件(類似 Vue 的 router-view 的概念)**，這樣子路由才會被渲染出來！這種路由在做 tab 切換頁面就很適合使用，這樣外層組件才不用重新渲染，可以更高效的渲染畫面且可以局部 `Suspense` 或 `權限較驗`
+因為是轉換成 `react-router@6` 的路由關係，所以子路由的上層路由**必須有 <Outlet /> 組件(類似 Vue 的 router-view 的概念)**
+，這樣子路由才會被渲染出來！這種路由在做 tab
+切換頁面就很適合使用，這樣外層組件才不用重新渲染，可以更高效的渲染畫面且可以局部 `Suspense` 或 `權限較驗`
 
 ```javascript
 pages /
