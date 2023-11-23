@@ -1,0 +1,43 @@
+{
+	"name": "twjw-react-spa-tmpl",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"prepare": "husky install"
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx,css,sass,scss,json,md}": "prettier --write"
+	},
+	"dependencies": {
+		"antd": "^5.11.2",
+		"clsx": "^2.0.0",
+		"date-fns": "^2.30.0",
+		"immer": "^10.0.3",
+		"lodash-es": "^4.17.21",
+		"mitt": "^3.0.1",
+		"query-string": "^8.1.0",
+		"rc-picker": "^3.14.6",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-router-dom": "^6.3.0",
+		"wtbx": "link:..\\toolbox-js",
+		"zustand": "^4.4.6"
+	},
+	"devDependencies": {
+		"@types/node": "^20.9.0",
+		"@types/react": "^18.2.15",
+		"@types/react-dom": "^18.2.7",
+		"@vitejs/plugin-react": "^4.2.0",
+		"husky": "^8.0.3",
+		"json5": "^2.2.3",
+		"lint-staged": "^15.1.0",
+		"prettier": "^3.1.0",
+		"unocss": "^0.57.4",
+		"vite": "^4.5.0",
+		"vite-plugin-html": "^3.2.0",
+		"vite-plugin-svgr": "^4.1.0"
+	}
+}
