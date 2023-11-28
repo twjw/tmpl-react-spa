@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
+import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { envConfig, routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'

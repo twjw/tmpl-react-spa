@@ -47,7 +47,7 @@
   - api
   - fetch 封裝
     - 自動推導 content-type 跟 res.xxx()
-    - 中斷功能
+  - useRequest
   - useQueryString
 - 組件/路由相關
   - error boundary
