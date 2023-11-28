@@ -25,6 +25,8 @@ dist-ssr
 
 # 客製
 __unconfig_vite.config.js
+__unconfig_vite.config.ts
 vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 package-lock.json
 yarn.lock

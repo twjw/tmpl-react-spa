@@ -70,6 +70,7 @@
   - @yoimu
 - toolbox
   - 上架至 npm
+  - enum2 使用 ts 重寫
 - CICD
   - 版號(延後處理)
 - husky
@@ -127,12 +128,12 @@ packages = {
 5. `vite alias` 配置到 `idea.config.js` 的 `paths` 裡
 6. 建議使用 `Jetbrains IDE` 開發，僅對該 IDE 做優化
 7. **[初始化](#初始化)** 標題裡的內容**必看**！
-8. 純邏輯使用 `.js`，含 **UI** 使用 `.jsx`
-9. 時間庫使用 `date-fns`，因為不是 `dayjs` 的關係，所以 `antd` 的日期相關組件請從 `@/components/index.jsx` 導入
-10. 除了 `*.page.jsx` 外，都使用 `export` 導出而不是 `export default`
+8. 純邏輯使用 `.tx`，含 **UI** 使用 `.tsx`
+9. 時間庫使用 `date-fns`，因為不是 `dayjs` 的關係，所以 `antd` 的日期相關組件請從 `@/components/index.tsx` 導入
+10. 除了 `*.page.tsx` 外，都使用 `export` 導出而不是 `export default`
 11. `export`, `export default` 建議在最底部一次導出，而不是在變量前申明
 
-```jsx
+```tsx
 const outlet = true
 
 function Page() {
@@ -144,7 +145,7 @@ export { outlet }
 export default Page
 ```
 
-12. 除了國際化字典檔外，通用方法或組件(如: `componets` 目錄)，建議在目錄下創建 `index.js` 檔一次導出
+12. 除了國際化字典檔外，通用方法或組件(如: `componets` 目錄)，建議在目錄下創建 `index.ts` 檔一次導出
 
 ---
 
@@ -199,7 +200,7 @@ react-spa
     env-config.js // 開發用的環境變數
   core/
     app/ // 開發通用模塊(不常改的核心模塊，類似 soul 那樣的東西)
-      index.jsx // ~app 指向的檔案
+      index.tsx // ~app 指向的檔案
     build-recipe/
       env/
         env.json // 通用環境變數
@@ -207,7 +208,7 @@ react-spa
       vite/
         config/ // vite 相關配置，有需要就改
         utils/ // vite 通用方法
-        bootstrap.js // vite 相關配置，有需要就改
+        bootstrap.ts // vite 相關配置，有需要就改
     type/ // core 用的 type
   dist/ // bundle 目錄
   mock-server/ // 開發中不介紹
@@ -221,12 +222,12 @@ react-spa
     type/ // 類型目錄(有需要在用)
       global.d.ts // 通用類型
     utils/ // 通用方法目錄
-    app.jsx // 入口 App Component
-    main.jsx // 入口 (react-dom render)
+    app.tsx // 入口 App Component
+    main.tsx // 入口 (react-dom render)
   idea.config.js // jetbrains IDE 用的 alias 配置，不過會依此配置自動生成對應的 vite alias
   index.html // 入口 html
   pnpm-lock.yaml // 包 lock，因為使用 pnpm，所以是 pnpm-lock.yaml 檔
-  vite.config.js // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.js 裡
+  vite.config.ts // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.ts 裡
 ```
 
 # env 環境變數
@@ -340,11 +341,11 @@ System.config({
   registerRouter({
     // 將 prefix, modules 的 ./pages 替換成你想要的目錄的"相對路徑"
     prefix: './pages',
-    modules: import.meta.glob('./pages/**/page.jsx'),
+    modules: import.meta.glob('./pages/**/page.tsx'),
   })
   ```
 
-- 檔名為 `page.jsx` 的檔案都會被自動轉成路由頁面(**必須 export default 導出**)
+- 檔名為 `page.tsx` 的檔案都會被自動轉成路由頁面(**必須 export default 導出**)
 - 目錄為 `[xxx]` 的檔案都會被轉成參數路由
   - 如 `[id]` 轉成 `:id`
   - 如 `[my-name]` 轉成 `:myName`，**注意：如果是多個單字的參數明會自動轉成駝峰命名**
@@ -353,7 +354,7 @@ System.config({
 ## 註冊路由
 
 ```javascript
-// main.jsx
+// main.tsx
 // 從 ~app 引入 registerRouter 來註冊頁面路由
 import { registerRouter } from '~app'
 
@@ -384,10 +385,10 @@ export default Page
 
 ```javascript
 pages / news / [id] / [start - date]
-page.jsx // /news/:id/:startDate
-page.jsx // /news/:id
-page.jsx // /news
-page.jsx // /
+page.tsx // /news/:id/:startDate
+page.tsx // /news/:id
+page.tsx // /news
+page.tsx // /
 ```
 
 ### 嵌套
@@ -401,11 +402,11 @@ pages /
   news /
   outlet / // 以下的路由都會變成 /news 的子路由
   tab1 /
-  page.jsx // /news/tab1
-tab2 / page.jsx // /news/tab2
-page.jsx // /news
+  page.tsx // /news/tab1
+tab2 / page.tsx // /news/tab2
+page.tsx // /news
 
-// news/page.jsx
+// news/page.tsx
 import { Outlet } from 'react-router-dom'
 
 function Page() {
@@ -428,7 +429,7 @@ export default Page
 ```javascript
 pages /
   outlet / // 以下路由都會在 / 的 Outlet 之中
-  page.jsx // /
+  page.tsx // /
 ```
 
 ## 其他
