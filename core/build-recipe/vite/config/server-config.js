@@ -2,7 +2,7 @@
  * @param envConfig {import('../../../../src/type/global.js').EnvConfig}
  * @return {import('vite').ServerOptions}
  */
-const server = envConfig => {
+const serverConfig = envConfig => {
 	return {
 		host: '0.0.0.0',
 		port: envConfig.server._port || 3000,
@@ -20,4 +20,4 @@ const server = envConfig => {
 	}
 }
 
-export { server }
+export { serverConfig }

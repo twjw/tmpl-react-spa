@@ -8,7 +8,7 @@ import { createHtmlPlugin } from 'vite-plugin-html'
  * @param envConfig {import('../../../../src/type/global.js').EnvConfig}
  * @return {import('vite').PluginOption}
  */
-function plugins(envConfig) {
+function pluginsConfig(envConfig) {
 	return [
 		UnoCSS({
 			shortcuts: [],
@@ -37,4 +37,4 @@ function plugins(envConfig) {
 	]
 }
 
-export { plugins }
+export { pluginsConfig }

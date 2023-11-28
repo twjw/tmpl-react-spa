@@ -72,6 +72,8 @@
   - 上架至 npm
 - CICD
   - 版號(延後處理)
+- husky
+  - 將 prettier 整合至 eslint 處理，並配置若 import 未使用的 package 將移除
 - IDE
   - 配置 react-buddy(延後處理)
 - package

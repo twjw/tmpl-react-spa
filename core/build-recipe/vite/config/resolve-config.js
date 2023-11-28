@@ -34,7 +34,7 @@ async function getIdeaPaths() {
  * @param envConfig {import('../../../../src/type/global.js').EnvConfig}
  * @return {{ alias: import('vite').AliasOptions }}
  */
-async function resolve(envConfig) {
+async function resolveConfig(envConfig) {
 	const alias = await getIdeaPaths()
 
 	logs.info(`通過 ${ideaConfigFilename} 生成的 alias:`)
@@ -45,4 +45,4 @@ async function resolve(envConfig) {
 	}
 }
 
-export { resolve }
+export { resolveConfig }

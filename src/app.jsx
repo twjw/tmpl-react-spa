@@ -3,13 +3,13 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { envConfig, routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
-import { DatePicker } from '@/components/index.jsx'
+import { fetch2 } from 'wtbx/common'
 
 function App() {
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
-		fetch('/api/text')
+		fetch2('/api/text')
 			.then(res => res.text())
 			.then(e => {
 				console.log(123, e)
@@ -37,7 +37,6 @@ function App() {
 				</p>
 			</div>
 			<p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-			<DatePicker />
 			{routePaths.map(path => (
 				<div key={path}>
 					<Link to={path}>{path}</Link>

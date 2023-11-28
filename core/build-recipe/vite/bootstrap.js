@@ -1,16 +1,16 @@
 import { defineConfig } from 'vite'
-import { server } from './config/server.js'
+import { serverConfig } from './config/server-config.js'
 import { createEnvConfig } from './utils/create-env-config.js'
-import { plugins } from './config/plugins.js'
-import { resolve } from './config/resolve.js'
+import { pluginsConfig } from './config/plugins-config.js'
+import { resolveConfig } from './config/resolve-config.js'
 
 async function bootstrap({ mode }) {
 	const envConfig = await createEnvConfig(mode)
 
 	return defineConfig({
-		plugins: plugins(envConfig),
-		resolve: await resolve(envConfig),
-		server: server(envConfig),
+		plugins: pluginsConfig(envConfig),
+		resolve: await resolveConfig(envConfig),
+		server: serverConfig(envConfig),
 	})
 }
 
