@@ -19,7 +19,7 @@ const outputDirPath = getBuildPath()
 const outputFileName = 'env.config.ts'
 const outputPath = path.resolve(process.cwd(), `${outputDirPath}/${outputFileName}`)
 
-const passConfig = async (config, filename, extension) => {
+const passConfig = async (config: Record<string, any>, filename: string, extension: Ext) => {
 	const _configBuffer = await fs.readFile(path.resolve(envPath, filename))
 
 	try {
@@ -48,7 +48,7 @@ const passConfig = async (config, filename, extension) => {
 	}
 }
 
-const dontTransform = e => e
+const dontTransform = <T>(e: T) => e
 
 const createEnvConfig = async <Result = EnvConfig>(mode: Mode = 'development', extension: Ext = extTs, transform: (envConfig: Result) => Result = dontTransform): Promise<Result> => {
 	logs.info('開始創建環境變數...')

@@ -17,7 +17,7 @@ async function getIdeaPaths() {
 		const result = {}
 
 		for (const k in paths) {
-			result[k.replace(dirReg, '')] = paths[k][0]
+			result[(k as string).replace(dirReg, '')] = paths[k][0]
 				// .replace(/^..\//, '')
 				.replace(dirReg, '')
 		}
