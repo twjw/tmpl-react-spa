@@ -8,7 +8,7 @@ import { translate, useLocale } from '~common/store/locale'
 
 function App() {
 	const setLocale = useLocale(e => e.setLocale)
-	const [count, setCount] = useState(0)
+	const [arr, setArr] = useState([])
 
 	useEffect(() => {
 		fetch2('/api/text')
@@ -32,18 +32,24 @@ function App() {
 					<img src={reactLogo} className="logo react" alt="React logo" />
 				</a>
 			</div>
-			<button className={'cursor-pointer'} onClick={() =>{
+			<button className={'cursor-pointer'} onClick={() => {
 				setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
 			}}>國際化(test) - {translate('test')}</button>
 			<button className={'cursor-pointer'} onClick={() => {
 				console.log(translate('testBlock.name'))
-			}}>log 翻譯</button>
+			}}>log 翻譯
+			</button>
+			<div>
+				<button onClick={() => {
+					setArr(1 as unknown as [])
+				}}>點擊會報錯 {arr.map(e => e)}</button>
+			</div>
 			<div className="flex items-start flex-wrap">
-			{routePaths.map(path => (
-				<div key={path} className={'mb-3 mr-4'}>
-					<Link to={path}>{path}</Link>
-				</div>
-			))}
+				{routePaths.map(path => (
+					<div key={path} className={'mb-3 mr-4'}>
+						<Link to={path}>{path}</Link>
+					</div>
+				))}
 			</div>
 			<Routes />
 		</div>
