@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
-import { envConfig, routePaths, Routes } from '~app'
+import { routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { fetch2 } from 'wtbx/common'
 import { translate, useLocale } from '~common/store/locale'
@@ -20,9 +20,9 @@ function App() {
 				console.error(err)
 			})
 	}, [])
-console.log(1234)
+
 	return (
-		<>
+		<div className={'text-18'}>
 			{Math.random()}
 			<div>
 				<a href="https://vitejs.dev" target="_blank">
@@ -32,27 +32,21 @@ console.log(1234)
 					<img src={reactLogo} className="logo react" alt="React logo" />
 				</a>
 			</div>
-			<h1 className={'text-rose text-50 border-1'}>{envConfig.project.title}</h1>
-			<h2 className={'cursor-pointer'} onClick={() =>{
+			<button className={'cursor-pointer'} onClick={() =>{
 				setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
-			}}>{translate('test')}</h2>
-			<h3 className={'cursor-pointer'} onClick={() => {
+			}}>國際化(test) - {translate('test')}</button>
+			<button className={'cursor-pointer'} onClick={() => {
 				console.log(translate('testBlock.name'))
-			}}>translate test</h3>
-			<div className="card">
-				<button onClick={() => setCount(count => count + 1)}>count is {count}</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+			}}>log 翻譯</button>
+			<div className="flex items-start flex-wrap">
 			{routePaths.map(path => (
-				<div key={path}>
+				<div key={path} className={'mb-3 mr-4'}>
 					<Link to={path}>{path}</Link>
 				</div>
 			))}
+			</div>
 			<Routes />
-		</>
+		</div>
 	)
 }
 

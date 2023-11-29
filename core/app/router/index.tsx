@@ -1,4 +1,4 @@
-import { Routes as ReactRouterDomRoutes, Route } from 'react-router-dom'
+import { Routes as ReactRouterDomRoutes, Route, Navigate } from 'react-router-dom'
 import { lazy, LazyExoticComponent, FC, ReactNode, ComponentType } from 'react'
 import { logs } from 'wtbx/common'
 
@@ -152,7 +152,10 @@ function _mapRoutes(routes: Route[] = [], parentPath = '') {
 }
 
 function Routes() {
-	return <ReactRouterDomRoutes>{_mapRoutes(_routes)}</ReactRouterDomRoutes>
+	return <ReactRouterDomRoutes>
+		{_mapRoutes(_routes)}
+		<Route path={'*'} element={<Navigate to={'/404'} replace />} />
+	</ReactRouterDomRoutes>
 }
 
 export { routePaths, register, Routes }
