@@ -19,7 +19,7 @@ const presetRem = definePreset((options?: RemToPxOptions) => {
 			util.entries.forEach(e => {
 				const value = e[1]
 				if (typeof value === 'string' && remRE.test(value))
-					e[1] = value.replace(remRE, (_, p1) => `${p1 / baseFontSize}rem`)
+					e[1] = value.replace(remRE, (_, p1) => `${p1 / baseFontSize * 4}rem`)
 			})
 		},
 	}

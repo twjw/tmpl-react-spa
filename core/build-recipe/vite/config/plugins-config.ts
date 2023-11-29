@@ -7,6 +7,8 @@ import { presetRem } from '../plugins/unocss/plugins/preset-rem'
 import { PluginOption } from 'vite'
 import { EnvConfig } from '../../../type/build'
 
+const baseFontSize = 50
+
 function pluginsConfig(envConfig: EnvConfig): PluginOption[] {
 	return [
 		UnoCSS({
@@ -20,7 +22,7 @@ function pluginsConfig(envConfig: EnvConfig): PluginOption[] {
 						'vertical-align': 'middle',
 					},
 				}),
-				presetRem({ baseFontSize: 40 }),
+				presetRem({ baseFontSize }),
 			],
 			inspector: true,
 		}),
@@ -31,6 +33,7 @@ function pluginsConfig(envConfig: EnvConfig): PluginOption[] {
 			inject: {
 				data: {
 					title: envConfig.project.title,
+					htmlFontSize: `${baseFontSize}px`,
 				},
 			},
 		}),

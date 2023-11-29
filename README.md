@@ -9,7 +9,6 @@
 
 # 目錄
 
-- [目錄](#目錄)
 - [TODO](#TODO)
 - [偉大的IDE](#偉大的IDE)
 - [package 介紹](#package-介紹)
@@ -36,53 +35,8 @@
 
 # 紀錄
 
----
-
-# TODO
-
-- 國際化(把sl方法搬進來)
-  - antd5
-    - 引入國際化
-- 身分/請求相關
-  - mock-server(延後處理)
-    - 把 mock 功能集成
-  - login page
-  - auth
-  - api
-  - fetch 封裝
-    - 自動推導 content-type 跟 res.xxx()
-  - useRequest
-  - useQueryString
-- 組件/路由相關
-  - error boundary
-  - router
-    - beforeEach
-    - keep-alive(不一定處理)
-    - 404
-  - 通用 layout
-    - sidebar
-    - header
-    - footer
-  - antd5
-    - 主題優化工具
-  - 寫過的項目中的好用的
-- hooks/utils
-  - 寫過的項目中的好用的
-- 樣式
-  - 基本 unocss 配置
-- 移植
-  - @yoimu
-- toolbox
-  - 上架至 npm
-  - enum2 使用 ts 重寫
-- CICD
-  - 版號(延後處理)
-- husky
-  - 將 prettier 整合至 eslint 處理，並配置若 import 未使用的 package 將移除
-- IDE
-  - 配置 react-buddy(延後處理)
-- package
-  - 之後確認 vite@5 周邊適配好升級至 vite@5(延後處理)
+* 要補樣式尺寸用法
+* 確認文檔通不通，因為轉TS了
 
 ---
 
