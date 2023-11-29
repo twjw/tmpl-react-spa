@@ -34,6 +34,10 @@
 
 ---
 
+# 紀錄
+
+---
+
 # TODO
 
 - 國際化(把sl方法搬進來)
@@ -121,17 +125,16 @@ packages = {
 
 # 最佳實踐
 
-1. 環境變數配置路徑為 `core/build-recipe/env`，建議使用 `ts` 檔配置
-2. 除了國際化字典檔外，檔案名採 `短橫線連接(kebab-case)` 規則命名
-3. 使用 `pnpm` 做包管理
-4. 配置 `prettier`
-5. `vite alias` 配置到 `idea.config.js` 的 `paths` 裡
-6. 建議使用 `Jetbrains IDE` 開發，僅對該 IDE 做優化
-7. **[初始化](#初始化)** 標題裡的內容**必看**！
-8. 純邏輯使用 `.tx`，含 **UI** 使用 `.tsx`
-9. 時間庫使用 `date-fns`，因為不是 `dayjs` 的關係，所以 `antd` 的日期相關組件請從 `@/components/index.tsx` 導入
-10. 除了 `*.page.tsx` 外，都使用 `export` 導出而不是 `export default`
-11. `export`, `export default` 建議在最底部一次導出，而不是在變量前申明
+01. 環境變數配置路徑為 `core/build-recipe/env`，建議使用 `ts` 檔配置
+02. 除了國際化字典檔外，檔案名採 `短橫線連接(kebab-case)` 規則命名
+03. 使用 `pnpm` 做包管理
+04. 配置 `prettier`
+05. 建議使用 `Jetbrains IDE` 開發，僅對該 IDE 做優化
+06. **[初始化](#初始化)** 標題裡的內容**必看**！
+07. 純邏輯使用 `.tx`，含 **UI** 使用 `.tsx`
+08. 時間庫使用 `date-fns`，因為不是 `dayjs` 的關係，所以 `antd` 的日期相關組件請從 `@/components/index.tsx` 導入
+09. 除了 `*.page.tsx` 外，都使用 `export` 導出而不是 `export default`
+10. `export`, `export default` 建議在最底部一次導出，而不是在變量前申明
 
 ```tsx
 const outlet = true
@@ -224,7 +227,6 @@ react-spa
     utils/ // 通用方法目錄
     app.tsx // 入口 App Component
     main.tsx // 入口 (react-dom render)
-  idea.config.js // jetbrains IDE 用的 alias 配置，不過會依此配置自動生成對應的 vite alias
   index.html // 入口 html
   pnpm-lock.yaml // 包 lock，因為使用 pnpm，所以是 pnpm-lock.yaml 檔
   vite.config.ts // vite 配置，不過寫在 core/build-recipe/vite/bootstrap.ts 裡
