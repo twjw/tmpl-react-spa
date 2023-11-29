@@ -7,7 +7,6 @@ import { fetch2 } from 'wtbx/common'
 import { translate, useLocale } from '~common/store/locale'
 
 function App() {
-	useLocale(e => e.locale)
 	const setLocale = useLocale(e => e.setLocale)
 	const [count, setCount] = useState(0)
 
@@ -21,9 +20,10 @@ function App() {
 				console.error(err)
 			})
 	}, [])
-
+console.log(1234)
 	return (
 		<>
+			{Math.random()}
 			<div>
 				<a href="https://vitejs.dev" target="_blank">
 					<img src={viteLogo} className="logo" alt="Vite logo" />
@@ -34,7 +34,7 @@ function App() {
 			</div>
 			<h1 className={'text-rose text-50 border-1'}>{envConfig.project.title}</h1>
 			<h2 className={'cursor-pointer'} onClick={() =>{
-				setLocale(Math.random() > 0.45 ? 'en' : 'zh_TW')
+				setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
 			}}>{translate('test')}</h2>
 			<h3 className={'cursor-pointer'} onClick={() => {
 				console.log(translate('testBlock.name'))
@@ -56,4 +56,6 @@ function App() {
 	)
 }
 
-export default App
+export {
+	App,
+}

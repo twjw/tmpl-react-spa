@@ -2,10 +2,11 @@ import 'virtual:uno.css'
 import '@/style/reset.css'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import App from './app.tsx'
+import { App } from './app.tsx'
 import { envConfig, registerRouter } from '~app'
 import { logs } from 'wtbx/common'
 import { ComponentType, Suspense } from 'react'
+import { LocaleWrap } from '~common/store/locale'
 
 // 只有 mode 為 development 才會顯示 log
 logs.isDebug = envConfig.mode === 'development'
@@ -20,6 +21,6 @@ registerRouter({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>
-		<App />
+		<LocaleWrap fc={App} />
 	</BrowserRouter>,
 )

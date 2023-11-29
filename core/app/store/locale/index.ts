@@ -8,8 +8,5 @@ export {
 	useLocale,
 } from '~common/store/locale/store'
 export { translate } from '~common/store/locale/translate'
-import dictionary from '~common/store/locale/locales'
-
-export {
-	dictionary,
-}
+export { LocaleWrap } from '~common/store/locale/wrap.tsx'
+export { dictionary } from '~common/store/locale/locales'
