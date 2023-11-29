@@ -4,8 +4,11 @@ import viteLogo from '/vite.svg'
 import { envConfig, routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { fetch2 } from 'wtbx/common'
+import { translate, useLocale } from '~common/store/locale'
 
 function App() {
+	useLocale(e => e.locale)
+	const setLocale = useLocale(e => e.setLocale)
 	const [count, setCount] = useState(0)
 
 	useEffect(() => {
@@ -30,6 +33,12 @@ function App() {
 				</a>
 			</div>
 			<h1 className={'text-rose text-50 border-1'}>{envConfig.project.title}</h1>
+			<h2 className={'cursor-pointer'} onClick={() =>{
+				setLocale(Math.random() > 0.45 ? 'en' : 'zh_TW')
+			}}>{translate('test')}</h2>
+			<h3 className={'cursor-pointer'} onClick={() => {
+				console.log(translate('testBlock.name'))
+			}}>translate test</h3>
 			<div className="card">
 				<button onClick={() => setCount(count => count + 1)}>count is {count}</button>
 				<p>

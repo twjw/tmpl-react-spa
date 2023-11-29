@@ -24,7 +24,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"~app": ["core/app/index.tsx"],
-			"~common": ["core/app/*"],
+			"~common/*": ["core/app/*"],
 			"@/*": ["src/*"]
 		}
 	},
