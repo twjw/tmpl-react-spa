@@ -1,6 +1,6 @@
 import { RecursiveKeyOf, recurFindKeyStrValue } from 'wtbx/common'
-import type { Dictionary } from '~common/store/locale'
-import { locale, dictionary } from '~common/store/locale'
+import type { Dictionary } from '~common/store'
+import { locale, dictionary } from '~common/store'
 
 const translate = (key: RecursiveKeyOf<Dictionary>, values = []) => {
 	let result = recurFindKeyStrValue<Dictionary>(dictionary[locale], key)
@@ -14,6 +14,4 @@ const translate = (key: RecursiveKeyOf<Dictionary>, values = []) => {
 	return result
 }
 
-export {
-	translate
-}
+export { translate }

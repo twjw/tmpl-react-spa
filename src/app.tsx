@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import { routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { fetch2 } from 'wtbx/common'
-import { translate, useLocale } from '~common/store/locale'
+import { translate, useLocale } from '~common/store'
 
 function App() {
 	const setLocale = useLocale(e => e.setLocale)
@@ -35,18 +35,31 @@ function App() {
 						<img src={reactLogo} className="logo react" alt="React logo" />
 					</a>
 				</div>
-				<button className={'cursor-pointer text-red'} onClick={() => {
-					setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
-				}}>國際化(test) - {translate('test')}</button>
-				<button className={'cursor-pointer'} onClick={() => {
-					console.log(translate('testBlock.name'))
-				}}>log 翻譯
+				<button
+					className={'cursor-pointer text-red'}
+					onClick={ev => {
+						setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
+					}}
+				>
+					國際化(test) - {translate('test')}
+				</button>
+				<button
+					className={'cursor-pointer'}
+					onClick={ev => {
+						console.log(translate('testBlock.name'))
+					}}
+				>
+					log 翻譯
 				</button>
 				<button onClick={() => setTheme('red')}>切換主題</button>
 				<div>
-					<button onClick={() => {
-						setArr(1 as unknown as [])
-					}}>點擊會報錯 {arr.map(e => e)}</button>
+					<button
+						onClick={() => {
+							setArr(1 as unknown as [])
+						}}
+					>
+						點擊會報錯 {arr.map(e => e)}
+					</button>
 				</div>
 				<div className="flex items-start flex-wrap">
 					{routePaths.map(path => (
@@ -61,6 +74,4 @@ function App() {
 	)
 }
 
-export {
-	App,
-}
+export { App }

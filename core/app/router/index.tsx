@@ -1,26 +1,38 @@
-import { Routes as ReactRouterDomRoutes, Route, Navigate } from 'react-router-dom'
+import { Routes as ReactRouterDomRoutes, Route } from 'react-router-dom'
 import { lazy, LazyExoticComponent, FC, ReactNode, ComponentType } from 'react'
 import { logs } from 'wtbx/common'
 
 type Route = {
-	path: string,
+	path: string
 	LazyPage: LazyExoticComponent<any>
-	children?: Route[],
+	children?: Route[]
 }
 
-type MySuspense = FC<{ path: string, children: ReactNode }>
+type Wrap = FC<{ path: string; children: ReactNode }>
 
-type RegisterOptions = { prefix: string, modules: Record<string, () => Promise<{ default: ComponentType }>>, Suspense: MySuspense }
+type RegisterOptions = {
+	prefix: string
+	eager?: boolean // 暫時不支持(未實作)
+	modules: Record<string, () => Promise<{ default: ComponentType }>>
+	afterRoutes?: ReactNode[]
+	Wrap: Wrap
+}
 
 let _routes: Route[] = []
+let _afterRoutes: ReactNode[] = []
 let routePaths: string[] = []
-let _Suspense: FC<{ path: string, children: ReactNode }>
+let _Wrap: FC<{ path: string; children: ReactNode }>
 const _OUTLET = '(outlet)'
 
 /**
  * @return 表示是否有該 outlet
  */
-function _passRouteChildren(path: string, routes: Record<string, Route> = {}, outlets: Record<string, Route[]> = {}, route?: Route) {
+function _passRouteChildren(
+	path: string,
+	routes: Record<string, Route> = {},
+	outlets: Record<string, Route[]> = {},
+	route?: Route,
+) {
 	if ((route != null || routes[path || '/'] != null) && outlets[path] != null) {
 		const children = outlets[path]
 		const _route = route || routes[path || '/']
@@ -38,7 +50,11 @@ function _passRouteChildren(path: string, routes: Record<string, Route> = {}, ou
 	return false
 }
 
-function _recursivePassChildrenRoutePath(routePaths: string[] = [], path = '', route: Route = {} as Route) {
+function _recursivePassChildrenRoutePath(
+	routePaths: string[] = [],
+	path = '',
+	route: Route = {} as Route,
+) {
 	if (route.children) {
 		for (let i = 0; i < route.children.length; i++) {
 			const e = route.children[i]
@@ -61,7 +77,7 @@ function _flatRoutePaths(routes: Record<string, Route> = {}) {
 	return routePaths
 }
 
-function register({ prefix, modules, Suspense }: RegisterOptions) {
+function register({ prefix, eager, modules, afterRoutes, Wrap }: RegisterOptions) {
 	const outlets: Record<string, Route[]> = {}
 	const routes: Record<string, Route> = {}
 
@@ -130,8 +146,9 @@ function register({ prefix, modules, Suspense }: RegisterOptions) {
 	logs.info(`項目 pages 生成的路由(length: ${flatRoutePaths.length})`)
 	logs.info(flatRoutePaths)
 
-	_Suspense = Suspense
+	_Wrap = Wrap
 	_routes = Object.values(routes)
+	if (afterRoutes != null) _afterRoutes = afterRoutes
 	routePaths = flatRoutePaths
 }
 
@@ -141,9 +158,9 @@ function _mapRoutes(routes: Route[] = [], parentPath = '') {
 			key={e.path}
 			path={e.path}
 			element={
-				<_Suspense path={`${parentPath ? `${parentPath}/` : parentPath}${e.path}`}>
+				<_Wrap path={`${parentPath ? `${parentPath}/` : parentPath}${e.path}`}>
 					<e.LazyPage />
-				</_Suspense>
+				</_Wrap>
 			}
 		>
 			{e.children ? _mapRoutes(e.children, e.path) : null}
@@ -152,10 +169,12 @@ function _mapRoutes(routes: Route[] = [], parentPath = '') {
 }
 
 function Routes() {
-	return <ReactRouterDomRoutes>
-		{_mapRoutes(_routes)}
-		<Route path={'*'} element={<Navigate to={'/404'} replace />} />
-	</ReactRouterDomRoutes>
+	return (
+		<ReactRouterDomRoutes>
+			{_mapRoutes(_routes)}
+			{_afterRoutes.map(route => route)}
+		</ReactRouterDomRoutes>
+	)
 }
 
 export { routePaths, register, Routes }

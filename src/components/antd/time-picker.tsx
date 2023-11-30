@@ -1,6 +1,6 @@
-import type { PickerTimeProps } from 'antd/es/date-picker/generatePicker';
+import type { PickerTimeProps } from 'antd/es/date-picker/generatePicker'
 import { forwardRef } from 'react'
-import { DatePicker } from '@/components/antd/date-picker.tsx'
+import { DatePicker } from '@/components/antd/date-picker'
 
 interface TimePickerProps extends Omit<PickerTimeProps<Date>, 'picker'> {}
 
