@@ -4,9 +4,7 @@ module.exports = {
 		"browser": true,
 		"es2020": true
 	},
-	"extends": [
-		"prettier"
-	],
+	"extends": [],
 	"ignorePatterns": [
 		"dist",
 		".eslintrc.cjs",
@@ -16,7 +14,6 @@ module.exports = {
 	"parser": "@typescript-eslint/parser",
 	"plugins": [
 		"unused-imports",
-		"prettier"
 	],
 	"rules": {
 		"unused-imports/no-unused-imports": "warn"
