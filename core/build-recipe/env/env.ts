@@ -14,6 +14,7 @@ export default // --- ---
 		password: '',
 	},
 	app: {
+		storagePrefix: 'rtmp',
 		version: 'v0.0.0',
 	},
 }

@@ -3,8 +3,11 @@ import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
-import { fetch2 } from 'wtbx/common'
+import { fetch2, logs } from 'wtbx/common'
 import { translate, useLocale } from '~common/store'
+import { storage } from '@/store'
+
+logs.info('storage.state', storage.state)
 
 function App() {
 	const setLocale = useLocale(e => e.setLocale)
@@ -14,10 +17,10 @@ function App() {
 		fetch2('/api/text')
 			.then(res => res.text())
 			.then(e => {
-				console.log(123, e)
+				logs.info(123, e)
 			})
 			.catch(err => {
-				console.error(err)
+				logs.error(err)
 			})
 	}, [])
 
@@ -46,7 +49,7 @@ function App() {
 				<button
 					className={'cursor-pointer'}
 					onClick={ev => {
-						console.log(translate('testBlock.name'))
+						logs.info(translate('testBlock.name'))
 					}}
 				>
 					log 翻譯

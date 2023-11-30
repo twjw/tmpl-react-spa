@@ -10,6 +10,7 @@ import { LocaleWrap } from '~common/store'
 import { ErrorBoundary, RouteWrap } from '@/components'
 
 // 只有 mode 為 development 才會顯示 log
+logs.prefix = ''
 logs.isDebug = envConfig.mode === 'development'
 
 registerRouter({

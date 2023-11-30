@@ -7,6 +7,7 @@ module.exports = {
 	"extends": [],
 	"ignorePatterns": [
 		"dist",
+		"package.json",
 		".eslintrc.cjs",
 		"core/build-recipe/env",
 		".wtbx-build",
