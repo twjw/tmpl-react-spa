@@ -13,7 +13,7 @@
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": "pnpm run lint",
-		"*.{js,jsx,ts,tsx,css,sass,scss,json}": "pnpm run format"
+		"*.{js,jsx,ts,tsx,css,sass,scss,less}": "pnpm run format"
 	},
 	"dependencies": {
 		"@unocss/reset": "^0.57.7",
