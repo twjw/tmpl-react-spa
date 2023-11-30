@@ -53,12 +53,11 @@ function App() {
 				</button>
 				<button onClick={() => setTheme('red')}>切換主題</button>
 				<div>
-					<button
-						onClick={() => {
+					<button     onClick={() => {
 							setArr(1 as unknown as [])
 						}}
 					>
-						點擊會報錯 {arr.map(e => e)}
+									點擊會報錯 {arr.map(e => e)}
 					</button>
 				</div>
 				<div className="flex items-start flex-wrap">
