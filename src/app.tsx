@@ -21,37 +21,42 @@ function App() {
 			})
 	}, [])
 
+	const [theme, setTheme] = useState('red')
+
 	return (
-		<div className={'text-18'}>
-			{Math.random()}
-			<div>
-				<a href="https://vitejs.dev" target="_blank">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
+		<div className={theme}>
+			<div className={'text-18 text-color1 <md:text-24'}>
+				{Math.random()}
+				<div>
+					<a href="https://vitejs.dev" target="_blank">
+						<img src={viteLogo} className="logo" alt="Vite logo" />
+					</a>
+					<a href="https://react.dev" target="_blank">
+						<img src={reactLogo} className="logo react" alt="React logo" />
+					</a>
+				</div>
+				<button className={'cursor-pointer text-red'} onClick={() => {
+					setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
+				}}>國際化(test) - {translate('test')}</button>
+				<button className={'cursor-pointer'} onClick={() => {
+					console.log(translate('testBlock.name'))
+				}}>log 翻譯
+				</button>
+				<button onClick={() => setTheme('red')}>切換主題</button>
+				<div>
+					<button onClick={() => {
+						setArr(1 as unknown as [])
+					}}>點擊會報錯 {arr.map(e => e)}</button>
+				</div>
+				<div className="flex items-start flex-wrap">
+					{routePaths.map(path => (
+						<div key={path} className={'mb-3 mr-4'}>
+							<Link to={path}>{path}</Link>
+						</div>
+					))}
+				</div>
+				<Routes />
 			</div>
-			<button className={'cursor-pointer'} onClick={() => {
-				setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
-			}}>國際化(test) - {translate('test')}</button>
-			<button className={'cursor-pointer'} onClick={() => {
-				console.log(translate('testBlock.name'))
-			}}>log 翻譯
-			</button>
-			<div>
-				<button onClick={() => {
-					setArr(1 as unknown as [])
-				}}>點擊會報錯 {arr.map(e => e)}</button>
-			</div>
-			<div className="flex items-start flex-wrap">
-				{routePaths.map(path => (
-					<div key={path} className={'mb-3 mr-4'}>
-						<Link to={path}>{path}</Link>
-					</div>
-				))}
-			</div>
-			<Routes />
 		</div>
 	)
 }

@@ -1,30 +1,16 @@
 import UnoCSS from 'unocss/vite'
-import { presetAttributify, presetIcons, presetUno } from 'unocss'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { presetRem } from '../plugins/unocss/plugins/preset-rem'
 import { PluginOption } from 'vite'
 import { EnvConfig } from '../../../type/build'
-
-const baseFontSize = 50
+import path from 'path'
+import { unoPresetRemBaseFontSize } from '../plugins/unocss/plugins/preset-rem'
 
 function pluginsConfig(envConfig: EnvConfig): PluginOption[] {
 	return [
 		UnoCSS({
-			shortcuts: [],
-			presets: [
-				presetUno(),
-				presetAttributify(),
-				presetIcons({
-					extraProperties: {
-						display: 'inline-block',
-						'vertical-align': 'middle',
-					},
-				}),
-				presetRem({ baseFontSize }),
-			],
-			inspector: true,
+			configFile: path.relative(__dirname, path.join(process.cwd(), 'uno.config.ts')),
 		}),
 		react(),
 		svgr(),
@@ -33,7 +19,7 @@ function pluginsConfig(envConfig: EnvConfig): PluginOption[] {
 			inject: {
 				data: {
 					title: envConfig.project.title,
-					htmlFontSize: `${baseFontSize}px`,
+					htmlFontSize: `${unoPresetRemBaseFontSize}px`,
 				},
 			},
 		}),

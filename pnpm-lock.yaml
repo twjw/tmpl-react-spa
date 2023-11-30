@@ -8,6 +8,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^6.13.0
   '@typescript-eslint/parser': ^6.13.0
   '@unocss/core': ^0.57.7
+  '@unocss/reset': ^0.57.7
   '@vitejs/plugin-react': ^4.2.0
   antd: ^5.11.2
   clsx: ^2.0.0
@@ -39,6 +40,7 @@ specifiers:
   zustand: ^4.4.6
 
 dependencies:
+  '@unocss/reset': 0.57.7
   antd: 5.11.3_mrmgyvvjwxyn5ncnaehlj4y4yi
   clsx: 2.0.0
   date-fns: 2.30.0
@@ -1458,7 +1460,6 @@ packages:
 
   /@unocss/reset/0.57.7:
     resolution: {integrity: sha512-oN9024WVrMewGbornnAPIpzHeKPIfVmZ5IsZGilWR761TnI5jTjHUkswsVoFx7tZdpCN2/bqS3JK/Ah0aot3NQ==}
-    dev: true
 
   /@unocss/rule-utils/0.57.7:
     resolution: {integrity: sha512-gLqbKTIetvRynLkhonu1znr+bmWnw+Cl3dFVNgZPGjiqGHd78PGS0gXQKvzuyN0iO2ADub1A7GlCWs826iEHjA==}
