@@ -4,12 +4,13 @@ import viteLogo from '/vite.svg'
 import { routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { fetch2 } from 'wtbx/common'
-import { translate, useLocale } from '~common/store'
+import { storage, translate, useLocale, useUserStore } from '~common/store'
 import { log } from '~common/utils'
 
 function App() {
 	const setLocale = useLocale(e => e.setLocale)
 	const [arr, setArr] = useState([])
+	const token = useUserStore(e => e.token)
 
 	useEffect(() => {
 		fetch2('/api/text')
@@ -22,10 +23,8 @@ function App() {
 			})
 	}, [])
 
-	const [theme, setTheme] = useState('red')
-
 	return (
-		<div className={theme}>
+		<div>
 			<div className={'text-18 text-color1 <md:text-24'}>
 				{Math.random()}
 				<div>
@@ -52,16 +51,20 @@ function App() {
 				>
 					log 翻譯
 				</button>
-				<button onClick={() => setTheme('red')}>切換主題</button>
-				<div>
-					<button
-						onClick={() => {
-							setArr(1 as unknown as [])
-						}}
-					>
-						點擊會報錯 {arr.map(e => e)}
-					</button>
-				</div>
+				<button
+					onClick={() => {
+						setArr(1 as unknown as [])
+					}}
+				>
+					點擊會報錯 {arr.map(e => e)}
+				</button>
+				<button onClick={() => useUserStore.setState({ token: String(Math.random()) })}>
+					change token(userStore) test
+				</button>
+				<button onClick={() => storage.update('token', String(Math.random()))}>
+					change token(storage) test
+				</button>
+				<div>last user.token = {token}</div>
 				<div className="flex items-start flex-wrap">
 					{routePaths.map(path => (
 						<div key={path} className={'mb-3 mr-4'}>

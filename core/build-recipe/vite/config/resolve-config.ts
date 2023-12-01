@@ -1,5 +1,5 @@
 import path from 'path'
-import { brLog } from '../utils'
+import { vLog } from '../utils'
 import fs from 'fs/promises'
 import jsonc from 'jsonc-parser'
 import { EnvConfig } from '../../../type/build'
@@ -21,7 +21,7 @@ async function getIdeaPaths() {
 
 		return result
 	} catch (error) {
-		brLog.error(error, `\n解析 ${tsConfigJsonName} 失敗，取消該檔自動 alias`)
+		vLog.error(error, `\n解析 ${tsConfigJsonName} 失敗，取消該檔自動 alias`)
 		return {}
 	}
 }
@@ -33,8 +33,8 @@ async function resolveConfig(envConfig: EnvConfig): Promise<
 > {
 	const alias = await getIdeaPaths()
 
-	brLog.info(`通過 ${tsConfigJsonName} 生成的 alias:`)
-	brLog.info(alias)
+	vLog.info(`通過 ${tsConfigJsonName} 生成的 alias:`)
+	vLog.info(alias)
 
 	return {
 		alias,

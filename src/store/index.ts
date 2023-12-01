@@ -1,1 +1,1 @@
-export * from '@/store/storage/storage.ts'
+export * from '@/store/storage'

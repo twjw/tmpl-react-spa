@@ -1,18 +1,21 @@
 import { create } from 'zustand'
-import { commonStoreActions, CommonStoreActions } from '~common/utils'
+import { storage } from '~common/store'
 
 type UserState = {
 	user: object | null
-	token: boolean
+	token: string
 }
 
-type UserStore = UserState & {} & CommonStoreActions<UserState>
+type UserStore = UserState & {}
 
-const userStore = create<UserStore>(set => ({
+const useUserStore = create<UserStore>(set => ({
 	user: null,
-	token: false,
-	...commonStoreActions<UserState>(set),
+	token: storage.state.token,
 }))
 
+storage.bind<UserState>(useUserStore, {
+	token: 'token',
+})
+
 export type { UserState, UserStore }
-export { userStore }
+export { useUserStore }
