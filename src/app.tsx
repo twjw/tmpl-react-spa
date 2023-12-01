@@ -3,8 +3,7 @@ import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
-import { fetch2 } from 'wtbx/common'
-import { storage, translate, useLocale, useUserStore } from '~common/store'
+import { storage, t, useLocale, useUserStore } from '~common/store'
 import { log } from '~common/utils'
 
 function App() {
@@ -13,14 +12,14 @@ function App() {
 	const token = useUserStore(e => e.token)
 
 	useEffect(() => {
-		fetch2('/api/text')
-			.then(res => res.text())
-			.then(e => {
-				log.info(123, e)
-			})
-			.catch(err => {
-				log.error(err)
-			})
+		// fetch2('/api/text')
+		// 	.then(res => res.text())
+		// 	.then(e => {
+		// 		log.info(123, e)
+		// 	})
+		// 	.catch(err => {
+		// 		log.error(err)
+		// 	})
 	}, [])
 
 	return (
@@ -38,15 +37,15 @@ function App() {
 				<button
 					className={'cursor-pointer text-red'}
 					onClick={ev => {
-						setLocale(translate('test') === 'test' ? 'zh_TW' : 'en')
+						setLocale(t('testBlock.name') === 'test block name' ? 'zh_TW' : 'en')
 					}}
 				>
-					國際化(test) - {translate('test')}
+					國際化(test) - {t('testBlock.name')}
 				</button>
 				<button
 					className={'cursor-pointer'}
 					onClick={ev => {
-						log.info(translate('testBlock.name'))
+						log.info(t('testBlock.name'))
 					}}
 				>
 					log 翻譯
