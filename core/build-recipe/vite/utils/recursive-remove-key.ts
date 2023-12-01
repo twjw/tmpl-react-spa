@@ -1,9 +1,9 @@
 import { forEach, isObject, isFunction } from 'lodash-es'
 
-function deepRemoveKey(obj: Record<string, any>, key: string | ((k: string) => boolean)) {
+function recursiveRemoveKey(obj: Record<string, any>, key: string | ((k: string) => boolean)) {
 	forEach(obj, function (value, _key) {
 		if (isObject(value)) {
-			deepRemoveKey(value, key)
+			recursiveRemoveKey(value, key)
 		}
 
 		const match = isFunction(key) ? (key as Function)(_key) : _key === key
@@ -16,4 +16,4 @@ function deepRemoveKey(obj: Record<string, any>, key: string | ((k: string) => b
 	return obj
 }
 
-export { deepRemoveKey }
+export { recursiveRemoveKey }

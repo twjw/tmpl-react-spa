@@ -3,15 +3,10 @@ import '@unocss/reset/eric-meyer.css'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Navigate, Route } from 'react-router-dom'
 import { App } from './app'
-import { envConfig, registerRouter } from '~app'
-import { logs } from 'wtbx/common'
+import { registerRouter } from '~app'
 import { ComponentType } from 'react'
 import { LocaleWrap } from '~common/store'
 import { ErrorBoundary, RouteWrap } from '@/components'
-
-// 只有 mode 為 development 才會顯示 log
-logs.prefix = ''
-logs.isDebug = envConfig.mode === 'development'
 
 registerRouter({
 	prefix: './pages', // modules glob /**/* 前面的路徑

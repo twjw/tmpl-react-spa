@@ -3,10 +3,10 @@ import fs from 'fs/promises'
 import JSON5 from 'json5'
 import { merge, cloneDeep } from 'lodash-es'
 import { getBuildPath } from './get-build-path'
-import { deepRemoveKey } from './deep-remove-key'
+import { recursiveRemoveKey } from './recursive-remove-key'
 import { checkCreateBuildPath } from './check-create-build-path'
 import { EnvConfig, Mode } from '../../../type/build'
-import { logs } from '../../../../../toolbox-js/packages/common'
+import { log } from './log'
 
 type Ext = 'json' | 'ts'
 
@@ -44,14 +44,18 @@ const passConfig = async (config: Record<string, any>, filename: string, extensi
 
 		merge(config, _config)
 	} catch (error) {
-		logs.error(error, `\n${filename} 解析失敗，忽略該配置`)
+		log.error(error, `\n${filename} 解析失敗，忽略該配置`)
 	}
 }
 
 const dontTransform = <T>(e: T) => e
 
-const createEnvConfig = async <Result = EnvConfig>(mode: Mode = 'development', extension: Ext = extTs, transform: (envConfig: Result) => Result = dontTransform): Promise<Result> => {
-	logs.info('開始創建環境變數...')
+const createEnvConfig = async <Result = EnvConfig>(
+	mode: Mode = 'development',
+	extension: Ext = extTs,
+	transform: (envConfig: Result) => Result = dontTransform,
+): Promise<Result> => {
+	log.info('開始創建環境變數...')
 
 	let config = {
 		mode,
@@ -73,14 +77,14 @@ const createEnvConfig = async <Result = EnvConfig>(mode: Mode = 'development', e
 
 		config = transform(config)
 		const viteConfig = cloneDeep(config)
-		deepRemoveKey(viteConfig, k => /^_/.test(k))
+		recursiveRemoveKey(viteConfig, k => /^_/.test(k))
 
 		await checkCreateBuildPath()
 		await fs.writeFile(outputPath, `export default ${JSON.stringify(viteConfig, null, 2)}`)
 	}
 
-	logs.info('環境變數創建完畢！環境變數為：')
-	logs.info(JSON.stringify(config, null, 2))
+	log.info('環境變數創建完畢！環境變數為：')
+	log.info(JSON.stringify(config, null, 2))
 
 	return config
 }

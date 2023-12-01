@@ -1,6 +1,6 @@
 import { Routes as ReactRouterDomRoutes, Route } from 'react-router-dom'
 import { lazy, LazyExoticComponent, FC, ReactNode, ComponentType } from 'react'
-import { logs } from 'wtbx/common'
+import { log } from '~common/utils'
 
 type Route = {
 	path: string
@@ -138,13 +138,13 @@ function register({ prefix, eager, modules, afterRoutes, Wrap }: RegisterOptions
 		exec++
 	}
 	if (exec >= max) {
-		logs.warn('路由生成比對次數超過上限，請排查...')
+		log.warn('路由生成比對次數超過上限，請排查...')
 	}
 
 	const flatRoutePaths = _flatRoutePaths(routes)
 
-	logs.info(`項目 pages 生成的路由(length: ${flatRoutePaths.length})`)
-	logs.info(flatRoutePaths)
+	log.info(`項目 pages 生成的路由(length: ${flatRoutePaths.length})`)
+	log.info(flatRoutePaths)
 
 	_Wrap = Wrap
 	_routes = Object.values(routes)
