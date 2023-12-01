@@ -1,5 +1,5 @@
 import { createLog } from '../../../../../toolbox-js/packages/common'
 
-const log = createLog('Vite')
+const brLog = createLog('BUILD')
 
-export { log }
+export { brLog }

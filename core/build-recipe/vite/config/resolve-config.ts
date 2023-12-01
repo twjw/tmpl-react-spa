@@ -1,5 +1,5 @@
 import path from 'path'
-import { log } from '../utils'
+import { brLog } from '../utils'
 import fs from 'fs/promises'
 import jsonc from 'jsonc-parser'
 import { EnvConfig } from '../../../type/build'
@@ -21,7 +21,7 @@ async function getIdeaPaths() {
 
 		return result
 	} catch (error) {
-		log.error(error, `\n解析 ${tsConfigJsonName} 失敗，取消該檔自動 alias`)
+		brLog.error(error, `\n解析 ${tsConfigJsonName} 失敗，取消該檔自動 alias`)
 		return {}
 	}
 }
@@ -33,8 +33,8 @@ async function resolveConfig(envConfig: EnvConfig): Promise<
 > {
 	const alias = await getIdeaPaths()
 
-	log.info(`通過 ${tsConfigJsonName} 生成的 alias:`)
-	log.info(alias)
+	brLog.info(`通過 ${tsConfigJsonName} 生成的 alias:`)
+	brLog.info(alias)
 
 	return {
 		alias,

@@ -1,4 +1,4 @@
-export * from './log'
+export * from './brLog'
 export * from './get-build-path'
 export * from './recursive-remove-key'
 export * from './create-env-config'

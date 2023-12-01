@@ -6,7 +6,7 @@ import { getBuildPath } from './get-build-path'
 import { recursiveRemoveKey } from './recursive-remove-key'
 import { checkCreateBuildPath } from './check-create-build-path'
 import { EnvConfig, Mode } from '../../../type/build'
-import { log } from './log'
+import { brLog } from '.'
 
 type Ext = 'json' | 'ts'
 
@@ -44,7 +44,7 @@ const passConfig = async (config: Record<string, any>, filename: string, extensi
 
 		merge(config, _config)
 	} catch (error) {
-		log.error(error, `\n${filename} 解析失敗，忽略該配置`)
+		brLog.error(error, `\n${filename} 解析失敗，忽略該配置`)
 	}
 }
 
@@ -55,7 +55,7 @@ const createEnvConfig = async <Result = EnvConfig>(
 	extension: Ext = extTs,
 	transform: (envConfig: Result) => Result = dontTransform,
 ): Promise<Result> => {
-	log.info('開始創建環境變數...')
+	brLog.info('開始創建環境變數...')
 
 	let config = {
 		mode,
@@ -83,8 +83,8 @@ const createEnvConfig = async <Result = EnvConfig>(
 		await fs.writeFile(outputPath, `export default ${JSON.stringify(viteConfig, null, 2)}`)
 	}
 
-	log.info('環境變數創建完畢！環境變數為：')
-	log.info(JSON.stringify(config, null, 2))
+	brLog.info('環境變數創建完畢！環境變數為：')
+	brLog.info(JSON.stringify(config, null, 2))
 
 	return config
 }
