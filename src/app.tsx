@@ -1,34 +1,15 @@
 import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
-import { envConfig, routePaths, Routes } from '~app'
+import { routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { storage, t, useLocale, useUserStore } from '~common/store'
 import { log } from '~common/utils'
-import { create } from 'zustand'
-import { zmStorage } from '../../toolbox-js/packages/web'
-
-type State = {
-	hello: string
-}
-
-const useStore = create<State>(
-	zmStorage(
-		set => ({
-			hello: 'hello',
-		}),
-		{
-			prefix: envConfig.app.storagePrefix,
-			items: ['hello'],
-		},
-	),
-)
 
 function App() {
 	const setLocale = useLocale(e => e.setLocale)
 	const [arr, setArr] = useState([])
 	const token = useUserStore(e => e.token)
-	const hello = useStore(e => e.hello)
 
 	useEffect(() => {
 		// fetch2('/api/text')
@@ -75,10 +56,6 @@ function App() {
 					}}
 				>
 					點擊會報錯 {arr.map(e => e)}
-				</button>
-				{hello}
-				<button onClick={() => useStore.setState({ hello: String(Math.random()) })}>
-					change token(useStore) test
 				</button>
 				<button onClick={() => useUserStore.setState({ token: String(Math.random()) })}>
 					change token(userStore) test
