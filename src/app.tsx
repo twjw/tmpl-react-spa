@@ -5,6 +5,18 @@ import { routePaths, Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { storage, t, useLocale, useUserStore } from '~common/store'
 import { log } from '~common/utils'
+import { createFetch2 } from 'wtbx/common'
+
+const fetch2 = createFetch2()
+
+fetch2.interceptors.request.use(config => {
+	return config
+})
+
+fetch2.interceptors.response.use(res => {
+	console.log(res)
+	return res?.data
+})
 
 function App() {
 	const setLocale = useLocale(e => e.setLocale)
@@ -20,6 +32,81 @@ function App() {
 		// 	.catch(err => {
 		// 		log.error(err)
 		// 	})
+
+		fetch2<{ n: number }[]>('get:/api/json', undefined, {
+			mark: 'eee',
+		}).then(res => {
+			console.log('e' + 1, res)
+		})
+
+		fetch2<{ n: number }[]>('get:/api/json', undefined, {
+			mark: 'eee',
+		}).then(res => {
+			console.log('e' + 2, res)
+		})
+
+		fetch2<{ n: number }[]>('get:/api/json', undefined, {
+			mark: 'eee',
+		}).then(res => {
+			console.log('e' + 3, res)
+
+			fetch2<{ n: number }[]>('get:/api/json', undefined, {
+				mark: 'eee',
+			}).then(res => {
+				console.log('e' + 4, res)
+			})
+		})
+
+		return
+
+		fetch2<{ n: number }[]>('get:/api/json', undefined, {
+			cacheTime: 3000,
+		}).then(res => {
+			console.log(152111, res)
+			setTimeout(() => {
+				console.log(1500)
+
+				fetch2<{ n: number }[]>('get:/api/json', undefined, { forceRun: true }).then(res => {
+					console.log(1500, res)
+				})
+			}, 1500)
+			setTimeout(() => {
+				console.log(4000)
+
+				fetch2<{ n: number }[]>('get:/api/json', undefined).then(res => {
+					console.log(4000, res)
+				})
+			}, 4000)
+		})
+
+		const c = new AbortController()
+		fetch2<string>(
+			'get:/api/text',
+			{
+				params: {
+					test: 1,
+					cool: 'guys',
+					arr: [1, 2],
+					obj: { hello: 'world', name: 'frank' },
+				},
+				// body: {
+				// 	hello: 'world',
+				// 	color: 'red',
+				// },
+				resType: 'text',
+			},
+			// { controller: c }
+		)
+			.then(res => {
+				console.log(444, res)
+				throw Error('asdasd')
+			})
+			.catch(err => {
+				console.log(123, err)
+			})
+
+		// c.abort()
+		// fetch2.cancelAll()
 	}, [])
 
 	return (
