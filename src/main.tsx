@@ -3,14 +3,19 @@ import '@unocss/reset/eric-meyer.css'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Navigate, Route } from 'react-router-dom'
 import { App } from './app'
-import { registerRouter } from '~app'
+import { envConfig, registerRouter } from '~app'
 import { ComponentType } from 'react'
 import { LocaleWrap } from '~common/store'
 import { ErrorBoundary, RouteWrap } from '@/components'
+import { PageMeta } from '@/type/global'
 
-registerRouter({
-	prefix: './pages', // modules glob /**/* 前面的路徑
-	modules: import.meta.glob<ComponentType>('./pages/**/page.tsx') as unknown as Record<
+registerRouter<PageMeta>({
+	prefix: './pages', // xxxModules glob /** 前面的路徑
+	defaultMeta: {
+		title: envConfig.project.title,
+	},
+	metaModules: import.meta.glob('./pages/**/page.meta.ts', { eager: true }),
+	pageModules: import.meta.glob<ComponentType>('./pages/**/page.tsx') as unknown as Record<
 		string,
 		() => Promise<{ default: ComponentType }>
 	>,

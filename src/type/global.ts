@@ -1,1 +1,3 @@
-export type AutoStorageState = {}
+export type PageMeta = {
+	title: string
+}

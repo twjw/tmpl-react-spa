@@ -10,10 +10,11 @@ type Route = {
 
 type Wrap = FC<{ path: string; children: ReactNode }>
 
-type RegisterOptions = {
+type RegisterOptions<Meta = any> = {
 	prefix: string
-	eager?: boolean // 暫時不支持(未實作)
-	modules: Record<string, () => Promise<{ default: ComponentType }>>
+	defaultMeta?: Meta
+	metaModules?: Record<string, () => Meta>
+	pageModules: Record<string, () => Promise<{ default: ComponentType }>>
 	afterRoutes?: ReactNode[]
 	Wrap: Wrap
 }
@@ -77,11 +78,21 @@ function _flatRoutePaths(routes: Record<string, Route> = {}) {
 	return routePaths
 }
 
-function register({ prefix, eager, modules, afterRoutes, Wrap }: RegisterOptions) {
+function register<Meta = any>({
+	prefix,
+	defaultMeta,
+	metaModules,
+	pageModules,
+	afterRoutes,
+	Wrap,
+}: RegisterOptions<Meta>) {
 	const outlets: Record<string, Route[]> = {}
 	const routes: Record<string, Route> = {}
 
-	for (const modulePath in modules) {
+	console.log(metaModules, 123)
+	console.log(pageModules, 456)
+
+	for (const modulePath in pageModules) {
 		const noPrefixPath = modulePath.substring(prefix.length)
 		const spByOutlets = noPrefixPath.split(`/${_OUTLET}`)
 
@@ -99,7 +110,7 @@ function register({ prefix, eager, modules, afterRoutes, Wrap }: RegisterOptions
 
 			outlets[path].push({
 				path: spByOutlets[spByOutlets.length - 1].replace(/^\/?(.+)\/page\.tsx$/, '$1'),
-				LazyPage: lazy(() => modules[modulePath]()),
+				LazyPage: lazy(() => pageModules[modulePath]()),
 			})
 
 			continue
@@ -124,7 +135,7 @@ function register({ prefix, eager, modules, afterRoutes, Wrap }: RegisterOptions
 		const routePath = _path || '/'
 		routes[routePath] = {
 			path: routePath,
-			LazyPage: lazy(() => modules[modulePath]()),
+			LazyPage: lazy(() => pageModules[modulePath]()),
 		}
 	}
 
