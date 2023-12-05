@@ -21,7 +21,6 @@ type RegisterOptions<Meta = any> = {
 
 let _routes: Route[] = []
 let _afterRoutes: ReactNode[] = []
-let routePaths: string[] = []
 let _Wrap: FC<{ path: string; children: ReactNode }>
 const _OUTLET = '(outlet)'
 
@@ -153,15 +152,15 @@ function register<Meta = any>({
 		log.warn('路由生成比對次數超過上限，請排查...')
 	}
 
-	const flatRoutePaths = _flatRoutePaths(routes)
-
-	log.info(`項目 pages 生成的路由(length: ${flatRoutePaths.length})`)
-	log.info(flatRoutePaths)
+	if (log.isDebug) {
+		const flatRoutePaths = _flatRoutePaths(routes)
+		log.info(`項目 pages 生成的路由(length: ${flatRoutePaths.length})`)
+		log.info(flatRoutePaths)
+	}
 
 	_Wrap = Wrap
 	_routes = Object.values(routes)
 	if (afterRoutes != null) _afterRoutes = afterRoutes
-	routePaths = flatRoutePaths
 }
 
 function _mapRoutes(routes: Route[] = [], parentPath = '') {
@@ -189,4 +188,4 @@ function Routes() {
 	)
 }
 
-export { routePaths, register, Routes }
+export { register, Routes }

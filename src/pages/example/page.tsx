@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
-import { routePaths, Routes } from '~app'
+import { Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { storage, t, useLocale, useUserStore } from '~common/store'
 import { log } from '~common/utils'
@@ -153,7 +153,22 @@ function Page() {
 				</button>
 				<div>last user.token = {token}</div>
 				<div className="flex items-start flex-wrap">
-					{routePaths.map(path => (
+					{[
+						'/404',
+						'/example/home',
+						'/example/news/detail',
+						'/example/news',
+						'/example/news/tab1',
+						'/example/news/tab1/tab1-1',
+						'/example/news/tab1/tab1-2',
+						'/example/news/tab2',
+						'/example',
+						'/example/role/detail/:id/:myName',
+						'/example/role/detail/:id',
+						'/example/role/detail',
+						'/example/role/list',
+						'/',
+					].map(path => (
 						<div key={path} className={'mb-3 mr-4'}>
 							<Link to={path}>{path}</Link>
 						</div>
