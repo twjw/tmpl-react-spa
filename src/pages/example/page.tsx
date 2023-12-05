@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
-import { Routes } from '~app'
 import { Link } from 'react-router-dom'
 import { storage, t, useLocale, useUserStore } from '~common/store'
 import { log } from '~common/utils'
@@ -24,15 +23,6 @@ function Page() {
 	const token = useUserStore(e => e.token)
 
 	useEffect(() => {
-		// fetch2('/api/text')
-		// 	.then(res => res.text())
-		// 	.then(e => {
-		// 		log.info(123, e)
-		// 	})
-		// 	.catch(err => {
-		// 		log.error(err)
-		// 	})
-
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
 			mark: 'eee',
 		}).then(res => {
@@ -174,7 +164,6 @@ function Page() {
 						</div>
 					))}
 				</div>
-				<Routes />
 			</div>
 		</div>
 	)

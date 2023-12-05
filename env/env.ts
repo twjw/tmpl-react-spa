@@ -1,4 +1,4 @@
-import { wObject } from '../../../../toolbox-js/packages/type'
+import { wObject } from '../../toolbox-js/packages/type'
 
 const env =
 	// --- ---
