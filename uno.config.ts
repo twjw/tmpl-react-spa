@@ -1,5 +1,5 @@
 import { defineConfig, presetAttributify, presetIcons, presetUno } from 'unocss'
-import { presetRem } from './core/build-recipe/vite/plugins/unocss/plugins/preset-rem'
+import { unoPresetRemPlugin } from '../toolbox-js/packages/vite'
 
 export default defineConfig({
 	presets: [
@@ -11,7 +11,7 @@ export default defineConfig({
 				'vertical-align': 'middle',
 			},
 		}),
-		presetRem(),
+		unoPresetRemPlugin(),
 	],
 	theme: {
 		breakpoints: {
