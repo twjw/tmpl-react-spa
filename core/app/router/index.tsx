@@ -1,5 +1,5 @@
 import { Routes as ReactRouterDomRoutes, Route } from 'react-router-dom'
-import { lazy, LazyExoticComponent, FC, ReactNode, ComponentType } from 'react'
+import { lazy, LazyExoticComponent, FC, ReactNode } from 'react'
 import { log } from '~common/utils'
 
 type Route = {
@@ -11,10 +11,10 @@ type Route = {
 type Wrap = FC<{ path: string; children: ReactNode }>
 
 type RegisterOptions<Meta = any> = {
-	prefix: string
+	ignorePrefixes: string[]
 	defaultMeta?: Meta
 	metaModules?: Record<string, () => Meta>
-	pageModules: Record<string, () => Promise<{ default: ComponentType }>>
+	pageModules: Record<string, () => Promise<any>>
 	afterRoutes?: ReactNode[]
 	Wrap: Wrap
 }
@@ -79,7 +79,7 @@ function _flatRoutePaths(routes: Record<string, Route> = {}) {
 }
 
 function register<Meta = any>({
-	prefix,
+	ignorePrefixes,
 	defaultMeta,
 	metaModules,
 	pageModules,
@@ -88,12 +88,13 @@ function register<Meta = any>({
 }: RegisterOptions<Meta>) {
 	const outlets: Record<string, Route[]> = {}
 	const routes: Record<string, Route> = {}
+	const ignorePrefixReg = new RegExp(`^(${ignorePrefixes.join('|')})*`)
 
 	console.log(metaModules, 123)
 	console.log(pageModules, 456)
 
 	for (const modulePath in pageModules) {
-		const noPrefixPath = modulePath.substring(prefix.length)
+		const noPrefixPath = modulePath.replace(ignorePrefixReg, '')
 		const spByOutlets = noPrefixPath.split(`/${_OUTLET}`)
 
 		// 如果含 (outlet) 做特殊處理
