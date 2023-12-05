@@ -6,5 +6,5 @@
 		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true
 	},
-	"include": ["vite.config.ts", "core/type/**/*", "core/build-recipe/**/*"]
+	"include": ["vite.config.ts", "env/**/*"]
 }
