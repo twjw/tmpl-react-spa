@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs/promises'
 import JSON5 from 'json5'
-import { cloneDeep, isArray, isObject, merge } from 'lodash-es'
+import { cloneDeep, isObject, merge } from 'lodash-es'
 import { getBuildPath } from './get-build-path'
 import { checkCreateBuildPath } from './check-create-build-path'
 import { EnvConfig, Mode } from '../../../type/build'
@@ -76,59 +76,47 @@ const _privateKeyToPublic = ({
 	privateKeys = {},
 	parentKeys,
 }: {
-	obj: any
+	obj: Record<string, any>
 	prefix?: string
 	privateKeys?: Record<string, any>
 	parentKeys?: string[]
 }) => {
-	if (isObject(obj)) {
-		for (const k in obj) {
-			let _k = k
+	for (const k in obj) {
+		let _k = k
 
-			if (new RegExp(`^${prefix}`).test(k)) {
-				obj[(_k = k.substring(prefix.length))] = obj[k]
-				delete obj[k]
-			}
+		if (new RegExp(`^${prefix}`).test(k)) {
+			obj[(_k = k.substring(prefix.length))] = obj[k]
+			delete obj[k]
 
-			if (isArray(obj[_k])) {
-				obj[_k].forEach(e => {
-					_privateKeyToPublic({
-						obj: e,
-						prefix,
-						privateKeys,
-						parentKeys: _passParentKeys(parentKeys, _k),
-					})
-				})
-			} else {
-				let _parentKeys: string[] | undefined
-				if (isObject(obj[_k])) {
-					_parentKeys = _passParentKeys(parentKeys, _k)
+			if (parentKeys?.length) {
+				let prev = privateKeys
+				for (let i = 0; i < parentKeys.length; i++) {
+					if (prev[parentKeys[i]] == null) {
+						prev = prev[parentKeys[i]] = {}
+					} else {
+						prev = prev[parentKeys[i]]
+					}
 				}
 
-				_privateKeyToPublic({
-					obj: obj[_k],
-					prefix,
-					privateKeys,
-					parentKeys: _parentKeys,
-				})
-			}
-		}
-	} else if (isArray(parentKeys)) {
-		if (parentKeys.length > 1) {
-			let prev = privateKeys
-			for (let i = 0; i < parentKeys.length - 1; i++) {
-				if (prev[parentKeys[i]] == null) {
-					prev = prev[parentKeys[i]] = {}
-				} else {
-					prev = prev[parentKeys[i]]
-				}
+				prev[_k] = 1
 			}
 		}
 
-		privateKeys[parentKeys[parentKeys.length - 1]] = 1
+		if (isObject(obj[_k])) {
+			let _parentKeys: string[] | undefined
+
+			if (isObject(obj[_k])) {
+				_parentKeys = _passParentKeys(parentKeys, _k)
+			}
+
+			_privateKeyToPublic({
+				obj: obj[_k],
+				prefix,
+				privateKeys,
+				parentKeys: _parentKeys,
+			})
+		}
 	}
-
-	console.log(prefix, parentKeys, privateKeys)
 
 	return {
 		obj,
