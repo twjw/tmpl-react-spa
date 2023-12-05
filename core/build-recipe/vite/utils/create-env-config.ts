@@ -1,9 +1,8 @@
 import path from 'path'
 import fs from 'fs/promises'
 import JSON5 from 'json5'
-import { merge, cloneDeep } from 'lodash-es'
+import { cloneDeep, isArray, isObject, merge } from 'lodash-es'
 import { getBuildPath } from './get-build-path'
-import { recursiveRemoveKey } from './recursive-remove-key'
 import { checkCreateBuildPath } from './check-create-build-path'
 import { EnvConfig, Mode } from '../../../type/build'
 import { vLog } from '.'
@@ -19,7 +18,12 @@ const outputDirPath = getBuildPath()
 const outputFileName = 'env.config.ts'
 const outputPath = path.resolve(process.cwd(), `${outputDirPath}/${outputFileName}`)
 
-const passConfig = async (config: Record<string, any>, filename: string, extension: Ext) => {
+const _passConfig = async (
+	privateKeys: Record<string, any>,
+	config: Record<string, any>,
+	filename: string,
+	extension: Ext,
+) => {
 	const _configBuffer = await fs.readFile(path.resolve(envPath, filename))
 
 	try {
@@ -42,24 +46,124 @@ const passConfig = async (config: Record<string, any>, filename: string, extensi
 			_config = JSON5.parse(text.substring(ranges[0] + tsSym.length, ranges[1]).trim())
 		}
 
-		merge(config, _config)
+		const { obj: publicConfig } = _privateKeyToPublic({
+			obj: _config,
+			privateKeys,
+		})
+
+		merge(config, publicConfig)
 	} catch (error) {
 		vLog.error(error, `\n${filename} 解析失敗，忽略該配置`)
 	}
 }
 
-const dontTransform = <T>(e: T) => e
+const _passParentKeys = (parentKeys: string[] | undefined, key: string) => {
+	let _parentKeys: string[]
+
+	if (parentKeys) {
+		_parentKeys = parentKeys
+		_parentKeys.push(key)
+	} else {
+		_parentKeys = [key]
+	}
+
+	return _parentKeys
+}
+
+const _privateKeyToPublic = ({
+	obj,
+	prefix = '_',
+	privateKeys = {},
+	parentKeys,
+}: {
+	obj: any
+	prefix?: string
+	privateKeys?: Record<string, any>
+	parentKeys?: string[]
+}) => {
+	if (isObject(obj)) {
+		for (const k in obj) {
+			let _k = k
+
+			if (new RegExp(`^${prefix}`).test(k)) {
+				obj[(_k = k.substring(prefix.length))] = obj[k]
+				delete obj[k]
+			}
+
+			if (isArray(obj[_k])) {
+				obj[_k].forEach(e => {
+					_privateKeyToPublic({
+						obj: e,
+						prefix,
+						privateKeys,
+						parentKeys: _passParentKeys(parentKeys, _k),
+					})
+				})
+			} else {
+				let _parentKeys: string[] | undefined
+				if (isObject(obj[_k])) {
+					_parentKeys = _passParentKeys(parentKeys, _k)
+				}
+
+				_privateKeyToPublic({
+					obj: obj[_k],
+					prefix,
+					privateKeys,
+					parentKeys: _parentKeys,
+				})
+			}
+		}
+	} else if (isArray(parentKeys)) {
+		if (parentKeys.length > 1) {
+			let prev = privateKeys
+			for (let i = 0; i < parentKeys.length - 1; i++) {
+				if (prev[parentKeys[i]] == null) {
+					prev = prev[parentKeys[i]] = {}
+				} else {
+					prev = prev[parentKeys[i]]
+				}
+			}
+		}
+
+		privateKeys[parentKeys[parentKeys.length - 1]] = 1
+	}
+
+	console.log(prefix, parentKeys, privateKeys)
+
+	return {
+		obj,
+		privateKeys,
+	}
+}
+
+const _removePrivateKeyValue = (obj: Record<string, any>, removeKeyObj: any) => {
+	if (isObject(removeKeyObj)) {
+		for (let k in removeKeyObj) {
+			if (removeKeyObj[k] === 1) {
+				if (isObject(obj)) {
+					delete obj[k]
+				}
+			} else if (isObject(removeKeyObj[k])) {
+				let _obj = isObject(obj) ? obj[k] : null
+				_removePrivateKeyValue(_obj, removeKeyObj[k])
+			}
+		}
+	}
+}
+
+const _dontTransform = <T>(e: T) => e
 
 const createEnvConfig = async <Result = EnvConfig>(
 	mode: Mode = 'development',
 	extension: Ext = extTs,
-	transform: (envConfig: Result) => Result = dontTransform,
+	transform: (envConfig: Result) => Result = _dontTransform,
 ): Promise<Result> => {
 	vLog.info('開始創建環境變數...')
 
 	let config = {
 		mode,
 	} as Result
+	let privateKeys = {} as Record<string, any>
 
 	if (supportExtensions.includes(extension)) {
 		const ls = await fs.readdir(envPath)
@@ -67,17 +171,17 @@ const createEnvConfig = async <Result = EnvConfig>(
 		const filterBaseLs = ls.filter(e => e === baseFileName)
 
 		if (ls.length > 0 && filterBaseLs.length !== ls.length)
-			await passConfig(config, baseFileName, extension)
+			await _passConfig(privateKeys, config, baseFileName, extension)
 
 		for (let i = 0; i < ls.length; i++) {
 			const filename = ls[i]
 			const env = filename.match(/^env\.?([A-z0-9-_]+)?\.(ts|json)$/)?.[1]
-			if (env === mode) await passConfig(config, filename, extension)
+			if (env === mode) await _passConfig(privateKeys, config, filename, extension)
 		}
 
 		config = transform(config)
 		const viteConfig = cloneDeep(config)
-		recursiveRemoveKey(viteConfig, k => /^_/.test(k))
+		_removePrivateKeyValue(viteConfig, privateKeys)
 
 		await checkCreateBuildPath()
 		await fs.writeFile(outputPath, `export default ${JSON.stringify(viteConfig, null, 2)}`)

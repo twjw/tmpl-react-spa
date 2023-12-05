@@ -57,54 +57,55 @@ function Page() {
 			})
 		})
 
-		return
+		// fetch2<{ n: number }[]>('get:/api/json', undefined, {
+		// 	cacheTime: 3000,
+		// }).then(res => {
+		// 	console.log(152111, res)
+		// 	setTimeout(() => {
+		// 		console.log(1500)
+		//
+		// 		fetch2<{ n: number }[]>('get:/api/json', undefined, { forceRun: true }).then(res => {
+		// 			console.log(1500, res)
+		// 		})
+		// 	}, 1500)
+		// 	setTimeout(() => {
+		// 		console.log(4000)
+		//
+		// 		fetch2<{ n: number }[]>('get:/api/json', undefined).then(res => {
+		// 			console.log(4000, res)
+		// 		})
+		// 	}, 4000)
+		// })
 
-		fetch2<{ n: number }[]>('get:/api/json', undefined, {
-			cacheTime: 3000,
-		}).then(res => {
-			console.log(152111, res)
-			setTimeout(() => {
-				console.log(1500)
-
-				fetch2<{ n: number }[]>('get:/api/json', undefined, { forceRun: true }).then(res => {
-					console.log(1500, res)
-				})
-			}, 1500)
-			setTimeout(() => {
-				console.log(4000)
-
-				fetch2<{ n: number }[]>('get:/api/json', undefined).then(res => {
-					console.log(4000, res)
-				})
-			}, 4000)
-		})
-
-		const c = new AbortController()
-		fetch2<string>(
-			'get:/api/text',
-			{
-				params: {
-					test: 1,
-					cool: 'guys',
-					arr: [1, 2],
-					obj: { hello: 'world', name: 'frank' },
-				},
-				// body: {
-				// 	hello: 'world',
-				// 	color: 'red',
-				// },
-				resType: 'text',
-			},
-			// { controller: c }
-		)
-			.then(res => {
-				console.log(444, res)
-				throw Error('asdasd')
-			})
-			.catch(err => {
-				console.log(123, err)
-			})
-
+		// const c = new AbortController()
+		// fetch2<string>(
+		// 	'get:/api/text',
+		// 	{
+		// 		params: {
+		// 			test: 1,
+		// 			cool: 'guys',
+		// 			arr: [1, 2],
+		// 			obj: { hello: 'world', name: 'frank' },
+		// 		},
+		// 		// body: {
+		// 		// 	hello: 'world',
+		// 		// 	color: 'red',
+		// 		// },
+		// 		resType: 'text',
+		// 	},
+		// 	{
+		// 		// controller: c
+		// 		// timeout: 1,
+		// 	}
+		// )
+		// 	.then(res => {
+		// 		console.log(444, res)
+		// 		throw Error('asdasd')
+		// 	})
+		// 	.catch(err => {
+		// 		console.log(123, err)
+		// 	})
+		//
 		// c.abort()
 		// fetch2.cancelAll()
 	}, [])
