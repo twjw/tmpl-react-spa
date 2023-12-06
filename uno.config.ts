@@ -1,7 +1,9 @@
 import { defineConfig, presetAttributify, presetIcons, presetUno } from 'unocss'
 import { unoPresetRemPlugin } from '../toolbox-js/packages/vite'
 
-export default defineConfig({
+const baseFontSize = 50
+
+const config = defineConfig({
 	presets: [
 		presetUno(),
 		presetAttributify(),
@@ -11,7 +13,7 @@ export default defineConfig({
 				'vertical-align': 'middle',
 			},
 		}),
-		unoPresetRemPlugin(),
+		unoPresetRemPlugin({ baseFontSize }),
 	],
 	theme: {
 		breakpoints: {
@@ -29,3 +31,6 @@ export default defineConfig({
 	},
 	shortcuts: {},
 })
+
+export { baseFontSize }
+export default config

@@ -202,7 +202,7 @@ react-spa
   - 如果環境變數值有 `Array` 的話，採用合併的方式處理
 
     ```javascript
-    // env.ts
+    // .env.ts
     const common = {
       levels: [1, 2, 3],
     }
