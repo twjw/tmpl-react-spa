@@ -2,5 +2,5 @@
 
 declare module '~envConfig' {
 	import { EnvType } from '../.env'
-	export default EnvType
+	export const envConfig: EnvType
 }

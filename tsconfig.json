@@ -23,7 +23,6 @@
 		/* Alias */
 		"baseUrl": ".",
 		"paths": {
-			"~envConfig": ["node_modules/.wtbx-build/env.config.ts"],
 			"@/*": ["src/*"]
 		}
 	},

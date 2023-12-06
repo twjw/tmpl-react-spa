@@ -7,8 +7,8 @@ import { registerPageRoutes } from 'wtbx/react'
 import { ErrorBoundary, RouteWrap } from '@/components'
 import { LocaleWrap } from '@/store'
 import { log } from '@/utils'
-import envConfig from '~envConfig'
-import { App } from './app'
+import { App } from '@/app'
+import { envConfig } from '~envConfig'
 
 registerPageRoutes({
 	log,

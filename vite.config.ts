@@ -3,11 +3,11 @@ import UnoCSS from 'unocss/vite'
 import react from '@vitejs/plugin-react-swc'
 import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import { autoAlias, reactPagesPlugin } from '../toolbox-js/packages/vite'
+import { createEnvConfig } from '../toolbox-js/packages/node'
 import path from 'path'
 import type { EnvType } from './.env'
-import { autoAlias, reactPagesPlugin } from '../toolbox-js/packages/vite'
 import { baseFontSize } from './uno.config'
-import { createEnvConfig } from '../toolbox-js/packages/node'
 
 export default async ({ mode }) => {
 	const envConfig = await createEnvConfig<EnvType, 'development' | 'production'>({ mode })
