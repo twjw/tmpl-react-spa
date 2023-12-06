@@ -5,7 +5,7 @@ import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import path from 'path'
 import type { EnvType } from './.env'
-import { bootstrap } from '../toolbox-js/packages/vite'
+import { bootstrap, reactPagesPlugin } from '../toolbox-js/packages/vite'
 import { baseFontSize } from './uno.config'
 
 export default ({ mode }) =>
@@ -28,6 +28,7 @@ export default ({ mode }) =>
 							},
 						},
 					}),
+					reactPagesPlugin(),
 				],
 				resolve: {
 					alias: resolveAlias,

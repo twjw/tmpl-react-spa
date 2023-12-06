@@ -23,6 +23,8 @@ function Page() {
 	const token = useUserStore(e => e.token)
 
 	useEffect(() => {
+		console.log(123)
+
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
 			mark: 'eee',
 		}).then(res => {
