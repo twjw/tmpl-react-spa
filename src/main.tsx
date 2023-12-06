@@ -3,12 +3,12 @@ import '@unocss/reset/eric-meyer.css'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { App } from './app'
-import { envConfig } from '~app'
+import envConfig from '~envConfig'
 import { LocaleWrap } from '~common/store'
 import { ErrorBoundary, RouteWrap } from '@/components'
 import { PageMeta } from '@/type/global'
 import { registerPageRoutes } from '../../toolbox-js/packages/react'
-import { log } from '~common/utils'
+import { log } from '@/utils'
 
 registerPageRoutes<PageMeta>({
 	log,

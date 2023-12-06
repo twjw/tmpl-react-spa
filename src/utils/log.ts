@@ -1,5 +1,5 @@
 import { createLog } from 'wtbx/common'
-import { envConfig } from '~app'
+import envConfig from '~envConfig'
 
 const log = createLog('LOG', envConfig.mode === 'development')
 

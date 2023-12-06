@@ -3,7 +3,7 @@ import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom'
 import { storage, t, useLocale, useUserStore } from '~common/store'
-import { log } from '~common/utils'
+import { log } from '@/utils'
 import { createFetch2 } from 'wtbx/common'
 
 const fetch2 = createFetch2()

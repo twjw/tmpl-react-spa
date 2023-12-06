@@ -23,7 +23,7 @@
 		/* Alias */
 		"baseUrl": ".",
 		"paths": {
-			"~app": ["core/app/index.tsx"],
+			"~envConfig": ["node_modules/.wtbx-build/env.config.ts"],
 			"~common/*": ["core/app/*"],
 			"@/*": ["src/*"]
 		}
