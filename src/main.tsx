@@ -3,13 +3,13 @@ import '@unocss/reset/eric-meyer.css'
 import '@/style/common.css'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { App } from './app'
-import envConfig from '~envConfig'
-import { LocaleWrap } from '@/store'
+import { registerPageRoutes } from 'wtbx/react'
 import { ErrorBoundary, RouteWrap } from '@/components'
+import { LocaleWrap } from '@/store'
 import { PageMeta } from '@/type/global'
-import { registerPageRoutes } from '../../toolbox-js/packages/react'
 import { log } from '@/utils'
+import envConfig from '~envConfig'
+import { App } from './app'
 
 registerPageRoutes<PageMeta>({
 	log,
