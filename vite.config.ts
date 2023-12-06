@@ -3,9 +3,8 @@ import UnoCSS from 'unocss/vite'
 import react from '@vitejs/plugin-react-swc'
 import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { autoAlias, reactPagesPlugin } from '../toolbox-js/packages/vite'
+import { autoAlias, reactAutoPages } from '../toolbox-js/packages/vite'
 import { createEnvConfig } from '../toolbox-js/packages/node'
-import path from 'path'
 import type { EnvType } from './.env'
 import { baseFontSize } from './uno.config'
 
@@ -15,7 +14,7 @@ export default async ({ mode }) => {
 	return defineConfig({
 		plugins: [
 			UnoCSS({
-				configFile: path.relative(__dirname, path.join(process.cwd(), 'uno.config.ts')),
+				configFile: 'uno.config.ts',
 			}),
 			react(),
 			svgr(),
@@ -29,7 +28,7 @@ export default async ({ mode }) => {
 				},
 			}),
 			autoAlias(),
-			reactPagesPlugin(),
+			reactAutoPages(),
 		],
 		server: {
 			host: '0.0.0.0',
