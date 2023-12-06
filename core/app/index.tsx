@@ -1,4 +1,2 @@
-import envConfig from '../../.wtbx-build/env.config'
-
-export { Routes, register as registerRouter } from './router'
+import envConfig from '../../node_modules/.wtbx-build/env.config'
 export { envConfig }

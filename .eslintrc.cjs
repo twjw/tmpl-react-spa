@@ -11,7 +11,6 @@ module.exports = {
 		".eslintrc.cjs",
 		".env.ts",
 		".env.*.ts",
-		".wtbx-build",
 	],
 	"parser": "@typescript-eslint/parser",
 	"plugins": [
