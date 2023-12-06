@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { dictionary } from '~common/store'
+import { dictionary } from '@/store'
 
 type Locale = keyof typeof dictionary
 type Dictionary = (typeof dictionary)['zh_TW']

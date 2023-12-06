@@ -1,6 +1,6 @@
 import { recurFindKeyStrValue } from 'wtbx/common'
-import type { Dictionary } from '~common/store'
-import { locale, dictionary } from '~common/store'
+import type { Dictionary } from '@/store'
+import { locale, dictionary } from '@/store'
 import { wObject } from 'wtbx/type'
 
 const t = (key: wObject.RecursiveKeyOf<Dictionary>, values = []) => {

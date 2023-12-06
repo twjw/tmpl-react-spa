@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom'
-import { storage, t, useLocale, useUserStore } from '~common/store'
+import { storage, t, useLocale, useUserStore } from '@/store'
 import { log } from '@/utils'
 import { createFetch2 } from 'wtbx/common'
 

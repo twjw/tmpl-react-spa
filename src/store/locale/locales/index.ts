@@ -6,6 +6,4 @@ const dictionary = {
 	zh_TW,
 }
 
-export {
-	dictionary,
-}
+export { dictionary }
