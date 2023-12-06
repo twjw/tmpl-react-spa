@@ -1,18 +1,23 @@
 import { ErrorBoundary } from '@/components'
-import { ReactNode, Suspense, useEffect } from 'react'
+import { FC, ReactNode, Suspense, useEffect } from 'react'
+import { useRoute } from 'wtbx/react'
 
-type CommonProps = { path: string; children: ReactNode }
+type CommonProps = { children: ReactNode }
 
-const _RouteContent = ({ path, children }: CommonProps) => {
+const _RouteContent: FC<CommonProps> = ({ children }) => {
+	const ctx = useRoute()
+
+	console.log('ctx', ctx)
+
 	useEffect(() => {}, [])
 
-	return <Suspense fallback={<div>{path} loading...</div>}>{children}</Suspense>
+	return <Suspense fallback={<></>}>{children}</Suspense>
 }
 
-const RouteWrap = ({ path, children }: CommonProps) => {
+const RouteWrap: FC<CommonProps> = ({ children }) => {
 	return (
 		<ErrorBoundary.Route>
-			<_RouteContent path={path}>{children}</_RouteContent>
+			<_RouteContent>{children}</_RouteContent>
 		</ErrorBoundary.Route>
 	)
 }

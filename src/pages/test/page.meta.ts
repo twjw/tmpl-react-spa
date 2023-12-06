@@ -1,7 +1,7 @@
 import { PageMeta } from '@/type/common.ts'
 
 const meta: PageMeta = {
-	title: 'example',
+	title: '(otelet)/test',
 }
 
 export default meta

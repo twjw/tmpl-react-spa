@@ -6,26 +6,19 @@ import { BrowserRouter } from 'react-router-dom'
 import { registerPageRoutes } from 'wtbx/react'
 import { ErrorBoundary, RouteWrap } from '@/components'
 import { LocaleWrap } from '@/store'
-import { PageMeta } from '@/type/global'
 import { log } from '@/utils'
 import envConfig from '~envConfig'
 import { App } from './app'
 
-registerPageRoutes<PageMeta>({
+registerPageRoutes({
 	log,
-	ignorePrefixes: ['./pages'],
+	ignorePrefixes: ['\\./pages'],
 	defaultMeta: {
 		title: envConfig.project.title,
 	},
-	metaModules: import.meta.glob('./pages/**/page.meta.ts', { eager: true }),
-	pageModules: import.meta.glob('./pages/**/page.tsx'),
-	Wrap: ({ path, children }) => {
-		return (
-			<RouteWrap key={path} path={path}>
-				{children}
-			</RouteWrap>
-		)
-	},
+	metaModules: [import.meta.glob('./pages/**/page.meta.ts', { eager: true })],
+	pageModules: [import.meta.glob('./pages/**/page.tsx') as Record<string, () => Promise<any>>],
+	Wrap: RouteWrap,
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
