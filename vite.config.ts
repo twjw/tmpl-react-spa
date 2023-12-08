@@ -5,7 +5,7 @@ import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { autoAlias, reactPageRoutes } from '../toolbox-js/packages/vite'
 import { createEnvConfig } from '../toolbox-js/packages/node'
-import type { EnvType } from './.env'
+import type { EnvType } from '.env'
 import { baseFontSize } from './uno.config'
 import path from 'path'
 
@@ -33,10 +33,7 @@ export default async ({ mode }) => {
 				defaultMeta: {
 					title: envConfig.project.title,
 				},
-				pages: [
-					path.resolve(__dirname, './src/pages'),
-					path.resolve(__dirname, './src/pages2'),
-				],
+				pages: [path.resolve(__dirname, './src/pages')],
 			}),
 		],
 		server: {
