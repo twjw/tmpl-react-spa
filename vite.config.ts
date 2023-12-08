@@ -3,7 +3,7 @@ import UnoCSS from 'unocss/vite'
 import react from '@vitejs/plugin-react-swc'
 import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { autoAlias, reactPageRoutes } from '../toolbox-js/packages/vite'
+import { autoAlias, buildDropLog, reactPageRoutes } from '../toolbox-js/packages/vite'
 import { createEnvConfig } from '../toolbox-js/packages/node'
 import type { EnvType } from '.env'
 import { baseFontSize } from './uno.config'
@@ -20,7 +20,7 @@ export default async ({ mode }) => {
 			react(),
 			svgr(),
 			createHtmlPlugin({
-				minify: envConfig.mode !== 'development',
+				minify: envConfig.mode === 'production',
 				inject: {
 					data: {
 						title: envConfig.project.title,
@@ -35,6 +35,7 @@ export default async ({ mode }) => {
 				},
 				pages: [path.resolve(__dirname, './src/pages')],
 			}),
+			buildDropLog(envConfig.mode === 'production'),
 		],
 		server: {
 			host: '0.0.0.0',

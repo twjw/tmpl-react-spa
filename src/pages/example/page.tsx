@@ -3,7 +3,6 @@ import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom'
 import { storage, t, useLocale, useUserStore } from '@/store'
-import { log } from '@/utils'
 import { createFetch2 } from 'wtbx/common'
 
 const fetch2 = createFetch2()
@@ -125,7 +124,7 @@ function Page() {
 				<button
 					className={'cursor-pointer'}
 					onClick={ev => {
-						log.info(t('testBlock.name'))
+						console.log(t('testBlock.name'))
 					}}
 				>
 					log 翻譯
