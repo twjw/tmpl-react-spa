@@ -1,15 +1,15 @@
 import { ErrorBoundary } from '@/components'
 import { FC, ReactNode, Suspense, useEffect } from 'react'
-// import { useRoute } from 'wtbx/react'
+import { usePageRoute } from '~page-routes'
 
 type CommonProps = { children: ReactNode }
 
 const _RouteContent: FC<CommonProps> = ({ children }) => {
-	// const ctx = useRoute()
-	//
-	// console.log('ctx', ctx)
+	const ctx = usePageRoute()
 
-	useEffect(() => {}, [])
+	useEffect(() => {
+		console.log(`path: ${ctx.path} .. ctx:\n`, ctx)
+	}, [])
 
 	return <Suspense fallback={<></>}>{children}</Suspense>
 }
