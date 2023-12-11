@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="wtbx/v-d-nice-i18n" />
 
 declare module '~env-config' {
 	import type { EnvType } from '../.env'

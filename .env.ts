@@ -1,4 +1,4 @@
-import { wObject } from '../toolbox-js/packages/type'
+import { WObject } from '../toolbox-js/packages/type'
 
 const env =
 	// --- ---
@@ -23,5 +23,5 @@ const env =
 	}
 // --- ---
 
-export type EnvType = wObject.IgnoreKeyPrefix<typeof env>
+export type EnvType = WObject.IgnoreKeyPrefix<typeof env>
 export default env

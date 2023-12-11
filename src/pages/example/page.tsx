@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom'
-import { storage, t, useLocale, useUserStore } from '@/store'
+import { storage, useUserStore } from '@/store'
 import { createFetch2 } from 'wtbx/common'
+import { setLocale, t } from '~nice-i18n'
 
 const fetch2 = createFetch2()
 
@@ -17,10 +18,9 @@ fetch2.interceptors.response.use(res => {
 })
 
 function Page() {
-	const setLocale = useLocale(e => e.setLocale)
 	const [arr, setArr] = useState([])
 	const token = useUserStore(e => e.token)
-
+	console.log(123456)
 	useEffect(() => {
 		console.log(123)
 
@@ -119,7 +119,7 @@ function Page() {
 						setLocale(t('testBlock.name') === 'test block name' ? 'zh_TW' : 'en')
 					}}
 				>
-					國際化(test) - {t('testBlock.name')}
+					國際化(testBlock.name) - {t('testBlock.name')}
 				</button>
 				<button
 					className={'cursor-pointer'}

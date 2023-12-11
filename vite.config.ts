@@ -8,6 +8,7 @@ import { createEnvConfig } from '../toolbox-js/packages/node'
 import type { EnvType } from '.env'
 import { baseFontSize } from './uno.config'
 import path from 'path'
+import { niceI18n } from '../toolbox-js/packages/vite/plugins/nice-i18n'
 
 export default async ({ mode }) => {
 	const envConfig = await createEnvConfig<EnvType, 'development' | 'production'>({ mode })
@@ -35,7 +36,12 @@ export default async ({ mode }) => {
 				},
 				pages: [path.resolve(__dirname, './src/pages')],
 			}),
-			buildDropLog(envConfig.mode === 'production'),
+			buildDropLog({
+				clean: envConfig.mode === 'production',
+			}),
+			niceI18n({
+				dirs: [path.resolve(__dirname, './src/assets/locale')],
+			}),
 		],
 		server: {
 			host: '0.0.0.0',

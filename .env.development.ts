@@ -1,7 +1,7 @@
 import type { EnvType } from './.env'
-import { wObject } from '../toolbox-js/packages/type'
+import { WObject } from '../toolbox-js/packages/type'
 
-const env: wObject.DeepPartial<EnvType> =
+const env: WObject.DeepPartial<EnvType> =
 	// --- ---
 	{
 		server: {
