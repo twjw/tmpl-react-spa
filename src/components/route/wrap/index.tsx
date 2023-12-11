@@ -1,11 +1,11 @@
 import { ErrorBoundary } from '@/components'
 import { FC, ReactNode, Suspense, useEffect } from 'react'
-import { usePageRoute } from '~page-routes'
+import { usePageRute } from '~page-routes'
 
 type CommonProps = { children: ReactNode }
 
 const _RouteContent: FC<CommonProps> = ({ children }) => {
-	const ctx = usePageRoute()
+	const ctx = usePageRute()
 
 	useEffect(() => {
 		console.log(`path: ${ctx.path} .. ctx:\n`, ctx)
