@@ -1,7 +1,7 @@
 import 'virtual:uno.css'
 import '@unocss/reset/eric-meyer.css'
 import '@/style/common.css'
-import { register as registerLocale, App as NiceI18nApp } from '~wtbx-i18n'
+import { register as registerLocale, App as WtbxI18nApp } from '~wtbx-i18n'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ErrorBoundary } from '@/components'
@@ -13,10 +13,10 @@ registerLocale({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>
-		<NiceI18nApp>
+		<WtbxI18nApp>
 			<ErrorBoundary.App>
 				<App />
 			</ErrorBoundary.App>
-		</NiceI18nApp>
+		</WtbxI18nApp>
 	</BrowserRouter>,
 )
