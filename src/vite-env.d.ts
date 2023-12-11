@@ -10,7 +10,7 @@ declare module '~page-routes' {
 	import type { PageMeta } from '@/type/common'
 
 	export const createPageRoutes: ReactPageRoutes.CreatePageRoutes
-	export const usePageRute: ReactPageRoutes.UsePageRute<Partial<PageMeta>>
+	export const usePageRoute: ReactPageRoutes.UsePageRute<Partial<PageMeta>>
 }
 
 declare module '~nice-i18n' {
