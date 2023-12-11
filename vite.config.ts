@@ -1,14 +1,13 @@
+import path from 'path'
 import { defineConfig } from 'vite'
 import UnoCSS from 'unocss/vite'
 import react from '@vitejs/plugin-react-swc'
 import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { autoAlias, buildDropLog, reactPageRoutes } from '../toolbox-js/packages/vite'
+import { autoAlias, buildDropLog, reactPageRoutes, niceI18n } from '../toolbox-js/packages/vite'
 import { createEnvConfig } from '../toolbox-js/packages/node'
-import type { EnvType } from '.env'
 import { baseFontSize } from './uno.config'
-import path from 'path'
-import { niceI18n } from '../toolbox-js/packages/vite/plugins/nice-i18n'
+import type { EnvType } from '.env'
 
 export default async ({ mode }) => {
 	const envConfig = await createEnvConfig<EnvType, 'development' | 'production'>({ mode })

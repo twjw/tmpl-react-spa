@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom'
 import { storage, useUserStore } from '@/store'
 import { createFetch2 } from 'wtbx/common'
-import { setLocale, t } from '~nice-i18n'
+import { t, setLocale } from '~nice-i18n'
 
 const fetch2 = createFetch2()
 

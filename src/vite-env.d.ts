@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-/// <reference types="wtbx/v-d-nice-i18n" />
 
 declare module '~env-config' {
 	import type { EnvType } from '../.env'
@@ -12,4 +11,23 @@ declare module '~page-routes' {
 
 	export const createPageRoutes: CreatePageRouteProps
 	export const usePageRoute: PageRouteContext<PageMeta>
+}
+
+declare module '~nice-i18n' {
+	import type {
+		NiceI18nTranslate,
+		NiceI18nRegister,
+		NiceI18nSetLocale,
+		NiceI18nApp,
+	} from 'wtbx/vite'
+
+	type Dictionary = import('./assets/locale/en').default
+	type Locale = 'en' | 'zh_TW'
+
+	export const dictionary: Dictionary
+	export const locale: Locale
+	export const t: NiceI18nTranslate<Dictionary>
+	export const register: NiceI18nRegister<Locale>
+	export const setLocale: NiceI18nSetLocale<Locale>
+	export const App: NiceI18nApp
 }
