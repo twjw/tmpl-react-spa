@@ -1,17 +1,7 @@
-import { Outlet } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function Page() {
-	return (
-		<>
-			<div>(outlet)/page.tsx</div>
-			<div>
-				<div>this is layout</div>
-				<div>
-					<Outlet />
-				</div>
-			</div>
-		</>
-	)
+	return <Link to={'/example'}>/example</Link>
 }
 
 export default Page
