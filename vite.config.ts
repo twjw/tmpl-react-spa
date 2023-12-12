@@ -35,7 +35,7 @@ export default async ({ mode }) => {
 				},
 				pages: [
 					path.resolve(__dirname, './src/pages'),
-					path.resolve(__dirname, './src/example/pages'),
+					path.resolve(__dirname, './src/_example/pages'),
 				],
 			}),
 			buildDropLog({

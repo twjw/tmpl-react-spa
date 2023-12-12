@@ -114,7 +114,7 @@ packages = {
 ## 3. 移除多餘檔案/目錄/內容
 
 - `src/example` 刪除該目錄(該目錄為示範目錄，可以觀摩該目錄來看項目該如何寫)
-- `vite.config.ts` 裡的 `reactPageRoutes` 插件裡的 `pages[]` 移除 `example` 目錄那行(`path.resolve(__dirname, './src/example/pages')`)
+- `vite.config.ts` 裡的 `reactPageRoutes` 插件裡的 `pages[]` 移除 `example` 目錄那行(`path.resolve(__dirname, './src/_example/pages')`)
 
 ## 4. 全局替換引入路徑
 
@@ -145,6 +145,7 @@ react-spa
   dist/ - bundle 目錄
   public/ - 靜態資源目錄(簡單理解為如果你的支援需要打包後拷貝一份就放這，否則放 assets)
   src/
+    _example/ - 示範目錄
     assets/ - 資源目錄
     components/ - 組件目錄
     enums/ - 枚舉目錄
