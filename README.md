@@ -30,7 +30,8 @@
 - [國際化](#國際化)
 - [Enum](#Enum)
 - [Service(待補)](#Service)
-- [Store(待補)](#Store)
+- [Store](#Store)
+  - [持久化](#持久化)
 - [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbxvite-插件)
   - [buildDropLog 構件移除 console](#buildDropLog-構件移除-console)
 - [wtbx](#wtbx)
@@ -154,6 +155,7 @@ react-spa
     hooks/ - 鉤子目錄
     pages/ - 頁面目錄
     service/ - 服務目錄
+      ws/ - websocket 相關
       api/ - 與後端 api 溝通的目錄
         [...domain]/
           type.ts - api response type
@@ -684,7 +686,66 @@ export { useUserStore }
 
 ## 持久化
 
-雖然官方有提供內置的持久化 `middleware`，但我建議是用以下方式：
+雖然官方有提供內置的持久化 `middleware`，但我建議是用以下方式，因為規範起來比較清晰：
+
+```typescript
+// store/storage/index.ts
+// 定義一個全局的 storage，用以集中管理有緩存的數據，以免 key 衝突或難找
+import { createValueStorage } from 'wtbx/web'
+import { envConfig } from '~env-config'
+
+const name = (name: string) => `${envConfig.project.storagePrefix}-${name}`
+
+const storage = {
+  token: createValueStorage<string | null>(name('user'), null),
+  // ...
+}
+
+export { storage }
+
+
+// store/user/index.ts
+import { create } from 'zustand'
+import { subscribeWithSelector } from 'zustand/middleware'
+import { storage } from '@/_example/store/storage'
+
+type UserState = {
+  // 類型直接 typeof 就好
+  token: typeof storage.token.defaultValue
+}
+
+type UserStore = UserState & {}
+
+const useUserStore = create<UserStore>()(
+  // 使用 subscribeWithSelector 中間件包裹以讓訂閱可以細粒化 
+  subscribeWithSelector(set => ({
+    // 使用 .defaultValue 取出初始值
+    token: storage.token.defaultValue, 
+  })),
+)
+
+// 監聽有緩存的 key-value(此為 token) 是否變化，變化就 setItem 更新
+useUserStore.subscribe(state => state.token, storage.token.setItem)
+
+export type { UserState, UserStore }
+export { useUserStore }
+```
+
+`createValueStorage` 方法的類型為以下：
+
+```typescript
+type createValueStorage = <T>(
+  key: string, 
+  defaultValue: T, 
+  storage: Storage, // default: localStorage 
+  ignoreEmptyText: boolean
+) => {
+  defaultValue: T
+  getItem: () => T
+  setItem: (value: T) => void
+  removeItem: () => void
+}
+```
 
 ---
 
