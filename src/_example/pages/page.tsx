@@ -6,6 +6,7 @@ import { useUserStore } from '@/_example/store'
 import { createFetch2 } from 'wtbx/common'
 import { t, setLocale } from '~wtbx-i18n'
 import { Status } from '@/_example/enum'
+import { storage } from '@/_example/store/storage'
 
 const fetch2 = createFetch2()
 
@@ -48,37 +49,30 @@ function Page() {
 				name: 'frank',
 			},
 			resType: 'text',
+		}).then(res => {
+			console.log('api/qs', res)
 		})
-			.then(res => {
-				console.log('api/qs', res)
-			})
-			.catch(err => {
-				console.log(777, err)
-			})
+
+		const mark = Symbol()
+		fetch2<{ n: number }[]>('get:/api/json', undefined, {
+			mark: mark,
+		}).then(res => {
+			console.log('api/json' + 1, res)
+		})
 
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
-			mark: 'eee',
-		})
-			.then(res => {
-				console.log('api/json' + 1, res)
-			})
-			.catch(err => {
-				console.log(777, err)
-			})
-
-		fetch2<{ n: number }[]>('get:/api/json', undefined, {
-			mark: 'eee',
+			mark: mark,
 		}).then(res => {
 			console.log('api/json' + 2, res)
 		})
 
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
-			mark: 'eee',
+			mark: mark,
 		}).then(res => {
 			console.log('api/json' + 3, res)
 
 			fetch2<{ n: number }[]>('get:/api/json', undefined, {
-				mark: 'eee',
+				mark: mark,
 			}).then(res => {
 				console.log('api/json' + 4, res)
 			})
@@ -185,7 +179,7 @@ function Page() {
 				<button onClick={() => useUserStore.setState({ token: String(Math.random()) })}>
 					change token(userStore) test
 				</button>
-				<button onClick={() => storage.update('token', String(Math.random()))}>
+				<button onClick={() => storage.token.setItem(String(Math.random()))}>
 					change token(storage) test
 				</button>
 				<div>last user.token = {token}</div>
