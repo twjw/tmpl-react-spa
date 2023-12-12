@@ -2,7 +2,8 @@
 
 > Author: @twjw  
 > Repository: https://github.com/twjw/tmpl-react-spa
-
+> 
+> 第一次使用時 **[初始化](#初始化)** 文檔必看
 ---
 
 # 目錄
@@ -20,13 +21,16 @@
   - [定義](#定義)
   - [配置](#配置)
   - [使用](#使用)
-- [alias](#alias)
+- [Alias](#Alias)
 - [路由](#路由)
   - [規則](#規則)
   - [配置](#配置)
   - [使用](#使用)
 - [樣式](#樣式)
 - [國際化](#國際化)
+- [Enum](#Enum)
+- [Service(待補)](#Service)
+- [Store(待補)](#Store)
 - [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbxvite-插件)
   - [buildDropLog 構件移除 console](#buildDropLog-構件移除-console)
 - [wtbx](#wtbx)
@@ -108,7 +112,7 @@ packages = {
 
 ## 3. 移除多餘檔案/目錄/內容
 
-- `src/example` 刪除該目錄
+- `src/example` 刪除該目錄(該目錄為示範目錄，可以觀摩該目錄來看項目該如何寫)
 - `vite.config.ts` 裡的 `reactPageRoutes` 插件裡的 `pages[]` 移除 `example` 目錄那行(`path.resolve(__dirname, './src/example/pages')`)
 
 ## 4. 全局替換引入路徑
@@ -172,6 +176,8 @@ react-spa
   uno.config.ts - unocss 配置文件
   vite.config.ts - vite 配置文件
 ```
+
+---
 
 # 環境變數
 
@@ -260,9 +266,13 @@ declare module '~env-config' {
 }
 ```
 
-# alias
+---
+
+# Alias
 
 直接配在 `tsconfig.json` 的 `compilerOptions.paths` 裡就好，會用過 `autoAlias plugin` 自動注入到 client，預設配置了 `@` 也就是 `./src` 目錄
+
+---
 
 # 路由
 
@@ -401,7 +411,10 @@ function App() {
 
 # 樣式
 
-> 使用 `unocss` 寫樣式，配置文件預設為 `/uno.config.ts`
+* 使用 `unocss` 寫樣式，配置文件預設為 `/uno.config.ts`
+* 若 `unocss` 無法滿足樣式需求時，可以使用 `.css` 來寫
+* `src/styles` 為全局的 css 放置目錄
+* 預設會引入 `eric-meyer` 的 `reset.css` 來清除預設樣式
 
 `uno.config.ts` 裡的 `unoPresetRem()` 會將類名的數字轉換為對應 `baseFontSize` 的 `rem`，比如說：
 ```text
@@ -514,6 +527,111 @@ export default defineConfig({
 	]
 })
 ```
+
+---
+
+# Enum
+
+因為是 `Typescript` 專案，所以有原生地 `enum` 支持，所以為此使用資料夾來區分：
+* `enum/gen/` 目錄為 `createEnum` 創建的；`enum/ts/` 目錄為 `ts 自帶的 enum`
+
+```typescript
+// enum/gen/status.ts
+import { createEnum } from 'wtbx/common'
+
+const Status = createEnum(
+  // 預設為 ['label', 'value'], 若二參的二維數組的長度 <= 2 的話，傳 undefined 即可
+  // 現在這裡傳的 ['color'] 為二參的二維數組第 2 筆後的名稱，也就是 'red' | 'green' 的名稱
+  ['color'] as const,
+  [
+    // 對應的 dataKey: label, value, color
+    ['ERROR', 1, 'red'],
+    ['OK', 2, 'green'],
+  ] as const,
+)
+
+Status.getByLabel(
+  // 二參二維數組的第 0 索引的值(又名 label)
+  'ERROR',
+  // 預設為 'value'，不傳就是 'value'，如果你想通過 label 取 'color' 的值，那就寫 'color'
+  'value',
+) // 1
+Status.getByLabel('OK') // 2
+Status.getByLabel('ERROR', 'color') // red
+
+Status.getByValue(
+  // 二參二維數組的第 1 索引的值(又名 value)
+  1,
+  // 預設為 'label'，不傳就是 'label'，如果你想通過 label 取 'color' 的值，那就寫 'color'
+  'label',
+) // 'ERROR'
+Status.getByValue(2) // 'OK'
+Status.getByValue(1, 'color') // 'ERROR'
+
+Status.map<R>((
+  // 此為二參對應索引的二維數組，這裡若 i 為 0，那麼 e 為 ['ERROR', 1, 'red']
+  e, 
+  i,
+) => R)
+
+
+
+// enum/ts/status.ts
+// 這就是 ts 的 enum，就不補充什麼了
+enum Status {
+  OK,
+  ERROR,
+}
+```
+
+---
+
+# Service
+
+> 使用 `wtbx` 提供的 `fetch2` 來處理 `api` 請求
+
+---
+
+# Store
+
+使用 `Zustand` 來定義 `Store`，下面僅提供最基本的定義方式
+
+```typescript
+// 基本定義，基本上與官網寫的一樣
+
+import { create } from 'zustand'
+
+type User = {
+  name: string
+}
+
+// 定義 State 類型
+type UserState = {
+  user: User
+}
+
+// 定義 Store 類型，& 後的類型就是 action 類型
+type UserStore = UserState & {
+  hello: () => void
+}
+
+// 創建 Store，通常會使用 use 為開頭
+const useUserStore = create<UserStore>((set, get) => ({
+  user: null,
+  hello() {
+    const user = get().user
+    console.log(`hello ${user.name}`)
+  }
+}))
+
+// 導出類型與 Store
+export type { UserState, UserStore }
+export { useUserStore }
+```
+
+## 持久化
+
+雖然官方有提供內置的持久化 `middleware`，但我建議是用以下方式：
 
 ---
 
