@@ -618,18 +618,22 @@ export { Status }
 
 ## 創建 `fetch2`
 
-使用 `createFetch2` 創建 `fetch2` 方法，是 `fetch API` 的封裝版，在保留原本功能外又提供了以下功能：  
-首先是 `createFetch2` 的類型，粗不了解 `fetch2` 應當如何使用
+> `fetch2` 為 `fetch API` 的封裝版，在保留原本功能外又提供了以下功能：
+
+首先是 `createFetch2` 的類型，粗布了解 `fetch2` 應當如何使用
 
 ```typescript
 // 全局統一配置
 type Options = {
   // 路由前綴
   prefix?: string
+  
   // 就timeout(毫秒)
   timeout?: number
+  
   // 重複次數 TODO 暫沒做
   retry?: number
+  
   // 競態 TODO 暫沒做
   compete?: Fetch2CompeteEnum
 }
@@ -638,12 +642,17 @@ type Options = {
 type ApiOptions = Options & {
   // 取消控制器
   controller?: AbortController
+  
   // 緩存時間(毫秒)
   cacheTime?: number
+  
   // 是否無視緩存強制執行(會清除緩存)
   forceRun?: boolean
+  
   // 用於處理重複請求的標記，如果路徑相同且標記一致只會發起一次請求
-  mark?: Mark
+  // 1. 若為 get 且 mark == null 的話自動使用 url 做標記進行去重處理
+  // 2. 若為非 get 請求，當 mark 為非 null | false 的值將進行去重處理(mark=true 的話使用 url 做標記)
+  mark?: symbol | string | number | boolean
 }
 
 type CreateFetch2 = (options?: Options) => {
@@ -680,7 +689,7 @@ type CreateFetch2 = (options?: Options) => {
 }
 ```
 
-實際創建方式
+創建 `fetch2` 方式以及如何對響應內容進行攔截處理
 
 ```typescript
 // service/fetch2.ts
