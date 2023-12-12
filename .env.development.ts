@@ -13,5 +13,3 @@ const env: WObject.DeepPartial<EnvType> =
 		},
 	}
 // --- ---
-
-export default env

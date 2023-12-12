@@ -24,4 +24,3 @@ const env =
 // --- ---
 
 export type EnvType = WObject.IgnoreKeyPrefix<typeof env>
-export default env
