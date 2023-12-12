@@ -43,10 +43,11 @@
   - `Unocss` 樣式插件
 - `其他不錯的`
   - `Smart Input` 自動切換輸入法
-  - `AI Assistant` 比 chat gpt 還準確的 AI
+  - `json2ts` 將 `json` 轉換成 `typescript` 類型
+  - `AI Assistant` 比 `chat gpt` 還準確的 AI
   - `Translation` 翻譯用
   - `Database Tools...` 數據庫用
-  - `.ignore` ignore 創建用
+  - `.ignore` 創建 ignore file 用
   - `Icon Viewer 2` 圖片預覽
   - `Chinese (Simplified)...` 簡體中文IDE介面(這個看人，至於上面都可裝)
 
@@ -153,8 +154,10 @@ react-spa
     pages/ - 頁面目錄
     service/ - 服務目錄
       api/ - 與後端 api 溝通的目錄
-        [...domain name]/
-      [...domain name]/ - 轉換 api/ 下的 api 的服務目錄
+        [...domain]/
+          type.ts - api response type
+          index.ts - api 路徑們
+      [...domain]/ - 轉換 api/ 下的 api 的服務目錄
     store/ - 狀態目錄
     style/ - 樣式目錄
       common.css - 全局樣式
@@ -623,7 +626,16 @@ export { Status }
 
 # Service
 
-> 使用 `wtbx` 提供的 `fetch2` 來處理 `api` 請求
+* 使用 `wtbx` 提供的 `fetch2` 來處理 `api` 請求
+* 可以使用 `jetbrains` 的 `json2ts` 插件來轉換類型，當然也可以用自己喜歡的
+
+## 創建 fetch2
+
+## 申明方式
+
+```typescript
+
+```
 
 ---
 
@@ -640,26 +652,26 @@ type User = {
   name: string
 }
 
-// 定義 State 類型
+// 1. 定義 State 類型
 type UserState = {
-  user: User
+  user: User | null
 }
 
-// 定義 Store 類型，& 後的類型就是 action 類型
+// 2. 定義 Store 類型，& 後的類型就是 action 類型
 type UserStore = UserState & {
   hello: () => void
 }
 
-// 創建 Store，通常會使用 use 為開頭
+// 3. 創建 Store，通常會使用 use 為開頭
 const useUserStore = create<UserStore>((set, get) => ({
   user: null,
   hello() {
     const user = get().user
-    console.log(`hello ${user.name}`)
+    console.log(`hello ${user?.name}`)
   }
 }))
 
-// 導出類型與 Store
+// 4. 導出類型與 Store
 export type { UserState, UserStore }
 export { useUserStore }
 ```
