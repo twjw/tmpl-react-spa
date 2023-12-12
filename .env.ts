@@ -5,6 +5,7 @@ const env =
 	{
 		project: {
 			title: 'twjw-react-spa-tmpl',
+			storagePrefix: 'tmpl-',
 		},
 		server: {
 			_port: 9247,

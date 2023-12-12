@@ -454,13 +454,14 @@ export default defineConfig({
 // 如果需要類型提醒就配，阿我是想不到什麼理由不配
 declare module '~wtbx-i18n' {
   import type { WtbxI18n } from 'wtbx/vite'
+  import type { WObject } from 'wtbx/type'
   
-  type Dictionary = import('./assets/locale/en').default
+  type Dictionary = typeof import('@/assets/locale/zh_TW').default
   type Locale = 'en' | 'zh_TW'
   
   export const dictionary: Dictionary
   export const locale: Locale
-  export const t: WtbxI18n.Translate<Dictionary>
+  export const t: (key: WObject.RecursiveKeyOf<Dictionary>, value?: string[]) => string
   export const register: WtbxI18n.Register<Locale>
   export const setLocale: WtbxI18n.SetLocale<Locale>
   export const App: WtbxI18n.App

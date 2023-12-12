@@ -1,21 +1,22 @@
 import { create } from 'zustand'
-import { storage } from '@/example/store'
+import { subscribeWithSelector } from 'zustand/middleware'
+import { storage } from '@/example/store/storage'
 
 type UserState = {
 	user: object | null
-	token: string
+	token: typeof storage.token.defaultValue
 }
 
 type UserStore = UserState & {}
 
-const useUserStore = create<UserStore>(set => ({
-	user: null,
-	token: storage.state.token,
-}))
+const useUserStore = create<UserStore>()(
+	subscribeWithSelector(set => ({
+		user: null,
+		token: storage.token.defaultValue,
+	})),
+)
 
-storage.bind<UserState>(useUserStore, {
-	token: 'token',
-})
+useUserStore.subscribe(state => state.token, storage.token.setItem)
 
 export type { UserState, UserStore }
 export { useUserStore }

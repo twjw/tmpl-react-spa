@@ -1,8 +1,10 @@
+import { createValueStorage } from 'wtbx/web'
 import { envConfig } from '~env-config'
-import { AutoStorageWithZustand } from 'wtbx/web'
 
-const storage = new AutoStorageWithZustand(envConfig.app.storagePrefix, {
-	token: AutoStorageWithZustand.string(''),
-})
+const name = (name: string) => `${envConfig.project.storagePrefix}-${name}`
+
+const storage = {
+	token: createValueStorage<string | null>(name('user-token'), null),
+}
 
 export { storage }
