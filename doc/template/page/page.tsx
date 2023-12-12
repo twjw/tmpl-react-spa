@@ -1,5 +1,5 @@
 function Page() {
-	return <>hello page.tsx</>
+	return <></>
 }
 
 export default Page

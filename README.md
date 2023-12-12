@@ -184,12 +184,12 @@ react-spa
 import { WObject } from '../toolbox-js/packages/type'
 
 const env =
-	// --- ---
-	{
-		// 可以嵌套定義
-		project: {
-			title: 'twjw-react-spa-tmpl',
-		},
+  // --- ---
+  {
+    // 可以嵌套定義
+    project: {
+      title: 'twjw-react-spa-tmpl',
+    },
     
     // _ 開頭為私有，僅能在 node 環境下調用，不會暴露在 vite/clinet 裡
     // node 處可以 envConfig.port 取，client 的話取不到
@@ -197,7 +197,7 @@ const env =
     
     // 僅能寫靜態的值，下面這麼寫會是錯的
     errorKey: process.env.NODE_ENV,
-	}
+  }
 // --- ---
 
 // 導出該環境變數類型(.env.ts 導出就好)，之後會用到
@@ -211,28 +211,28 @@ export type EnvType = WObject.IgnoreKeyPrefix<typeof env>
 import { autoAlias } from '../toolbox-js/packages/vite'
 
 export default async ({ mode }) => {
-	// 讀取環境變數
-	const envConfig = await createEnvConfig<
+  // 讀取環境變數
+  const envConfig = await createEnvConfig<
     EnvType, // 上面定義的環境變數類型
     'development' | 'production' // Mode: 支援的環境有哪些(你可以看你檔名來定義就好)
   >({ mode }) // mode 必傳
   
   // 如果有需要動態轉換環境可以使用 transform
-	const dyncmicEnvConfig = await createEnvConfig<
+  const dyncmicEnvConfig = await createEnvConfig<
     EnvType, 
     'development' | 'production',
     1 // transform 返回的類型，也為最終的環境變數值
   >({ 
     mode,
-		transform: (envConfig /* type 為 EnvType & { mode: Mode } */) => 
+    transform: (envConfig /* type 為 EnvType & { mode: Mode } */) => 
       1 // transform return 為你修改後的環境變數值
-	})
-
-	return defineConfig({
-		plugins: [
-			// hasEnv 預設為 true，所以可以寫 autoAlias() 就好
-			// hasEnv 若為 true，會將 ~env-config 注入到 vite-client
-			autoAlias({ hasEnv: true }), 
+  })
+  
+  return defineConfig({
+    plugins: [
+      // hasEnv 預設為 true，所以可以寫 autoAlias() 就好
+      // hasEnv 若為 true，會將 ~env-config 注入到 vite-client
+      autoAlias({ hasEnv: true }), 
     ]
   })
 }
@@ -250,8 +250,8 @@ import { envConfig } from '~env-config'
 ```typescript
 // src/vite-env.d.ts
 declare module '~env-config' {
-	import type { EnvType } from '../.env'
-	export const envConfig: EnvType
+  import type { EnvType } from '../.env'
+  export const envConfig: EnvType
 }
 ```
 
@@ -330,11 +330,11 @@ export default defineConfig({
 // src/vite-env.d.ts
 // 如果需要類型提醒就配，阿我是想不到什麼理由不配
 declare module '~page-routes' {
-	import { ReactPageRoutes } from 'wtbx/vite'
-	import type { PageMeta } from '@/type/common' // 這是你的元數據類型
-
-	export const createPageRoutes: ReactPageRoutes.CreatePageRoutes
-	export const usePageRoute: ReactPageRoutes.UsePageRute<Partial<PageMeta>>
+  import { ReactPageRoutes } from 'wtbx/vite'
+  import type { PageMeta } from '@/type/common' // 這是你的元數據類型
+  
+  export const createPageRoutes: ReactPageRoutes.CreatePageRoutes
+  export const usePageRoute: ReactPageRoutes.UsePageRute<Partial<PageMeta>>
 }
 ```
 
@@ -346,7 +346,7 @@ declare module '~page-routes' {
 import { PageMeta } from '@/type/common.ts'
 
 const meta: PageMeta = {
-	title: 'home',
+  title: 'home',
 }
 
 // 必須使用 export default 導出變量
@@ -358,7 +358,7 @@ export default meta
 import { Link } from 'react-router-dom'
 
 function Page() {
-	return <Link to={'/example'}>/example</Link>
+  return <Link to={'/example'}>/example</Link>
 }
 
 // 必須使用 export default 導出 jsx
@@ -373,18 +373,18 @@ import { createPageRoutes, usePageRoute } from '~page-routes'
 type CommonProps = { children: ReactNode }
 
 const RouteWrap: FC<CommonProps> = ({ children }) => {
-	// usePageRoute 可以用來拿路由元數據
-	const ctx = usePageRoute()
+  // usePageRoute 可以用來拿路由元數據
+  const ctx = usePageRoute()
   
-	// 必須要有 Suspense(因為只提供 lazy component)，其他按你需要加
-	return <Suspense fallback={<></>}>{children}</Suspense>
+  // 必須要有 Suspense(因為只提供 lazy component)，其他按你需要加
+  return <Suspense fallback={<></>}>{children}</Suspense>
 }
 
 function App() {
-	// 生成目錄是路由列表，需放在 react-router-dom Routes 組件內
-	const pageRoutes = useMemo(() => createPageRoutes({ Wrap: RouteWrap }), [])
-
-	return (
+  // 生成目錄是路由列表，需放在 react-router-dom Routes 組件內
+  const pageRoutes = useMemo(() => createPageRoutes({ Wrap: RouteWrap }), [])
+  
+  return (
     <Routes>
       {pageRoutes}
     </Routes>
@@ -421,10 +421,10 @@ import { reactPageRoutes } from '../toolbox-js/packages/vite'
 
 export default defineConfig({
   plugins: [
-		wtbxI18n({
+    wtbxI18n({
       // 字典檔目錄的絕對路徑，一樣後蓋前
-			dirs: [path.resolve(__dirname, './src/assets/locale')],
-		}),
+      dirs: [path.resolve(__dirname, './src/assets/locale')],
+    }),
   ]
 })
 
@@ -432,27 +432,27 @@ export default defineConfig({
 // src/vite-env.d.ts
 // 如果需要類型提醒就配，阿我是想不到什麼理由不配
 declare module '~wtbx-i18n' {
-	import type { WtbxI18n } from 'wtbx/vite'
-
-	type Dictionary = import('./assets/locale/en').default
-	type Locale = 'en' | 'zh_TW'
-
-	export const dictionary: Dictionary
-	export const locale: Locale
-	export const t: WtbxI18n.Translate<Dictionary>
-	export const register: WtbxI18n.Register<Locale>
-	export const setLocale: WtbxI18n.SetLocale<Locale>
-	export const App: WtbxI18n.App
+  import type { WtbxI18n } from 'wtbx/vite'
+  
+  type Dictionary = import('./assets/locale/en').default
+  type Locale = 'en' | 'zh_TW'
+  
+  export const dictionary: Dictionary
+  export const locale: Locale
+  export const t: WtbxI18n.Translate<Dictionary>
+  export const register: WtbxI18n.Register<Locale>
+  export const setLocale: WtbxI18n.SetLocale<Locale>
+  export const App: WtbxI18n.App
 }
 
 
 // src/assets/locale/en.ts
 // 字典檔像這樣寫就好
 export default {
-	test: 'test',
-	testBlock: {
-		name: 'test block name',
-	},
+  test: 'test',
+  testBlock: {
+    name: 'test block name',
+  },
 }
 ```
 
@@ -464,11 +464,11 @@ import { register as registerLocale, App as WtbxI18nApp } from '~wtbx-i18n'
 
 // 註冊 i18n，必須在使用 t 前註冊
 registerLocale({
-	default: 'zh_TW', // 預設的語系
+  default: 'zh_TW', // 預設的語系
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-	// 使用 ~wtbx-i18n 提供的 App 組件包裹來讓以下組件支持 locale 替換
+  // 使用 ~wtbx-i18n 提供的 App 組件包裹來讓以下組件支持 locale 替換
   <WtbxI18nApp>
     <App />
   </WtbxI18nApp>
@@ -476,18 +476,18 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 // 其他 tsx
 import {
-	dictionary, // 當前字典檔，也就是 en.ts 那些
-	locale, // 當前語系(無副檔名的檔名)，也就是 en 那些
+  dictionary, // 當前字典檔，也就是 en.ts 那些
+  locale, // 當前語系(無副檔名的檔名)，也就是 en 那些
   
-	// 翻譯語法，支持 {0} {1} 這種索引入值，只要在 registerLocale 後使用都不會有問題
+  // 翻譯語法，支持 {0} {1} 這種索引入值，只要在 registerLocale 後使用都不會有問題
   // { world: '世界', parent: { hello: '你好 {0}' } } 假設字典如此
-	// t('world') 世界
-	// t('parent.hello', ['frank']) 你好 frank
-	t, 
+  // t('world') 世界
+  // t('parent.hello', ['frank']) 你好 frank
+  t, 
   
-	register, // 註冊 i18n
-	setLocale, // 更換語系
-	App, // setLocale 更換語系刷新應用用的組件
+  register, // 註冊 i18n
+  setLocale, // 更換語系
+  App, // setLocale 更換語系刷新應用用的組件
 } from '~wtbx-i18n'
 ```
 

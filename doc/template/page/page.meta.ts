@@ -1,7 +1,8 @@
 import { PageMeta } from '@/type/common.ts'
+import { envConfig } from '~env-config'
 
 const meta: PageMeta = {
-	title: 'example/home',
+	title: envConfig.project.title,
 }
 
 export default meta

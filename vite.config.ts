@@ -34,7 +34,7 @@ export default async ({ mode }) => {
 					title: envConfig.project.title,
 				},
 				pages: [
-					// path.resolve(__dirname, './src/pages'),
+					path.resolve(__dirname, './src/pages'),
 					path.resolve(__dirname, './src/example/pages'),
 				],
 			}),
