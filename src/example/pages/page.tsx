@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { storage, useUserStore } from '@/store'
 import { createFetch2 } from 'wtbx/common'
 import { t, setLocale } from '~wtbx-i18n'
+import { Status } from '@/example/enum'
 
 const fetch2 = createFetch2()
 
@@ -112,6 +113,16 @@ function Page() {
 					<a href="https://react.dev" target="_blank">
 						<img src={reactLogo} className="logo react" alt="React logo" />
 					</a>
+				</div>
+				<div>Status enum(ERROR value): {Status.getByLabel('ERROR')}</div>
+				<div>Status enum(OK color): {Status.getByLabel('OK', 'color')}</div>
+				<div>
+					Status enum map:{' '}
+					{Status.map(([label, value, color]) => (
+						<span key={value}>
+							Status.{label}: {value} {color},{' '}
+						</span>
+					))}
 				</div>
 				<button
 					className={'cursor-pointer text-red'}

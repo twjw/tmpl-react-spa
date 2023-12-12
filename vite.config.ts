@@ -33,7 +33,10 @@ export default async ({ mode }) => {
 				defaultMeta: {
 					title: envConfig.project.title,
 				},
-				pages: [path.resolve(__dirname, './src/pages')],
+				pages: [
+					path.resolve(__dirname, './src/pages'),
+					path.resolve(__dirname, './src/example/pages'),
+				],
 			}),
 			buildDropLog({
 				clean: envConfig.mode === 'production',
