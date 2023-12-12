@@ -24,6 +24,7 @@ function Page() {
 	console.log(123456)
 	useEffect(() => {
 		console.log(123)
+		Status.hello()
 
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
 			mark: 'eee',

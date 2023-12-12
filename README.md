@@ -519,12 +519,12 @@ import {
 import { buildDropLog } from 'wtbx/vite'
 
 export default defineConfig({
-	plugins: [
-		buildDropLog({
-			// 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
-			clean: envConfig.mode === 'production', 
-		}),
-	]
+  plugins: [
+    buildDropLog({
+      // 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
+      clean: envConfig.mode === 'production', 
+    }),
+  ]
 })
 ```
 
@@ -542,7 +542,10 @@ import { createEnum } from 'wtbx/common'
 const Status = createEnum(
   // 預設為 ['label', 'value'], 若二參的二維數組的長度 <= 2 的話，傳 undefined 即可
   // 現在這裡傳的 ['color'] 為二參的二維數組第 2 筆後的名稱，也就是 'red' | 'green' 的名稱
+  // **** 如果不是 undefined 的話，as const 為必須！ ****
   ['color'] as const,
+	
+  // **** as const 為必須！ ****
   [
     // 對應的 dataKey: label, value, color
     ['ERROR', 1, 'red'],
@@ -582,6 +585,38 @@ enum Status {
   OK,
   ERROR,
 }
+```
+
+## 擴展 Enum 方法
+
+如果有擴展方法掛載在 `createEnum` 的 `enum` 上可以這麼寫： 
+
+```typescript
+import { createEnum } from 'wtbx/common'
+
+// 1. 定義 enum
+const _enum = createEnum(
+  undefined,
+  [
+    ['ERROR', 1],
+    ['OK', 2],	
+  ] as const
+)
+
+// 2. 定義擴展的方法類型
+type _Actions = {
+  hello: () => void
+}
+
+// 3. 將方法類型與 enum 綁起來
+const Status = _enum as typeof _enum & _Actions
+
+// 4. 擴展 hello 方法到 Status enum 上
+Status.hello = () => {
+  console.log('hello enum Status')
+}
+
+export { Status }
 ```
 
 ---
