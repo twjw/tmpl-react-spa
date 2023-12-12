@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom'
-import { storage, useUserStore } from '@/store'
+import { storage, useUserStore } from '@/example/store'
 import { createFetch2 } from 'wtbx/common'
 import { t, setLocale } from '~wtbx-i18n'
 import { Status } from '@/example/enum'
@@ -18,35 +18,69 @@ fetch2.interceptors.response.use(res => {
 	return res?.data
 })
 
+fetch2.interceptors.error.use((error, userConfig) => {
+	return { aaa: 123 }
+})
+
 function Page() {
 	const [arr, setArr] = useState([])
 	const token = useUserStore(e => e.token)
-	console.log(123456)
+
 	useEffect(() => {
-		console.log(123)
 		Status.hello()
 
+		const formData = new FormData()
+		formData.append('text', 'hello form-data text')
+		fetch2<{ n: number }[]>('post:/api/form-data', {
+			body: formData,
+			resType: 'text',
+		})
+			.then(res => {
+				console.log('api/form-data', res)
+			})
+			.catch(err => {
+				console.log(777, err)
+			})
+
+		fetch2<{ n: number }[]>('get:/api/qs', {
+			params: {
+				id: '123',
+				name: 'frank',
+			},
+			resType: 'text',
+		})
+			.then(res => {
+				console.log('api/qs', res)
+			})
+			.catch(err => {
+				console.log(777, err)
+			})
+
+		fetch2<{ n: number }[]>('get:/api/json', undefined, {
+			mark: 'eee',
+		})
+			.then(res => {
+				console.log('api/json' + 1, res)
+			})
+			.catch(err => {
+				console.log(777, err)
+			})
+
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
 			mark: 'eee',
 		}).then(res => {
-			console.log('e' + 1, res)
+			console.log('api/json' + 2, res)
 		})
 
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
 			mark: 'eee',
 		}).then(res => {
-			console.log('e' + 2, res)
-		})
-
-		fetch2<{ n: number }[]>('get:/api/json', undefined, {
-			mark: 'eee',
-		}).then(res => {
-			console.log('e' + 3, res)
+			console.log('api/json' + 3, res)
 
 			fetch2<{ n: number }[]>('get:/api/json', undefined, {
 				mark: 'eee',
 			}).then(res => {
-				console.log('e' + 4, res)
+				console.log('api/json' + 4, res)
 			})
 		})
 

@@ -626,10 +626,14 @@ export { Status }
 
 # Service
 
-* 使用 `wtbx` 提供的 `fetch2` 來處理 `api` 請求
+* 使用 `wtbx/common` 提供的 `create-fetch2` 來處理 `api` 請求
 * 可以使用 `jetbrains` 的 `json2ts` 插件來轉換類型，當然也可以用自己喜歡的
 
 ## 創建 fetch2
+
+```typescript
+
+```
 
 ## 申明方式
 

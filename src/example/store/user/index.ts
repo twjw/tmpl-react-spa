@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { storage } from '@/store'
+import { storage } from '@/example/store'
 
 type UserState = {
 	user: object | null
