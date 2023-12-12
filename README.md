@@ -27,7 +27,8 @@
   - [使用](#使用)
 - [樣式](#樣式)
 - [國際化](#國際化)
-- [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbx/vite-插件)
+- [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbxvite-插件)
+  - [buildDropLog 構件移除 console](#buildDropLog-構件移除-console)
 - [wtbx](#wtbx)
 
 ---
@@ -146,6 +147,10 @@ react-spa
       ts/ - ts 自己的 enum 目錄
     hooks/ - 鉤子目錄
     pages/ - 頁面目錄
+    service/ - 服務目錄
+      api/ - 與後端 api 溝通的目錄
+        [...domain name]/
+      [...domain name]/ - 轉換 api/ 下的 api 的服務目錄
     store/ - 狀態目錄
     style/ - 樣式目錄
       common.css - 全局樣式
@@ -181,7 +186,7 @@ react-spa
 其他的定義看以下描述就好
 
 ```typescript
-import { WObject } from '../toolbox-js/packages/type'
+import { WObject } from 'wtbx/type'
 
 const env =
   // --- ---
@@ -208,7 +213,7 @@ export type EnvType = WObject.IgnoreKeyPrefix<typeof env>
 
 ```typescript
 // vite.config.ts
-import { autoAlias } from '../toolbox-js/packages/vite'
+import { autoAlias } from 'wtbx/vite'
 
 export default async ({ mode }) => {
   // 讀取環境變數
@@ -312,7 +317,7 @@ pages/ 假設這是你的路由目錄入口
 
 ```typescript
 // vite.config.ts
-import { reactPageRoutes } from '../toolbox-js/packages/vite'
+import { reactPageRoutes } from 'wtbx/vite'
 
 export default defineConfig({
   plugins: [
@@ -417,7 +422,7 @@ text-20 = 1.25rem
 
 ```typescript
 // vite.config.ts
-import { reactPageRoutes } from '../toolbox-js/packages/vite'
+import { reactPageRoutes } from 'wtbx/vite'
 
 export default defineConfig({
   plugins: [
@@ -494,6 +499,21 @@ import {
 ---
 
 # 其他用到的 `wtbx/vite` 插件
+
+## buildDropLog 構件移除 console
+
+```typescript
+import { buildDropLog } from 'wtbx/vite'
+
+export default defineConfig({
+	plugins: [
+		buildDropLog({
+			// 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
+			clean: envConfig.mode === 'production', 
+		}),
+	]
+})
+```
 
 ---
 
