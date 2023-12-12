@@ -1,7 +1,7 @@
 import { defineConfig, presetAttributify, presetIcons, presetUno } from 'unocss'
-import { unoPresetRemPlugin } from '../toolbox-js/packages/vite'
+import { unoPresetRem } from '../toolbox-js/packages/vite'
 
-const baseFontSize = 50
+const baseFontSize = 16
 
 const config = defineConfig({
 	presets: [
@@ -13,7 +13,7 @@ const config = defineConfig({
 				'vertical-align': 'middle',
 			},
 		}),
-		unoPresetRemPlugin({ baseFontSize }),
+		unoPresetRem({ baseFontSize }),
 	],
 	theme: {
 		breakpoints: {

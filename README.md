@@ -396,13 +396,104 @@ function App() {
 
 # 樣式
 
+> 使用 `unocss` 寫樣式，配置文件預設為 `/uno.config.ts`
+
+`uno.config.ts` 裡的 `unoPresetRem()` 會將類名的數字轉換為對應 `baseFontSize` 的 `rem`，比如說：
+```text
+baseFontSize = 16
+
+text-4 = 0.25rem
+text-16 = 1rem
+text-20 = 1.25rem
+
+所以不用在腦裡特別轉換每個 rem 的尺寸，要 16px 的 rem 就輸入 16，要 16px 就輸入 16px
+```
+
 ---
 
-- [國際化](#國際化)
+# 國際化
+
+## 配置
+
+```typescript
+// vite.config.ts
+import { reactPageRoutes } from '../toolbox-js/packages/vite'
+
+export default defineConfig({
+  plugins: [
+		wtbxI18n({
+      // 字典檔目錄的絕對路徑，一樣後蓋前
+			dirs: [path.resolve(__dirname, './src/assets/locale')],
+		}),
+  ]
+})
+
+
+// src/vite-env.d.ts
+// 如果需要類型提醒就配，阿我是想不到什麼理由不配
+declare module '~wtbx-i18n' {
+	import type { WtbxI18n } from 'wtbx/vite'
+
+	type Dictionary = import('./assets/locale/en').default
+	type Locale = 'en' | 'zh_TW'
+
+	export const dictionary: Dictionary
+	export const locale: Locale
+	export const t: WtbxI18n.Translate<Dictionary>
+	export const register: WtbxI18n.Register<Locale>
+	export const setLocale: WtbxI18n.SetLocale<Locale>
+	export const App: WtbxI18n.App
+}
+
+
+// src/assets/locale/en.ts
+// 字典檔像這樣寫就好
+export default {
+	test: 'test',
+	testBlock: {
+		name: 'test block name',
+	},
+}
+```
+
+## 使用
+
+```typescript jsx
+// main.tsx
+import { register as registerLocale, App as WtbxI18nApp } from '~wtbx-i18n'
+
+// 註冊 i18n，必須在使用 t 前註冊
+registerLocale({
+	default: 'zh_TW', // 預設的語系
+})
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+	// 使用 ~wtbx-i18n 提供的 App 組件包裹來讓以下組件支持 locale 替換
+  <WtbxI18nApp>
+    <App />
+  </WtbxI18nApp>
+)
+
+// 其他 tsx
+import {
+	dictionary, // 當前字典檔，也就是 en.ts 那些
+	locale, // 當前語系(無副檔名的檔名)，也就是 en 那些
+  
+	// 翻譯語法，支持 {0} {1} 這種索引入值，只要在 registerLocale 後使用都不會有問題
+  // { world: '世界', parent: { hello: '你好 {0}' } } 假設字典如此
+	// t('world') 世界
+	// t('parent.hello', ['frank']) 你好 frank
+	t, 
+  
+	register, // 註冊 i18n
+	setLocale, // 更換語系
+	App, // setLocale 更換語系刷新應用用的組件
+} from '~wtbx-i18n'
+```
 
 ---
 
-- [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbx/vite-插件)
+# 其他用到的 `wtbx/vite` 插件
 
 ---
 
