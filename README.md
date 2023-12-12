@@ -3,7 +3,7 @@
 > Author: @twjw  
 > Repository: https://github.com/twjw/tmpl-react-spa
 > 
-> 第一次使用時 **[初始化](#初始化)** 文檔必看
+> 第一次建專案時 **[初始化](#初始化)** 文檔必看，其他就是不懂再看
 ---
 
 # 目錄
