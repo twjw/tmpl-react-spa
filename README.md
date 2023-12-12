@@ -40,9 +40,9 @@
 
 # IDE 插件
 
-- `項目必要`
+- 項目必要
   - `Unocss` 樣式插件
-- `其他不錯的`
+- 其他不錯的
   - `Smart Input` 自動切換輸入法
   - `json2ts` 將 `json` 轉換成 `typescript` 類型
   - `AI Assistant` 比 `chat gpt` 還準確的 AI
@@ -616,9 +616,10 @@ export { Status }
 * 使用 `wtbx/common` 提供的 `create-fetch2` 來處理 `api` 請求
 * 可以使用 `jetbrains` 的 `json2ts` 插件來轉換類型，當然也可以用自己喜歡的
 
-## 創建 fetch2
+## 創建 `fetch2`
 
-使用 `createFetch2` 創建 `fetch2` 方法，是 `fetch API` 的封裝版，在保留原本功能外又提供了以下功能：
+使用 `createFetch2` 創建 `fetch2` 方法，是 `fetch API` 的封裝版，在保留原本功能外又提供了以下功能：  
+首先是 `createFetch2` 的類型，粗不了解 `fetch2` 應當如何使用
 
 ```typescript
 // 全局統一配置
@@ -679,6 +680,8 @@ type CreateFetch2 = (options?: Options) => {
 }
 ```
 
+實際創建方式
+
 ```typescript
 // service/fetch2.ts
 import { createFetch2 } from 'wtbx/common'
@@ -720,6 +723,12 @@ export {
 // service/api/[domain]/index.ts
 
 // service/api/index.ts
+```
+
+## 使用
+
+```typescript
+
 ```
 
 ---
