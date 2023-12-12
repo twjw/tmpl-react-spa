@@ -29,7 +29,7 @@
 - [樣式](#樣式)
 - [國際化](#國際化)
 - [Enum](#Enum)
-- [Service(待補)](#Service)
+- [Service](#Service)
 - [Store](#Store)
   - [持久化](#持久化)
 - [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbxvite-插件)
@@ -161,6 +161,8 @@ react-spa
           type.ts - api response type
           index.ts - api 路徑們
       [...domain]/ - 轉換 api/ 下的 api 的服務目錄
+      fetch2.ts - 主要的 fetch 方法實例
+      index.ts - 統一導出
     store/ - 狀態目錄
     style/ - 樣式目錄
       common.css - 全局樣式
@@ -518,25 +520,6 @@ import {
 
 ---
 
-# 其他用到的 `wtbx/vite` 插件
-
-## buildDropLog 構件移除 console
-
-```typescript
-import { buildDropLog } from 'wtbx/vite'
-
-export default defineConfig({
-  plugins: [
-    buildDropLog({
-      // 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
-      clean: envConfig.mode === 'production', 
-    }),
-  ]
-})
-```
-
----
-
 # Enum
 
 因為是 `Typescript` 專案，所以有原生地 `enum` 支持，所以為此使用資料夾來區分：
@@ -635,14 +618,108 @@ export { Status }
 
 ## 創建 fetch2
 
-```typescript
+使用 `createFetch2` 創建 `fetch2` 方法，是 `fetch API` 的封裝版，在保留原本功能外又提供了以下功能：
 
+```typescript
+// 全局統一配置
+type Options = {
+  // 路由前綴
+  prefix?: string
+  // 就timeout(毫秒)
+  timeout?: number
+  // 重複次數 TODO 暫沒做
+  retry?: number
+  // 競態 TODO 暫沒做
+  compete?: Fetch2CompeteEnum
+}
+
+// 單獨配置，會蓋掉 Options 的配置
+type ApiOptions = Options & {
+  // 取消控制器
+  controller?: AbortController
+  // 緩存時間(毫秒)
+  cacheTime?: number
+  // 是否無視緩存強制執行(會清除緩存)
+  forceRun?: boolean
+  // 用於處理重複請求的標記，如果路徑相同且標記一致只會發起一次請求
+  mark?: Mark
+}
+
+type CreateFetch2 = (options?: Options) => {
+  // fetch2() 的類型
+  <R = Fetch2.InterceptorResponse>(
+    // 路徑格式為 '[METHOD]:[API_URL]'
+    // example: get:/api/user/list, post:/api/user/create
+    url: string,
+    // NodeJS.fetch.RequestInit 為原本的 fetch 二參配置
+    init?: Omit<NodeJS.fetch.RequestInit, 'body'> & {
+      // 如果 method 不是 get | delete，可以使用 body 傳遞 json 參數，同 axios 的 data
+      body?: object
+      // 這個就是 query-string，同 axios 的 params
+      params?: object
+      // 返回的數據格式，也就是 fetch 的 res['json' | 'text' | ...]() 的方法 key
+      resType?: 'arrayBuffer' | 'blob' | 'formData' | 'json' | 'text'
+    },
+    options?: ApiOptions,
+  ): Promise<R>
+  
+  // fetch2.cancel() 用以取消對應正在請求的 api 請求
+  cancel: (controller: AbortController) => void
+  
+  // fetch2.cancelAll() 用以取消所有正在請求的 api
+  cancelAll: () => void
+  
+  // fetch2.interceptors.(request|response|error).use()
+  // 對應的攔截器，詳細看下方備註
+  interceptors: {
+    request: { use: InterceptorUseRequest }
+    response: { use: InterceptorUseResponse }
+    error: { use: InterceptorUseError }
+  }
+}
+```
+
+```typescript
+// service/fetch2.ts
+import { createFetch2 } from 'wtbx/common'
+
+const fetch2 = createFetch2()
+
+// 以下三個為攔截器，傳參不了解其實可以自己點進去看
+// 統一 request 處理
+fetch2.interceptors.request.use(config => {
+  return config
+})
+
+// 統一正確的響應處理，fetch api 是後端不管是 400, 500 還啥只要是返回得了的
+// 都是正確響應，可以使用 ok 跟 status 來判斷要響應什麼
+fetch2.interceptors.response.use(res => {
+  return res
+})
+
+// 錯誤響應攔截，如果未攔截的話 fetch2 遇到以下錯誤將會 throw error 出去，要主動 catch
+// 首參是錯誤實例
+//   內外部錯誤: Fetch2UnknownError
+//   取消: Fetch2AbortError
+//   超時: Fetch2TimeoutError
+// 二參是 fetch2 傳入的所有數據 { url: string, init: RequestInit | null, apiOptions: ApiOptions | null }
+fetch2.interceptors.error.use((error, userConfig) => {
+  return error
+})
+
+export {
+  fetch2
+}
 ```
 
 ## 申明方式
 
 ```typescript
+// service/api/[domain]/type.ts
 
+// service/api/[domain]/index.ts
+
+// service/api/index.ts
 ```
 
 ---
@@ -749,6 +826,27 @@ type createValueStorage = <T>(
 
 ---
 
+# 其他用到的 `wtbx/vite` 插件
+
+## buildDropLog 構件移除 console
+
+```typescript
+import { buildDropLog } from 'wtbx/vite'
+
+export default defineConfig({
+  plugins: [
+    buildDropLog({
+      // 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
+      clean: envConfig.mode === 'production', 
+    }),
+  ]
+})
+```
+
+---
+
 # wtbx
+
+> 待補不完善
 
 工具集([連結](https://github.com/twjw/toolbox-js))
