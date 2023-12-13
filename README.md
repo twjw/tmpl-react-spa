@@ -1,9 +1,10 @@
 # twjw-tmpl-react-spa
 
-> Author: @twjw  
-> Repository: https://github.com/twjw/tmpl-react-spa
+> **Author**: [@twjw](https://github.com/twjw)  
+> **Repository**: https://github.com/twjw/tmpl-react-spa  
 > 
 > 第一次建專案時 **[初始化](#初始化)** 文檔必看，其他就是不懂再看
+
 ---
 
 # 目錄
@@ -30,6 +31,9 @@
 - [國際化](#國際化)
 - [Enum](#Enum)
 - [Service](#Service)
+  - [創建 `fetch2`](#創建-fetch2)
+  - [申明方式](#申明方式)
+  - [使用](#使用)
 - [Store](#Store)
   - [持久化](#持久化)
 - [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbxvite-插件)
@@ -93,7 +97,7 @@ packages = {
 03. 建議使用 `Jetbrains IDE` 開發，僅對該 IDE 做優化
 04. 純邏輯使用 `.tx`，含 **jsx** 使用 `.tsx`
 05. 時間庫使用 `date-fns`，因為不是 `dayjs` 的關係，所以 `antd` 的日期相關組件請從 `@/components` 導入
-06. 除了 `*.page.tsx` 外，都使用 `export` 導出而不是 `export default`，`export`, `export default` 建議在最底部一次導出，而不是在變量前申明
+06. 除了 `*.page.tsx`，都使用 `export` 導出而不是 `export default`，這樣才可以準確的導入模塊，`export`, `export default` 都建議在最底部一次導出，而不是在變量前申明(除特殊模塊)
 
 ---
 
@@ -139,10 +143,18 @@ react-spa
   .husky/ - 哈士奇
     pre-commit - git pre-commit hook
   doc/ - 文檔目錄
-    template/
-      page/ - 可以用作頁面模板，複製貼上改目錄名就建好一個頁面了
-        page.meta.ts
-        page.tsx
+    code/ - 代碼模板與示範
+      example/ - 示範代碼目錄(不知道怎用可以看)
+        enum/ - enum 示範目錄
+        service/ - service 示範目錄
+        store/ - store 示範目錄
+      template/ - 模板目錄
+        api/ - api 模板
+          index.ts
+          type.ts
+        page/ - 頁面模板
+          page.meta.ts
+          page.tsx
   dist/ - bundle 目錄
   public/ - 靜態資源目錄(簡單理解為如果你的支援需要打包後拷貝一份就放這，否則放 assets)
   src/
@@ -169,8 +181,8 @@ react-spa
     type/ - 類型目錄
       common.ts - 通用類型
     utils/ - 通用方法目錄
-    app.tsx - 入口 App Component
-    main.tsx - 入口 (react-dom render)
+    app.tsx - 主入口組件(App Component)
+    main.tsx - 主入口(react-dom render)
     vite-env.d.ts - vite 全局環境(若開啟 wtbx 的相應功能，也會加類型到這)
   .env.?*.ts - 環境變數
   .eslintrc.cjs - eslint 配置，可以不用配，哈士奇會處理
@@ -522,6 +534,8 @@ import {
 
 # Enum
 
+> 參考代碼路徑為：/doc/code/example/enum/gen/index.ts
+
 因為是 `Typescript` 專案，所以有原生地 `enum` 支持，所以為此使用資料夾來區分：
 * `enum/gen/` 目錄為 `createEnum` 創建的；`enum/ts/` 目錄為 `ts 自帶的 enum`
 
@@ -613,6 +627,8 @@ export { Status }
 
 # Service
 
+> 示範代碼可參考：/doc/code/example/service
+
 * 使用 `wtbx/common` 提供的 `create-fetch2` 來處理 `api` 請求
 * 可以使用 `jetbrains` 的 `json2ts` 插件來轉換類型，當然也可以用自己喜歡的
 
@@ -682,9 +698,10 @@ type CreateFetch2 = (options?: Options) => {
   // fetch2.interceptors.(request|response|error).use()
   // 對應的攔截器，詳細看下方備註
   interceptors: {
-    request: { use: InterceptorUseRequest }
-    response: { use: InterceptorUseResponse }
-    error: { use: InterceptorUseError }
+    // callback 類型不想寫了，自己看
+    request: { use: <R = any>(callback: Function) => R }
+    response: { use: <R = any>(callback: Function) => R }
+    error: { use: <R = any>(callback: Function) => R }
   }
 }
 ```
@@ -692,8 +709,15 @@ type CreateFetch2 = (options?: Options) => {
 創建 `fetch2` 方式以及如何對響應內容進行攔截處理
 
 ```typescript
-// service/fetch2.ts
+// service/fetch2/index.ts
 import { createFetch2 } from 'wtbx/common'
+
+// 自定義響應類型
+type ApiResponse<D = null> = {
+  success: boolean
+  status: number | undefined // undefined 為 error
+  data: D
+}
 
 const fetch2 = createFetch2()
 
@@ -705,7 +729,7 @@ fetch2.interceptors.request.use(config => {
 
 // 統一正確的響應處理，fetch api 是後端不管是 400, 500 還啥只要是返回得了的
 // 都是正確響應，可以使用 ok 跟 status 來判斷要響應什麼
-fetch2.interceptors.response.use(res => {
+fetch2.interceptors.response.use<ApiResponse>(res => {
   return res
 })
 
@@ -715,10 +739,12 @@ fetch2.interceptors.response.use(res => {
 //   取消: Fetch2AbortError
 //   超時: Fetch2TimeoutError
 // 二參是 fetch2 傳入的所有數據 { url: string, init: RequestInit | null, apiOptions: ApiOptions | null }
-fetch2.interceptors.error.use((error, userConfig) => {
+fetch2.interceptors.error.use<ApiResponse>((error, userConfig) => {
   return error
 })
 
+// 導出後可以掛載到 apis/[domain]/type.ts 中，具體查閱下面
+export type { ApiResponse }
 export {
   fetch2
 }
@@ -727,22 +753,66 @@ export {
 ## 申明方式
 
 ```typescript
-// service/api/[domain]/type.ts
+// 1. 先申明對應的 api 響應類型
+// service/apis/user/type.ts
+import { type ApiResponse } from '@/service'
 
-// service/api/[domain]/index.ts
+// 通常一個 api 一個 namespace，namespace 裡的類型可以通過 jetbrains 的 json2ts plugin 來轉換
+export namespace UserList {
+  // 這個 api 用到的其他 type 就包在裡面不用特別抽出去，儘管是一樣的
+  export type User = {
+    name: string
+    age: number
+  }
 
-// service/api/index.ts
+  // namespace export type Response 為最終的 Response 類型
+  export type Response = ApiResponse<User[]>
+}
+
+// 2. 先創建 api 方法並掛上 Response 類型
+// service/apis/user/index.ts
+import { UserList } from '@/service/apis/user/type'
+import { fetch2 } from '@/service'
+
+// 將對應的類型掛到對應的 api 上
+export const list = () => fetch2<UserList.Response>('get:/user/list')
+
+
+// 3. 最重導出
+// service/apis/index.ts
+export * from '@/service/fetch2'
+import * as user from '@/service/apis/user'
+
+const apis = {
+  user,
+}
+
+export { apis }
 ```
 
 ## 使用
 
 ```typescript
+import { apis } from '@/service'
 
+// page.tsx
+function Page() {
+  useEffect(() => {
+    // 調用方式就這麼調用，此函數返回類型就是你的申明類型
+    // 也就是 Promise<UserList.Response>
+    apis.user.list()
+  }, [])
+  return null
+}
+
+export default Page
 ```
 
 ---
 
 # Store
+
+> 示範代碼可參考：/doc/code/example/store
 
 使用 `Zustand` 來定義 `Store`，下面僅提供最基本的定義方式
 
