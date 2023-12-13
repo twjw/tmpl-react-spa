@@ -7,7 +7,7 @@ import { createFetch2 } from 'wtbx/common'
 import { t, setLocale } from '~wtbx-i18n'
 import { Status } from '@/_example/enum'
 import { storage } from '@/_example/store/storage'
-import { apis } from '@/_example/service/api'
+import { apis } from '@/_example/service'
 
 const fetch2 = createFetch2()
 
