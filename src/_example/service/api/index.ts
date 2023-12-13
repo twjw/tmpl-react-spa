@@ -1,13 +1,7 @@
-export namespace UserApi {
-	export namespace GetUser {
-		export type User = {
-			name: string
-			age: number
-		}
+import * as user from '@/_example/service/api/user'
 
-		export type Type = {
-			name: string
-			user: User
-		}
-	}
+const apis = {
+	user,
 }
+
+export { apis }

@@ -7,6 +7,7 @@ import { createFetch2 } from 'wtbx/common'
 import { t, setLocale } from '~wtbx-i18n'
 import { Status } from '@/_example/enum'
 import { storage } from '@/_example/store/storage'
+import { apis } from '@/_example/service/api'
 
 const fetch2 = createFetch2()
 
@@ -29,6 +30,8 @@ function Page() {
 
 	useEffect(() => {
 		Status.hello()
+
+		apis.user.list()
 
 		const formData = new FormData()
 		formData.append('text', 'hello form-data text')
