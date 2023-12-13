@@ -369,7 +369,7 @@ declare module '~page-routes' {
   import type { PageMeta } from '@/type/common' // 這是你的元數據類型
   
   export const createPageRoutes: ReactPageRoutes.CreatePageRoutes
-  export const usePageRoute: ReactPageRoutes.UsePageRute<Partial<PageMeta>>
+  export const usePageRoute: ReactPageRoutes.UsePageRute<PageMeta>
 }
 ```
 
@@ -409,6 +409,7 @@ type CommonProps = { children: ReactNode }
 
 const RouteWrap: FC<CommonProps> = ({ children }) => {
   // usePageRoute 可以用來拿路由元數據
+  // { path: string, meta: PageMeta | undefined }
   const ctx = usePageRoute()
   
   // 必須要有 Suspense(因為只提供 lazy component)，其他按你需要加
