@@ -14,9 +14,6 @@ export default async ({ mode }) => {
 
 	return defineConfig({
 		plugins: [
-			UnoCSS({
-				configFile: 'uno.config.ts',
-			}),
 			react(),
 			svgr(),
 			createHtmlPlugin({
@@ -35,14 +32,20 @@ export default async ({ mode }) => {
 				},
 				pages: [
 					path.resolve(__dirname, './src/pages'),
-					path.resolve(__dirname, './src/_example/pages'),
+					path.resolve(__dirname, './doc/code/example/_admin/pages'),
 				],
 			}),
 			buildDropLog({
 				clean: envConfig.mode === 'production',
 			}),
 			wtbxI18n({
-				dirs: [path.resolve(__dirname, './src/assets/locale')],
+				dirs: [
+					path.resolve(__dirname, './src/assets/locale'),
+					path.resolve(__dirname, './doc/code/example/_admin/assets/locale'),
+				],
+			}),
+			UnoCSS({
+				configFile: 'uno.config.ts',
 			}),
 		],
 		server: {

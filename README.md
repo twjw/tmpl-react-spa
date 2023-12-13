@@ -118,8 +118,15 @@ packages = {
 
 ## 3. 移除多餘檔案/目錄/內容
 
-- `src/example` 刪除該目錄(該目錄為示範目錄，可以觀摩該目錄來看項目該如何寫)
-- `vite.config.ts` 裡的 `reactPageRoutes` 插件裡的 `pages[]` 移除 `example` 目錄那行(`path.resolve(__dirname, './src/_example/pages')`)
+- `doc/code/example/_admin` 刪除該目錄(該目錄為專案後台示範目錄，可以觀摩該目錄來看項目該如何寫)
+- `vite.config.ts` 裡移除有 `doc/code/example/_admin` 巴拉巴拉的 `resolve` 路徑代碼
+- `tsconfig.json` 裡將 `@/*` 的指向指到 `src/*`
+- `README.md` 將內容更換為以下
+  ```markdown
+  # 開發文檔  
+  
+  > 詳細請查閱該文檔 [https://github.com/twjw/tmpl-react-spa](https://github.com/twjw/tmpl-react-spa)
+    ```
 
 ## 4. 全局替換引入路徑
 
@@ -145,6 +152,7 @@ react-spa
   doc/ - 文檔目錄
     code/ - 代碼模板與示範
       example/ - 示範代碼目錄(不知道怎用可以看)
+        _admin/ - 該專案的後台示範代碼目錄
         enum/ - enum 示範目錄
         service/ - service 示範目錄
         store/ - store 示範目錄
@@ -158,7 +166,6 @@ react-spa
   dist/ - bundle 目錄
   public/ - 靜態資源目錄(簡單理解為如果你的支援需要打包後拷貝一份就放這，否則放 assets)
   src/
-    _example/ - 示範目錄
     assets/ - 資源目錄
     components/ - 組件目錄
     enums/ - 枚舉目錄
@@ -393,7 +400,7 @@ export default meta
 import { Link } from 'react-router-dom'
 
 function Page() {
-  return <Link to={'/example'}>/example</Link>
+  return <Link to={'/demo'}>/demo</Link>
 }
 
 // 必須使用 export default 導出 jsx
@@ -476,17 +483,15 @@ export default defineConfig({
 // 如果需要類型提醒就配，阿我是想不到什麼理由不配
 declare module '~wtbx-i18n' {
   import type { WtbxI18n } from 'wtbx/vite'
-  import type { WObject } from 'wtbx/type'
   
   type Dictionary = typeof import('@/assets/locale/zh_TW').default
   type Locale = 'en' | 'zh_TW'
   
   export const dictionary: Dictionary
   export const locale: Locale
-  export const t: (key: WObject.RecursiveKeyOf<Dictionary>, value?: string[]) => string
-  export const register: WtbxI18n.Register<Locale>
+  export const t: WtbxI18n.Translate<Dictionary>
   export const setLocale: WtbxI18n.SetLocale<Locale>
-  export const App: WtbxI18n.App
+  export const App: WtbxI18n.App<Locale>
 }
 
 
@@ -504,17 +509,13 @@ export default {
 
 ```typescript jsx
 // main.tsx
-import { register as registerLocale, App as WtbxI18nApp } from '~wtbx-i18n'
-
-// 註冊 i18n，必須在使用 t 前註冊
-registerLocale({
-  default: 'zh_TW', // 預設的語系
-})
+import { App as WtbxI18nApp } from '~wtbx-i18n'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // 使用 ~wtbx-i18n 提供的 App 組件包裹來讓以下組件支持 locale 替換
+  // defaultLocale 為預設的語系，語系為無附檔名的檔名
   // 有 fallback prop 可傳，預設為 <></>
-  <WtbxI18nApp>
+  <WtbxI18nApp defaultLocale={'zh_TW'}>
     <App />
   </WtbxI18nApp>
 )
@@ -530,7 +531,6 @@ import {
   // t('parent.hello', ['frank']) 你好 frank
   t, 
   
-  register, // 註冊 i18n
   setLocale, // 更換語系
   App, // setLocale 更換語系刷新應用用的組件
 } from '~wtbx-i18n'
@@ -876,7 +876,7 @@ export { storage }
 // store/user/index.ts
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
-import { storage } from '@/_example/store/storage'
+import { storage } from '@/store/storage'
 
 type UserState = {
   // 類型直接 typeof 就好

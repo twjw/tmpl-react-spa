@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
-import { storage } from '@/_example/store/storage'
+import { storage } from '@/store/storage'
 
 type UserState = {
 	user: object | null

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
-import viteLogo from '/vite.svg'
+import viteLogo from '/favicon.svg'
 import { Link } from 'react-router-dom'
-import { useUserStore } from '@/_example/store'
+import { useUserStore } from '@/store'
 import { createFetch2 } from 'wtbx/common'
 import { t, setLocale } from '~wtbx-i18n'
-import { Status } from '@/_example/enum'
-import { storage } from '@/_example/store/storage'
-import { apis } from '@/_example/service'
+import { Status } from '@/enum'
+import { storage } from '@/store/storage'
+import { apis } from '@/service'
 import { usePageRoute } from '~page-routes'
 
 const fetch2 = createFetch2()
