@@ -8,6 +8,7 @@ import { t, setLocale } from '~wtbx-i18n'
 import { Status } from '@/_example/enum'
 import { storage } from '@/_example/store/storage'
 import { apis } from '@/_example/service'
+import { usePageRoute } from '~page-routes'
 
 const fetch2 = createFetch2()
 
@@ -27,8 +28,15 @@ fetch2.interceptors.error.use((error, userConfig) => {
 function Page() {
 	const [arr, setArr] = useState([])
 	const token = useUserStore(e => e.token)
+	const ctx = usePageRoute()
+	const ctx2 = usePageRoute('/news/tab1')
+	const ctx3 = usePageRoute('/news/tab2')
 
 	useEffect(() => {
+		console.log('usePageRoute()', ctx)
+		console.log(`usePageRoute('/news/tab1')`, ctx2)
+		console.log(`usePageRoute('/news/tab2')`, ctx3)
+
 		Status.hello()
 		;(async () => {
 			const { success, status, data } = await apis.user.list()
