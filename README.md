@@ -761,8 +761,6 @@ export {
 ```typescript
 // 1. 先申明對應的 api 響應類型
 // service/apis/user/type.ts
-import { type ApiResponse } from '@/service'
-
 // 通常一個 api 一個 namespace，namespace 裡的類型可以通過 jetbrains 的 json2ts plugin 來轉換
 export namespace UserList {
   // 這個 api 用到的其他 type 就包在裡面不用特別抽出去，儘管是一樣的
@@ -772,16 +770,16 @@ export namespace UserList {
   }
 
   // namespace export type Response 為最終的 Response 類型
-  export type Response = ApiResponse<User[]>
+  export type Response = User[]
 }
 
 // 2. 先創建 api 方法並掛上 Response 類型
 // service/apis/user/index.ts
+import { type ApiResponse, fetch2 } from '@/service'
 import { UserList } from '@/service/apis/user/type'
-import { fetch2 } from '@/service'
 
 // 將對應的類型掛到對應的 api 上
-export const list = () => fetch2<UserList.Response>('get:/user/list')
+export const list = () => fetch2<ApiResponse<UserList.Response>>('get:/user/list')
 
 
 // 3. 最重導出

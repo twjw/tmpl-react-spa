@@ -1,4 +1,4 @@
-import { fetch2 } from '@/service'
+import { type ApiResponse, fetch2 } from '@/service'
 import { UserList } from '@/service/apis/user/type'
 
-export const list = () => fetch2<UserList.Response>('get:/user/list')
+export const list = () => fetch2<ApiResponse<UserList.Response>>('get:/user/list')

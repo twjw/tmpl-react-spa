@@ -1,10 +1,8 @@
-import { type ApiResponse } from '@/service'
-
 export namespace UserList {
 	export type User = {
 		name: string
 		age: number
 	}
 
-	export type Response = ApiResponse<User[]>
+	export type Response = User[]
 }
