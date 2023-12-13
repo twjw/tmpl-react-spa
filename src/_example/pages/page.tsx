@@ -30,8 +30,10 @@ function Page() {
 
 	useEffect(() => {
 		Status.hello()
-
-		apis.user.list()
+		;(async () => {
+			const { success, status, data } = await apis.user.list()
+			console.log('userList', success, status, data)
+		})()
 
 		const formData = new FormData()
 		formData.append('text', 'hello form-data text')
