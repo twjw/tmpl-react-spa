@@ -1,25 +1,29 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { useMemo } from 'react'
-import { BrowserRouter } from 'react-router-dom'
-import { ErrorBoundary } from '@/components'
+import { type ReactNode, useMemo } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { createPageRoutes } from '~page-routes'
 import { App as WtbxI18nApp } from '~wtbx-i18n'
-import { RouteWrap } from '@/components'
+import { RouteWrap, ErrorBoundary } from '@/components'
+
+function _AppWrap({ children }: { children: ReactNode }) {
+	return (
+		<BrowserRouter>
+			<WtbxI18nApp>
+				<ErrorBoundary.App>{children}</ErrorBoundary.App>
+			</WtbxI18nApp>
+		</BrowserRouter>
+	)
+}
 
 function App() {
 	const pageRoutes = useMemo(() => createPageRoutes({ Wrap: RouteWrap }), [])
 
 	return (
-		<BrowserRouter>
-			<WtbxI18nApp>
-				<ErrorBoundary.App>
-					<Routes>
-						{pageRoutes}
-						<Route key={'*'} path={'*'} element={<Navigate to={'/404'} replace />} />
-					</Routes>
-				</ErrorBoundary.App>
-			</WtbxI18nApp>
-		</BrowserRouter>
+		<_AppWrap>
+			<Routes>
+				{pageRoutes}
+				<Route key={'*'} path={'*'} element={<Navigate to={'/404'} replace />} />
+			</Routes>
+		</_AppWrap>
 	)
 }
 
