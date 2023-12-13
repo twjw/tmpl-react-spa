@@ -330,17 +330,17 @@ declare module '~env-config' {
 ```text
 pages/ 假設這是你的路由目錄入口
   home/
-    page.tsx // /home
+    page.tsx - /home
   news/
     (outlet)
       list/
-        page.tsx // /news/list (但是為 /news 的子路由)
+        page.tsx - /news/list (但是為 /news 的子路由)
     detail/
       [id]/
-        page.tsx // /news/detail/:id
-    page.tsx // /news (outlet) 目錄下路由的父路由
-  page.meta.ts // / 的元數據
-  page.tsx // /
+        page.tsx - /news/detail/:id
+    page.tsx - /news (outlet) 目錄下路由的父路由
+  page.meta.ts - / 的元數據，當 location === / 的時候，usePageRoute() 取回的 meta 就會是該檔定義的值
+  page.tsx - /
 ```
 
 ## 配置
@@ -509,6 +509,7 @@ registerLocale({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // 使用 ~wtbx-i18n 提供的 App 組件包裹來讓以下組件支持 locale 替換
+  // 有 fallback prop 可傳，預設為 <></>
   <WtbxI18nApp>
     <App />
   </WtbxI18nApp>
