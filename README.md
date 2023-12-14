@@ -553,20 +553,26 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </WtbxI18nApp>
 )
 
-// 其他 tsx
+// 全部方法介紹
 import {
-  dictionary, // 當前字典檔，也就是 en.ts 那些
-  locale, // 當前語系(無副檔名的檔名)，也就是 en 那些
+  dictionary, // 當前字典檔，也就是 en.ts, zh_TW.ts, ... 裡導出的物件
+  locale, // 當前語系(無副檔名的檔名)，也就是 en, zh_TW, ... 那些
   
-  // 翻譯語法，支持 {0} {1} 這種索引入值，只要在 registerLocale 後使用都不會有問題
-  // { world: '世界', parent: { hello: '你好 {0}' } } 假設字典如此
-  // t('world') 世界
-  // t('parent.hello', ['frank']) 你好 frank
+  // 翻譯語法，下面詳細講
   t, 
   
-  setLocale, // 更換語系
-  App, // setLocale 更換語系刷新應用用的組件
+  setLocale, // 更換語系，e.g. setLocale('en') 全站轉換為英文語系
+  App, // 更換語系更新應用用組件，並且加載對應的預設語系字典
 } from '~wtbx-i18n'
+
+// 以下是 t 的範例，支持跳脫、索引/key替換，二參為索引替換；三參為key替換
+// e.g.
+t('{0} - {1}', [123, 456]) // 123 - 456
+t('{0} - {1} - {0}', [123, 456]) // 123 - 456 - 123，同個索引可以重複入值
+t('{a} - {0} - {b}', [123], { a: 'aaa', b: 'bbb' }) // aaa - 123 - bbb
+t('{a}', [], { a: 'aaa' }) // aaa
+t('{a}', undefined, { a: 'aaa' }) // aaa
+t('\\{0} - {0}', [123]) // {0} - 123，\\{ 可以跳脫替換
 ```
 
 ---
