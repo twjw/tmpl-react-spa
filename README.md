@@ -177,7 +177,7 @@ react-spa
     hooks/ - 鉤子目錄
     pages/ - 頁面目錄
     service/ - 服務目錄
-      api/ - 與後端 api 溝通的目錄
+      apis/ - 與後端 api 溝通的目錄
         [...domain]/
           type.ts - api response type
           index.ts - api 路徑們
