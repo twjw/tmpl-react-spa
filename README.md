@@ -96,8 +96,8 @@ packages = {
 02. 使用 `pnpm` 做包管理
 03. 建議使用 `Jetbrains IDE` 開發，僅對該 IDE 做優化
 04. 純邏輯使用 `.tx`，含 **jsx** 使用 `.tsx`
-05. 時間庫使用 `date-fns`，因為不是 `dayjs` 的關係，所以 `antd` 的日期相關組件請從 `@/components` 導入
-06. 除了 `*.page.tsx`，都使用 `export` 導出而不是 `export default`，這樣才可以準確的導入模塊，`export`, `export default` 都建議在最底部一次導出，而不是在變量前申明(除特殊模塊)
+05. 時間庫使用 `date-fns`，因為不是 `dayjs` 的關係，所以 `antd` 的日期相關組件請從 `@/components/antd` 導入
+06. 除了 `*.page.tsx` 或其他特定的模塊，都使用 `export` 導出而不是 `export default`，這樣才可以準確的導入模塊與搖樹處理，**簡言之：不知道該用 `export default` 還是 `export` 就直接用 `export`**
 
 ---
 
@@ -143,6 +143,8 @@ packages = {
 
 # 目錄結構
 
+> 所有檔名為 `_` 的檔案都是佔位檔案，因為 `git` 不能 `push` 空的目錄
+
 以下列出比較重要的而已
 
 ```text
@@ -175,14 +177,13 @@ react-spa
     hooks/ - 鉤子目錄
     pages/ - 頁面目錄
     service/ - 服務目錄
-      ws/ - websocket 相關
       api/ - 與後端 api 溝通的目錄
         [...domain]/
           type.ts - api response type
           index.ts - api 路徑們
+      fetch2/ - 主要的 fetch 方法實例
+      ws/ - websocket 相關
       [...domain]/ - 轉換 api/ 下的 api 的服務目錄
-      fetch2.ts - 主要的 fetch 方法實例
-      index.ts - 統一導出
     store/ - 狀態目錄
     style/ - 樣式目錄
       common.css - 全局樣式
@@ -315,8 +316,8 @@ declare module '~env-config' {
 
 ## 規則
 
-- 檔名為 `page.tsx` 的檔案都會被自動轉成路由頁面(**必須 export default 導出**)
-- 檔名為 `page.meta.ts` 的檔案都會被自動轉成路由元數據(**必須 export default 導出**)
+- 檔名為 `page.tsx` 的檔案都會被自動轉成路由頁面(**必須 export default 且靜態導出(下方詳述)**)
+- 檔名為 `page.meta.ts` 的檔案都會被自動轉成路由元數據(**必須 export default 且靜態導出(下方詳述)**)
 - 目錄為 `[xxx]` 的檔案都會被轉成參數路由
   - 如 `[id]` 轉成 `:id`
   - 如 `[my-name]` 轉成 `:myName`，**注意：如果是多個單字的參數明會自動轉成駝峰命名**
@@ -333,6 +334,8 @@ declare module '~env-config' {
       </div>
     </div>
   }
+  
+  export default Page
   ```
 
 ```text
@@ -383,16 +386,43 @@ declare module '~page-routes' {
 
 ## 使用
 
+> **`page.tsx`, `page.meta.ts` 這兩個檔案導出必須是提前申明再導出，而非直接導出，會導致無法跟蹤熱更，具體請參考以下程式碼：**  
+> ```typescript jsx
+> // page.meta.ts
+> // 錯誤，不能跟蹤熱更且不能較驗類型
+> export default {} 
+> 
+> // 正確
+> const meta: PageMeta = {}
+> export default meta
+> 
+> 
+> // page.tsx
+> // 錯誤，不能跟蹤熱更
+> export default function () {} 
+> export default () => {} 
+> 
+> // 正確
+> function Page() {}
+> export default Page
+> 
+> const Page = () => {}
+> export default Page
+> ```
+
+完整的範例
+
 ```typescript jsx
 // page.meta.ts
 // 元數據的定義方式
-import { PageMeta } from '@/type/common.ts'
+import { PageMeta } from '@/type/common'
 
 const meta: PageMeta = {
   title: 'home',
 }
 
 // 必須使用 export default 導出變量
+// 僅能使用靜態方式導出，不能是 export default {} 的方式導出，這樣無法跟蹤模塊變更而導致無法熱更新
 export default meta
 
 
@@ -405,6 +435,8 @@ function Page() {
 }
 
 // 必須使用 export default 導出 jsx
+// 僅能使用靜態方式導出，不能是 export default function() {} 或者是 export default () => {}
+// 的方式導出，這樣無法跟蹤模塊變更而導致無法熱更新
 export default Page
 
 

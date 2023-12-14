@@ -1,5 +1,0 @@
-export * from '@/components/antd/calendar'
-export * from '@/components/antd/date-picker'
-export * from '@/components/antd/time-picker'
-export * from '@/components/error-boundary'
-export * from '@/components/route/wrap'

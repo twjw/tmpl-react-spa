@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '/favicon.svg'
 import { Link } from 'react-router-dom'
-import { useUserStore } from '@/store'
+import { useUserStore } from '@/store/user'
 import { createFetch2 } from 'wtbx/common'
 import { t, setLocale } from '~wtbx-i18n'
 import { Status } from '@/enum'
 import { storage } from '@/store/storage'
-import { apis } from '@/service'
+import { userApis } from '@/service/apis/user'
 import { usePageRoute } from '~page-routes'
 
 const fetch2 = createFetch2()
@@ -39,7 +39,7 @@ function Page() {
 
 		Status.hello()
 		;(async () => {
-			const { success, status, data } = await apis.user.list()
+			const { success, status, data } = await userApis.list()
 			console.log('userList', success, status, data)
 		})()
 
