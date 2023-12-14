@@ -168,6 +168,7 @@ react-spa
   src/
     assets/ - 資源目錄
     components/ - 組件目錄
+    constants/ - 常量目錄
     enums/ - 枚舉目錄
       gen/ - wtbx createEnum 產出的 enum 目錄
       ts/ - ts 自己的 enum 目錄
