@@ -120,7 +120,7 @@ packages = {
 
 - `doc/code/example/_admin` 刪除該目錄(該目錄為專案後台示範目錄，可以觀摩該目錄來看項目該如何寫)
 - `vite.config.ts` 裡移除有 `doc/code/example/_admin` 巴拉巴拉的 `resolve` 路徑代碼
-- `tsconfig.json` 裡將 `@/*` 的指向指到 `src/*`
+- `tsconfig.json` 裡將 `paths` 的 `@/*` 的指向指到 `src/*` 並將 `include` 的 `doc` 移除
 - `README.md` 將內容更換為以下
   ```markdown
   # 開發文檔  
