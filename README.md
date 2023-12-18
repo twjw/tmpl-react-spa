@@ -130,7 +130,7 @@ packages = {
 
 ## 4. 全局替換引入路徑
 
-> 不想 monorepo 暫出此下策
+> 目前不想 monorepo 暫出此下策
 
 - 全局搜尋 `toolbox-js/packages`，將其取代為 `wtbx`，前面的 `../` 等路徑都要移掉，比如：
   ```text
@@ -500,11 +500,11 @@ text-20 = 1.25rem
 
 ```typescript
 // vite.config.ts
-import { reactPageRoutes } from 'wtbx/vite'
+import { reactI18n } from 'wtbx/vite'
 
 export default defineConfig({
   plugins: [
-    wtbxI18n({
+    reactI18n({
       // 字典檔目錄的絕對路徑，一樣後蓋前
       dirs: [path.resolve(__dirname, './src/assets/locale')],
     }),
