@@ -6,7 +6,7 @@ declare module '~env-config' {
 }
 
 declare module '~page-routes' {
-	import { ReactPageRoutes } from 'wtbx/vite'
+	import type { ReactPageRoutes } from 'wtbx/vite'
 	import type { PageMeta } from '@/type/common'
 
 	export const createPageRoutes: ReactPageRoutes.CreatePageRoutes
