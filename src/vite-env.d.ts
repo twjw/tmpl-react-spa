@@ -13,15 +13,15 @@ declare module '~page-routes' {
 	export const usePageRoute: ReactPageRoutes.UsePageRute<PageMeta>
 }
 
-declare module '~wtbx-i18n' {
-	import type { WtbxI18n } from 'wtbx/vite'
+declare module '~i18n' {
+	import type { ReactI18n } from 'wtbx/vite'
 
 	type Dictionary = typeof import('@/assets/locale/zh_TW').default
 	type Locale = 'en' | 'zh_TW'
 
 	export const dictionary: Dictionary
 	export const locale: Locale
-	export const t: WtbxI18n.Translate<Dictionary>
-	export const setLocale: WtbxI18n.SetLocale<Locale>
-	export const App: WtbxI18n.App<Locale>
+	export const t: ReactI18n.Translate<Dictionary>
+	export const setLocale: ReactI18n.SetLocale<Locale>
+	export const App: ReactI18n.App<Locale>
 }

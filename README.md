@@ -514,17 +514,17 @@ export default defineConfig({
 
 // src/vite-env.d.ts
 // 如果需要類型提醒就配，阿我是想不到什麼理由不配
-declare module '~wtbx-i18n' {
-  import type { WtbxI18n } from 'wtbx/vite'
+declare module '~i18n' {
+  import type { ReactI18n } from 'wtbx/vite'
   
   type Dictionary = typeof import('@/assets/locale/zh_TW').default
   type Locale = 'en' | 'zh_TW'
   
   export const dictionary: Dictionary
   export const locale: Locale
-  export const t: WtbxI18n.Translate<Dictionary>
-  export const setLocale: WtbxI18n.SetLocale<Locale>
-  export const App: WtbxI18n.App<Locale>
+  export const t: ReactI18n.Translate<Dictionary>
+  export const setLocale: ReactI18n.SetLocale<Locale>
+  export const App: ReactI18n.App<Locale>
 }
 
 
@@ -542,15 +542,15 @@ export default {
 
 ```typescript jsx
 // main.tsx
-import { App as WtbxI18nApp } from '~wtbx-i18n'
+import { App as I18nApp } from '~i18n'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  // 使用 ~wtbx-i18n 提供的 App 組件包裹來讓以下組件支持 locale 替換
+  // 使用 ~i18n 提供的 App 組件包裹來讓以下組件支持 locale 替換
   // defaultLocale 為預設的語系，語系為無附檔名的檔名
   // 有 fallback prop 可傳，預設為 <></>
-  <WtbxI18nApp defaultLocale={'zh_TW'}>
+  <I18nApp defaultLocale={'zh_TW'}>
     <App />
-  </WtbxI18nApp>
+  </I18nApp>
 )
 
 // 其他 tsx
@@ -566,7 +566,7 @@ import {
   
   setLocale, // 更換語系
   App, // setLocale 更換語系刷新應用用的組件
-} from '~wtbx-i18n'
+} from '~i18n'
 ```
 
 ---

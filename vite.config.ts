@@ -4,7 +4,12 @@ import UnoCSS from 'unocss/vite'
 import react from '@vitejs/plugin-react-swc'
 import svgr from 'vite-plugin-svgr'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { autoAlias, buildDropLog, reactPageRoutes, wtbxI18n } from '../toolbox-js/packages/vite'
+import {
+	autoAlias,
+	buildDropLog,
+	reactPageRoutes,
+	reactI18n,
+} from '../toolbox-js/packages/vite'
 import { createEnvConfig } from '../toolbox-js/packages/node'
 import { baseFontSize } from './uno.config'
 import type { EnvType } from '.env'
@@ -38,7 +43,7 @@ export default async ({ mode }) => {
 			buildDropLog({
 				clean: envConfig.mode === 'production',
 			}),
-			wtbxI18n({
+			reactI18n({
 				dirs: [
 					path.resolve(__dirname, './src/assets/locale'),
 					path.resolve(__dirname, './doc/code/example/_admin/assets/locale'),

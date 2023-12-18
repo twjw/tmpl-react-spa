@@ -1,7 +1,7 @@
 import { type ReactNode, useMemo } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { createPageRoutes } from '~page-routes'
-import { App as WtbxI18nApp } from '~wtbx-i18n'
+import { App as WtbxI18nApp } from '~i18n'
 import { RouteWrap } from '@/components/route/wrap'
 import { ErrorBoundary } from '@/components/error-boundary'
 

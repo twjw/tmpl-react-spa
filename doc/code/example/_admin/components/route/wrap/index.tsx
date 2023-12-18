@@ -1,4 +1,4 @@
-import { ErrorBoundary } from '@/components'
+import { ErrorBoundary } from '@/components/error-boundary'
 import { FC, ReactNode, Suspense, useEffect } from 'react'
 import { usePageRoute } from '~page-routes'
 

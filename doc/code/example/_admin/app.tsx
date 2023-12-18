@@ -1,16 +1,16 @@
 import { type ReactNode, useMemo } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { createPageRoutes } from '~page-routes'
-import { App as WtbxI18nApp } from '~wtbx-i18n'
+import { App as I18nApp } from '~i18n'
 import { RouteWrap } from '@/components/route/wrap'
 import { ErrorBoundary } from '@/components/error-boundary'
 
 function _AppWrap({ children }: { children: ReactNode }) {
 	return (
 		<BrowserRouter>
-			<WtbxI18nApp defaultLocale={'zh_TW'}>
+			<I18nApp defaultLocale={'zh_TW'}>
 				<ErrorBoundary.App>{children}</ErrorBoundary.App>
-			</WtbxI18nApp>
+			</I18nApp>
 		</BrowserRouter>
 	)
 }
