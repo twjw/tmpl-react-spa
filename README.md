@@ -224,18 +224,18 @@ react-spa
 import { WObject } from 'wtbx/type'
 
 // 裡面隨便寫都行
-const env = {
+const envConfig = {
 	// 預設暴露到 client 端的 key，也可以自定義下面會說
 	vite: {}
 }
 
 // 下面導出的環境變數類型導出在 .env.ts 就可以了，其他不用寫
-export type EnvType = WObject.IgnoreKeyPrefix<typeof env>
+export type EnvType = WObject.IgnoreKeyPrefix<typeof envConfig>
 export type EnvMode = 'development' | 'production'
 // 此為最終注入到 client 的類型
 export type ClintEnv = { mode: EnvMode } & EnvType['vite']
 // 最後請必須導出 env 物件
-export default env
+export default envConfig
 
 
 // .env.other.ts
@@ -243,9 +243,9 @@ import type { EnvType } from './.env'
 import { WObject } from '../toolbox-js/packages/type'
 
 // 其他環境寫法都隨意，類型掛上 WObject.DeepPartial<EnvType> 就好
-const env: WObject.DeepPartial<EnvType> = {}
+const envConfig: WObject.DeepPartial<EnvType> = {}
 
-export default env
+export default envConfig
 ```
 
 ## 配置
@@ -256,7 +256,7 @@ import { autoAlias } from 'wtbx/vite'
 
 export default async ({ mode }) => {
   // 讀取環境變數
-  const env = await mergeEnv<EnvType, EnvMode>({
+  const envConfig = await mergeEnv<EnvType, EnvMode>({
     mode,
     // 讀取的目錄路徑
     dirs: [process.cwd()],
@@ -266,7 +266,7 @@ export default async ({ mode }) => {
     plugins: [
 			// 注入到 client 的插件
       injectEnv({ 
-        env,
+        env: envConfig,
         propNames: ['mode', 'vite'], // 預設導出的 key
 			}),
     ]
@@ -964,7 +964,7 @@ export default defineConfig({
   plugins: [
     buildDropLog({
       // 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
-      clean: env.mode === 'production', 
+      clean: envConfig.mode === 'production', 
     }),
   ]
 })

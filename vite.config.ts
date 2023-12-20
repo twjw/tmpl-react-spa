@@ -16,7 +16,7 @@ import { baseFontSize } from './uno.config'
 import type { EnvMode, EnvType } from '.env'
 
 export default async ({ mode }) => {
-	const env = await mergeEnv<EnvType, EnvMode>({
+	const envConfig = await mergeEnv<EnvType, EnvMode>({
 		mode,
 		dirs: [process.cwd()],
 	})
@@ -26,19 +26,19 @@ export default async ({ mode }) => {
 			react(),
 			svgr(),
 			createHtmlPlugin({
-				minify: env.mode === 'production',
+				minify: envConfig.mode === 'production',
 				inject: {
 					data: {
-						title: env.title,
+						title: envConfig.title,
 						htmlFontSize: `${baseFontSize}px`,
 					},
 				},
 			}),
-			injectEnv({ env }),
+			injectEnv({ env: envConfig }),
 			autoAlias(),
 			reactPageRoutes({
 				defaultMeta: {
-					title: env.title,
+					title: envConfig.title,
 				},
 				pages: [
 					path.resolve(__dirname, './src/pages'),
@@ -46,7 +46,7 @@ export default async ({ mode }) => {
 				],
 			}),
 			buildDropLog({
-				clean: env.mode === 'production',
+				clean: envConfig.mode === 'production',
 			}),
 			reactI18n({
 				dirs: [
@@ -60,14 +60,14 @@ export default async ({ mode }) => {
 		],
 		server: {
 			host: '0.0.0.0',
-			port: env.port || 3000,
+			port: envConfig.port || 3000,
 			proxy: {
-				[env.apiBaseUrl]: {
-					target: env.apiUrl,
+				[envConfig.apiBaseUrl]: {
+					target: envConfig.apiUrl,
 					changeOrigin: true,
 				},
-				// [env.wsBaseUrl]: {
-				// 	target: env.apiUrl,
+				// [envConfig.wsBaseUrl]: {
+				// 	target: envConfig.apiUrl,
 				// 	changeOrigin: true,
 				// 	// rewrite: path => path.replace(/^\/ws/, '')
 				// }
