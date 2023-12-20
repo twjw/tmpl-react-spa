@@ -9,8 +9,6 @@ module.exports = {
 		"dist",
 		"package.json",
 		".eslintrc.cjs",
-		".env.ts",
-		".env.*.ts",
 	],
 	"parser": "@typescript-eslint/parser",
 	"plugins": [

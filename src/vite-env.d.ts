@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
 declare module '~env-config' {
-	import type { EnvType } from '../.env'
-	export const envConfig: EnvType
+	import type { ClintEnv } from '../.env'
+	export const envConfig: ClintEnv
 }
 
 declare module '~page-routes' {

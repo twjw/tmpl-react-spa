@@ -9,31 +9,36 @@ import {
 	buildDropLog,
 	reactPageRoutes,
 	reactI18n,
+	injectEnv,
 } from '../toolbox-js/packages/vite'
-import { createEnvConfig } from '../toolbox-js/packages/node'
+import { mergeEnv } from '../toolbox-js/packages/node'
 import { baseFontSize } from './uno.config'
-import type { EnvType } from '.env'
+import type { EnvMode, EnvType } from '.env'
 
 export default async ({ mode }) => {
-	const envConfig = await createEnvConfig<EnvType, 'development' | 'production'>({ mode })
+	const env = await mergeEnv<EnvType, EnvMode>({
+		mode,
+		dirs: [process.cwd()],
+	})
 
 	return defineConfig({
 		plugins: [
 			react(),
 			svgr(),
 			createHtmlPlugin({
-				minify: envConfig.mode === 'production',
+				minify: env.mode === 'production',
 				inject: {
 					data: {
-						title: envConfig.project.title,
+						title: env.title,
 						htmlFontSize: `${baseFontSize}px`,
 					},
 				},
 			}),
+			injectEnv({ env }),
 			autoAlias(),
 			reactPageRoutes({
 				defaultMeta: {
-					title: envConfig.project.title,
+					title: env.title,
 				},
 				pages: [
 					path.resolve(__dirname, './src/pages'),
@@ -41,7 +46,7 @@ export default async ({ mode }) => {
 				],
 			}),
 			buildDropLog({
-				clean: envConfig.mode === 'production',
+				clean: env.mode === 'production',
 			}),
 			reactI18n({
 				dirs: [
@@ -55,14 +60,14 @@ export default async ({ mode }) => {
 		],
 		server: {
 			host: '0.0.0.0',
-			port: envConfig.server.port || 3000,
+			port: env.port || 3000,
 			proxy: {
-				[envConfig.server.apiBaseUrl]: {
-					target: envConfig.server.apiUrl,
+				[env.apiBaseUrl]: {
+					target: env.apiUrl,
 					changeOrigin: true,
 				},
-				// [envConfig.server.wsBaseUrl]: {
-				// 	target: envConfig.server.apiUrl,
+				// [env.wsBaseUrl]: {
+				// 	target: env.apiUrl,
 				// 	changeOrigin: true,
 				// 	// rewrite: path => path.replace(/^\/ws/, '')
 				// }

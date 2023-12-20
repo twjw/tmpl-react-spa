@@ -193,7 +193,7 @@ react-spa
     app.tsx - 主入口組件(App Component)
     main.tsx - 主入口(react-dom render)
     vite-env.d.ts - vite 全局環境(若開啟 wtbx 的相應功能，也會加類型到這)
-  .env.?*.ts - 環境變數
+  .env*.ts - 環境變數
   .eslintrc.cjs - eslint 配置，可以不用配，哈士奇會處理
   .prettierrc - prettier 配置，可以不用配，哈士奇會處理
   index.html - 入口 html
@@ -214,34 +214,38 @@ react-spa
 
 ## 定義
 
-* `// --- ---` **兩個這著註解不可更動**，這是我讀取環境變數的範圍用
-* 可以使用 `ts`, `json` 副檔名定義，僅推薦 ts
-* 命名方式為 `通用: .env.(ts|json)`, `mode: .env.*.(ts|json)`
-
-其他的定義看以下描述就好
+* **請使用 `ts` 為附檔名**，可以在裡面寫邏輯的，**只是最終導出的結果須為 `JSON` 支持的類型**
+* **最後請使用 `export default` 導出環境變數**
+* 命名與覆蓋方式與 `vite` 預設的環境變數邏輯一致(右側為 `merge` 順序)： `.env.ts` > `.env.local.ts` > `.env.[mode].ts` > `.env.[mode].local.ts`
+* `client` 端預設只導出 `mode` | `vite` 兩個 `key` 的環境變數 
 
 ```typescript
+// .env.ts
 import { WObject } from 'wtbx/type'
 
-const env =
-  // --- ---
-  {
-    // 可以嵌套定義
-    project: {
-      title: 'twjw-react-spa-tmpl',
-    },
-    
-    // _ 開頭為私有，僅能在 node 環境下調用，不會暴露在 vite/clinet 裡
-    // node 處可以 envConfig.port 取，client 的話取不到
-    _port: 8080,
-    
-    // 僅能寫靜態的值，下面這麼寫會是錯的
-    errorKey: process.env.NODE_ENV,
-  }
-// --- ---
+// 裡面隨便寫都行
+const env = {
+	// 預設暴露到 client 端的 key，也可以自定義下面會說
+	vite: {}
+}
 
-// 導出該環境變數類型(.env.ts 導出就好)，之後會用到
+// 下面導出的環境變數類型導出在 .env.ts 就可以了，其他不用寫
 export type EnvType = WObject.IgnoreKeyPrefix<typeof env>
+export type EnvMode = 'development' | 'production'
+// 此為最終注入到 client 的類型
+export type ClintEnv = { mode: EnvMode } & EnvType['vite']
+// 最後請必須導出 env 物件
+export default env
+
+
+// .env.other.ts
+import type { EnvType } from './.env'
+import { WObject } from '../toolbox-js/packages/type'
+
+// 其他環境寫法都隨意，類型掛上 WObject.DeepPartial<EnvType> 就好
+const env: WObject.DeepPartial<EnvType> = {}
+
+export default env
 ```
 
 ## 配置
@@ -252,27 +256,19 @@ import { autoAlias } from 'wtbx/vite'
 
 export default async ({ mode }) => {
   // 讀取環境變數
-  const envConfig = await createEnvConfig<
-    EnvType, // 上面定義的環境變數類型
-    'development' | 'production' // Mode: 支援的環境有哪些(你可以看你檔名來定義就好)
-  >({ mode }) // mode 必傳
-  
-  // 如果有需要動態轉換環境可以使用 transform
-  const dyncmicEnvConfig = await createEnvConfig<
-    EnvType, 
-    'development' | 'production',
-    1 // transform 返回的類型，也為最終的環境變數值
-  >({ 
+  const env = await mergeEnv<EnvType, EnvMode>({
     mode,
-    transform: (envConfig /* type 為 EnvType & { mode: Mode } */) => 
-      1 // transform return 為你修改後的環境變數值
+    // 讀取的目錄路徑
+    dirs: [process.cwd()],
   })
   
   return defineConfig({
     plugins: [
-      // hasEnv 預設為 true，所以可以寫 autoAlias() 就好
-      // hasEnv 若為 true，會將 ~env-config 注入到 vite-client
-      autoAlias({ hasEnv: true }), 
+			// 注入到 client 的插件
+      injectEnv({ 
+        env,
+        propNames: ['mode', 'vite'], // 預設導出的 key
+			}),
     ]
   })
 }
@@ -290,8 +286,8 @@ import { envConfig } from '~env-config'
 ```typescript
 // src/vite-env.d.ts
 declare module '~env-config' {
-  import type { EnvType } from '../.env'
-  export const envConfig: EnvType
+  import type { ClintEnv } from '../.env'
+  export const envConfig: ClintEnv
 }
 ```
 
@@ -902,7 +898,7 @@ export { useUserStore }
 import { createValueStorage } from 'wtbx/web'
 import { envConfig } from '~env-config'
 
-const name = (name: string) => `${envConfig.project.storagePrefix}-${name}`
+const name = (name: string) => `${envConfig.storagePrefix}-${name}`
 
 const storage = {
   token: createValueStorage<string | null>(name('user'), null),
@@ -968,7 +964,7 @@ export default defineConfig({
   plugins: [
     buildDropLog({
       // 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
-      clean: envConfig.mode === 'production', 
+      clean: env.mode === 'production', 
     }),
   ]
 })

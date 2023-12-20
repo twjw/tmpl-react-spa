@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 import { createValueStorage } from 'wtbx/web'
 import { envConfig } from '~env-config'
-import { storage } from '@/store/storage'
 
 // 建立集中管理的 storage
 // store/storage/index.ts
