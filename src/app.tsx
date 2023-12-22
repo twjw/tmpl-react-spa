@@ -16,12 +16,10 @@ function _AppWrap({ children }: { children: ReactNode }) {
 }
 
 function App() {
-	const pageRoutes = useMemo(() => createPageRoutes({ Wrap: RouteWrap }), [])
-
 	return (
 		<_AppWrap>
 			<Routes>
-				{pageRoutes}
+				{useMemo(() => createPageRoutes({ Wrap: RouteWrap }), [])}
 				<Route path={'*'} element={<Navigate to={'/404'} replace />} />
 			</Routes>
 		</_AppWrap>
