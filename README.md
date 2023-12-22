@@ -448,10 +448,6 @@ const RouteWrap: FC<CommonProps> = ({ children }) => {
   // { path: string, meta: PageMeta | undefined }
   const ctx = usePageRoute()
   
-  // 如果傳完整的網址，那麼就會取出對應路徑的 meta 訊息
-  // { path: string, meta: PageMeta | undefined }
-  const ctx2 = usePageRoute('/xxx')
-  
   // 必須要有 Suspense(因為只提供 lazy component)，其他按你需要加
   return <Suspense fallback={<></>}>{children}</Suspense>
 }
