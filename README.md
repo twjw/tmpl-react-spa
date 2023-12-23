@@ -36,9 +36,12 @@
   - [使用](#使用)
 - [Store](#Store)
   - [持久化](#持久化)
-- [其他用到的 `wtbx/vite` 插件](#其他用到的-wtbxvite-插件)
-  - [buildDropLog 構件移除 console](#buildDropLog-構件移除-console)
+- [其他可用的 `wtbx/vite` 插件](#其他可用的-wtbxvite-插件)
+  - [buildDropLog(生產移除 console)](#buildDropLog生產移除-console)
+  - [mergePublic(合併 public 資源)](#mergePublic合併-public-資源)
+  - [cycleConvertPngAndWebp(`png` 與 `webp` 檔互轉換)](#cycleconvertpngandwebppng-與-webp-檔互轉換)
 - [wtbx](#wtbx)
+
 
 ---
 
@@ -949,9 +952,9 @@ type createValueStorage = <T>(
 
 ---
 
-# 其他用到的 `wtbx/vite` 插件
+# 其他可用的 `wtbx/vite` 插件
 
-## buildDropLog 構件移除 console
+## buildDropLog(生產移除 console)
 
 ```typescript
 import { buildDropLog } from 'wtbx/vite'
@@ -961,6 +964,43 @@ export default defineConfig({
     buildDropLog({
       // 如果為 true 且使用 vite build 指令將會移除 console, debugger 語法
       clean: envConfig.mode === 'production', 
+    }),
+  ]
+})
+```
+
+## mergePublic(合併 public 資源)
+
+當有多模板需求時可用，可以將多個目錄的資源實時合併
+
+```typescript
+import { mergePublic } from 'wtbx/vite'
+
+export default defineConfig({
+  plugins: [
+    mergePublic({
+      // 此目錄名為 public/ 下的目錄名稱，會以後蓋前的方式合併資源
+      dirNames: ['template1', 'template2'],  
+    }),
+  ]
+})
+```
+
+## cycleConvertPngAndWebp(`png` 與 `webp` 檔互轉換)
+
+如果有需要兼容 `png` 與 `webp` 的需求時可用，會讀取 `dirs` 目錄下的 `png` 與 `webp` 目錄名的目錄進行實時的雙向綁定圖源互換
+
+```typescript
+import path from 'path'
+import { cycleConvertPngAndWebp } from 'wtbx/vite'
+
+export default defineConfig({
+  plugins: [
+    cycleConvertPngAndWebp({
+      // 填寫需要轉換的資源目錄(絕對路徑)
+      dirs: [
+        path.resolve(__dirname, 'public')
+      ],  
     }),
   ]
 })
