@@ -971,6 +971,8 @@ export default defineConfig({
 
 ## mergePublic(合併 public 資源)
 
+> `Node` 版本需 `>= 16.7.0`
+
 當有多模板需求時可用，可以將多個目錄的資源實時合併
 
 ```typescript
@@ -987,6 +989,8 @@ export default defineConfig({
 ```
 
 ## cycleConvertPngAndWebp(`png` 與 `webp` 檔互轉換)
+
+> `Node` 版本需 `>= 18.17.0`
 
 如果有需要兼容 `png` 與 `webp` 的需求時可用，會讀取 `dirs` 目錄下的 `png` 與 `webp` 目錄名的目錄進行實時的雙向綁定圖源互換
 
