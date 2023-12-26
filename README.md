@@ -236,7 +236,7 @@ const envConfig = {
 export type EnvType = WObject.IgnoreKeyPrefix<typeof envConfig>
 export type EnvMode = 'development' | 'production'
 // 此為最終注入到 client 的類型
-export type ClintEnv = { mode: EnvMode } & EnvType['vite']
+export type ClintEnv = { mode: EnvMode } & { vite: EnvType['vite'] }
 // 最後請必須導出 env 物件
 export default envConfig
 

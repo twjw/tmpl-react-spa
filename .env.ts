@@ -15,5 +15,5 @@ const env = {
 
 export type EnvType = WObject.IgnoreKeyPrefix<typeof env>
 export type EnvMode = 'development' | 'production'
-export type ClintEnv = { mode: EnvMode } & EnvType['vite']
+export type ClintEnv = { mode: EnvMode } & { vite: EnvType['vite'] }
 export default env
