@@ -17,11 +17,12 @@ fetch2.interceptors.request.use(config => {
 })
 
 fetch2.interceptors.response.use(res => {
-	console.log(res)
+	console.log(111, res)
 	return res?.data
 })
 
 fetch2.interceptors.error.use((error, userConfig) => {
+	console.log(222, error)
 	return { aaa: 123 }
 })
 
@@ -67,7 +68,9 @@ function Page() {
 		})
 
 		const mark = Symbol()
+		const controller = new AbortController()
 		fetch2<{ n: number }[]>('get:/api/json', undefined, {
+			controller,
 			mark: mark,
 		}).then(res => {
 			console.log('api/json' + 1, res)
@@ -90,6 +93,8 @@ function Page() {
 				console.log('api/json' + 4, res)
 			})
 		})
+
+		fetch2.cancel(controller)
 
 		// fetch2<{ n: number }[]>('get:/api/json', undefined, {
 		// 	cacheTime: 3000,
